@@ -38,7 +38,7 @@ export async function userSignup(req,res){
     }
     catch(err){
         console.log(err)
-        res.status(500).json({ message: err });
+        res.status(510).json({ message: err });
     }
 }
 
