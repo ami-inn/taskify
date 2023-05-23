@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { BrowserRouter as Router,Routes,Route,Navigate } from 'react-router-dom';
+import axios from 'axios'
+import { useDispatch,useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import UserSignup from './components/UserSignup/UserSignup';
 
 function App() {
+  axios.defaults.baseURL = "http://localhost:5000/";
+  axios.defaults.withCredentials = true;
+
+  const { user, admin,refresh } = useSelector((state) => {
+    return state;
+  });
+
+  const dispatch=useDispatch()
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <Router>
+    <Routes>
+      <Route path='/signup' element={<UserSignup/>}/>
+      <Route path='/' element={<UserSignup/>}/>
+    </Routes>
+  </Router>
   );
 }
 

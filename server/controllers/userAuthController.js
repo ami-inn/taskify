@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import sentOtp from '../helpers/sentOtp.js'
 import crypto from 'crypto'
-import { MongoNetworkTimeoutError } from 'mongodb'
+
 
 
 var salt = bcrypt.genSaltSync(10)
