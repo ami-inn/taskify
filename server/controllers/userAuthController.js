@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import sentOtp from '../helpers/sentOtp.js'
 import crypto from 'crypto'
+import { log } from 'console'
 
 
 
@@ -10,15 +11,19 @@ var salt = bcrypt.genSaltSync(10)
 
 export async function userSignup(req,res){
     try{
-        const {name,email,phone}=req.body
+        console.log('enterrr');
+        const {name, email, password, confPassword,lastname,phoneNumber}=req.body
+        console.log(req.body);
         const hashPassword=bcrypt.hashSync(password,salt)
         const user=await usermodel.findOne({email})
 
         if(user){
             return res.json({error:true,message:'user already exists'})
         }
+        const mergedName = name + ' ' + lastname; 
+        
 
-        const newUser=new usermodel({name,email,phone,password:hashPassword})
+        const newUser=new usermodel({name:mergedName,email,phone:phoneNumber,password:hashPassword})
 
         await newUser.save()
 

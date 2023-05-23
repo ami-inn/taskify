@@ -4,20 +4,12 @@ import cors from 'cors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import dbConnect from './config/dbConnect.js'
-
-
-
-
-
-
-
-
-
-
+// import userAuthRouter from './routers/userAuthRouter.js'
+import userAuthRouter from './routers/userAuthRouter.js'
 
 const app=express()
 app.use(express.json({limit:'50mb'}))
-app.use(cookieParser)
+app.use(cookieParser())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.resolve()+'/public'))
 app.use(
@@ -28,8 +20,10 @@ app.use(
         credentials:true,
     })
 )
+
 dbConnect()
+app.use('/',userAuthRouter)
 
 app.listen(5000,()=>{
-    console.log('server running on port 5000')
+    console.log('server running on port 5000 hello')
 })

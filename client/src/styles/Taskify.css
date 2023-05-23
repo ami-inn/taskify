@@ -23581,3 +23581,6 @@ ul.iq-contact-rest li a p {
   .button-submit-login-p a{
     color: #CC059A;
   }
+  .button-submit-login:disabled{
+    opacity: 50%;
+  }
