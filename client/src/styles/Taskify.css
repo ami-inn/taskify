@@ -19917,8 +19917,10 @@ fieldset[disabled] .btn {
   .floating-input:not(:placeholder-shown) ~ label {
     top: 0;
     font-size: 14px;
-    background: #F8F7F7;
-    padding: 5px 8px; }
+    background: #330e2d;
+    padding: 2px 11px;
+    border-radius: 10%;
+}
 
 @media (min-width: 992px) {
   .lb-img {

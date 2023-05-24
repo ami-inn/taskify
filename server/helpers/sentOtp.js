@@ -7,13 +7,13 @@ export default function sentOtp(email,otp){
             port: 465,
             secure: true,
             auth: {
-              user: process.env.EMAIL,
-              pass: process.env.PASSWORD,
+              user: 'amipk2001@gmail.com',
+              pass: 'gzpenpqheyoeplcl',
             },
         })
 
         var mailOptions={
-            from: process.env.EMAIL,
+            from: 'amipk2001@gmail.com',
             to: email,
             subject: "DocOnline Email verification",
             html: `

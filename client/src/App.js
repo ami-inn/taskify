@@ -5,6 +5,9 @@ import axios from 'axios'
 import { useDispatch,useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import UserSignup from './components/UserSignup/UserSignup';
+import UserLanding from './components/UserLanding/UserLanding';
+import UserLogin from './components/UserLogin/UserLogin';
+import VerifyOtp from './components/VerifyOtp/VerifyOtp';
 
 function App() {
   axios.defaults.baseURL = "http://localhost:5000/";
@@ -22,7 +25,9 @@ function App() {
   <Router>
     <Routes>
       <Route path='/signup' element={<UserSignup/>}/>
-      <Route path='/' element={<UserSignup/>}/>
+      <Route path='/login' element={<UserLogin/>}/>
+      <Route path='/' element={<UserLanding/>}/>
+      
     </Routes>
   </Router>
   );

@@ -12,28 +12,33 @@ var salt = bcrypt.genSaltSync(10)
 export async function userSignup(req,res){
     try{
         console.log('enterrr');
-        const {name, email, password, confPassword,lastname,phoneNumber}=req.body
-        console.log(req.body);
-        const hashPassword=bcrypt.hashSync(password,salt)
+        const {email}=req.body
+
         const user=await usermodel.findOne({email})
 
         if(user){
             return res.json({error:true,message:'user already exists'})
         }
-        const mergedName = name + ' ' + lastname; 
+
+        let otp=Math.ceil(Math.random()*1000000)
+
+        let otpSent=await sentOtp(email,otp)
+
+
+        // const mergedName = name + ' ' + lastname; 
         
 
-        const newUser=new usermodel({name:mergedName,email,phone:phoneNumber,password:hashPassword})
+        // const newUser=new usermodel({name:mergedName,email,phone:phoneNumber,password:hashPassword})
 
-        await newUser.save()
+        // await newUser.save()
 
-        console.log(newUser);
+        // console.log(newUser);
 
         const token=jwt.sign({
-            id:newUser._id
+            otp:otp
         },'myJwtsecretKey')
 
-        return res.cookie('token', token,{
+        return res.cookie('tempToken', token,{
             httpOnly: true,
             secure: true,
             maxAge: 1000 * 60 * 60 * 24 * 7 * 30,
@@ -44,6 +49,53 @@ export async function userSignup(req,res){
     catch(err){
         console.log(err)
         res.status(510).json({ message: err });
+    }
+}
+export async function userVerifySignup(req,res){
+    try{
+        console.log('enterrrr');
+        const {name, email, password,lastname,phoneNumber,otp}=req.body
+        console.log((req.body));
+        const tempToken=req.cookies.tempToken
+        console.log(tempToken);
+        if(!tempToken){
+            console.log('error 1');
+            return res.json({err:true,message:'otp session is time out'})
+        }
+        const verifiedTempToken=jwt.verify(tempToken,'myJwtsecretKey')
+        console.log(verifiedTempToken);
+
+        if(otp!=verifiedTempToken.otp){
+            console.log('error 2');
+            return res.json({ err: true, message: "Invalid OTP" });
+
+        }
+        console.log('herre');
+        const hashPassword=bcrypt.hashSync(password,salt)
+           const mergedName = name + ' ' + lastname; 
+        
+
+        const newUser=new usermodel({name:mergedName,email,phone:phoneNumber,password:hashPassword})
+
+        await newUser.save()
+
+        console.log(newUser);
+        const token = jwt.sign(
+            {
+                id: newUser._id
+            },'myJwtsecretKey'
+            
+        )
+        return res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+            sameSite: "none",
+        }).json({ err: false })
+    }
+    catch(err){
+        console.log(err);
+
     }
 }
 

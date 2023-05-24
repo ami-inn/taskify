@@ -3,6 +3,8 @@ import '../../styles/Taskify.css'
 import SignupImg from '../../assets/images/login/01.png'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
+import VerifyOtp from '../VerifyOtp/VerifyOtp'
+import { Link } from 'react-router-dom'
 
 
 function UserSignup() {
@@ -15,6 +17,7 @@ function UserSignup() {
     const [errMessage,setErrMessage]=useState(null)
     const [phoneNumber,setPhoneNumber]=useState()
     const dispatch = useDispatch()
+    const [showOtpPage, setShowOtpPage] = useState(false)
 
     
     function validationErr() {
@@ -38,7 +41,8 @@ function UserSignup() {
             name, email, password, confPassword,lastname,phoneNumber
           });
           if(!data.error){
-            alert('success')
+            // alert('success')
+            setShowOtpPage(true)
             dispatch({type:"refresh"})
          
           }else{
@@ -51,7 +55,9 @@ function UserSignup() {
   return (
     <div className='body'>
 
-<div className="wrapper">
+        {
+            !showOtpPage?
+            <div className="wrapper">
   <section className="login-content">   
     <div className="container">
       <div className="row align-items-center justify-content-center height-self-center">
@@ -104,7 +110,7 @@ function UserSignup() {
                       </div>
                       <button type="submit" disabled={validationErr()} className="button-submit-login">Sign Up</button>
                       <p className="mt-3 button-submit-login-p">
-                        Already have an Account <a href="auth-sign-in.html">Sign In</a>
+                        Already have an Account <Link to='/login'>Sign In</Link>
                       </p>
                     </form>
                   </div>
@@ -119,7 +125,10 @@ function UserSignup() {
       </div>
     </div>
   </section>
-</div>
+</div>: <VerifyOtp data={{name, email, password, confPassword,lastname,phoneNumber}} />
+        }
+
+
 
     </div>
   )
