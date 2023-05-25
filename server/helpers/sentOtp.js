@@ -15,10 +15,10 @@ export default function sentOtp(email,otp){
         var mailOptions={
             from: 'amipk2001@gmail.com',
             to: email,
-            subject: "DocOnline Email verification",
+            subject: "Taskify Email verification",
             html: `
             <h1>Verify Your Email For Taskify</h1>
-              <h3>use this code in E-cart to verify your email</h3>
+              <h3>use this code in Taskify to verify your email</h3>
               <h2>${otp}</h2>
             `,
         }

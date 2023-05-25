@@ -1,5 +1,5 @@
 import express from "express";
-import { adminLogin, adminLogout, checkAdminLoggedIn } from "../controllers/adminAuthController";
+import { adminLogin, adminLogout, checkAdminLoggedIn } from "../controllers/adminAuthController.js";
 
 
 const router = express.Router()
@@ -8,5 +8,7 @@ const router = express.Router()
 router.post('/login',adminLogin)
 router.get('/check',checkAdminLoggedIn)
 router.get('/logout',adminLogout)
+router.get('/check',checkAdminLoggedIn)
+
 
 export default router;

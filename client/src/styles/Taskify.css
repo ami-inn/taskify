@@ -19851,6 +19851,7 @@ fieldset[disabled] .btn {
   position: relative;
   height: 100vh;
   z-index: 99; }
+
   .login-content .floating-label label {
     color: #605C8D;
     font-size: 14px;
@@ -19869,12 +19870,73 @@ fieldset[disabled] .btn {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out; }
+
+
   .login-content .form-control {
     border-color: #c7cbd3; }
+
     .login-content .form-control:focus {
       border-color: #5773FF; }
+
   .login-content .custom-control-label::before {
     background-color: #F8F7F7; }
+
+
+    /* admin login */
+  
+
+      .login-content .floating-label-admin label {
+        color: black;
+        font-size: 14px;
+        font-weight: 400;
+        position: absolute;
+        pointer-events: none;
+        left: 12px;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out; }
+
+        .floating-label-admin {
+          position: relative;
+          margin-bottom: 20px; }
+        
+        .floating-input-admin:focus ~ label {
+          color: #5282fa;
+          top: 0;
+          left: 6px;
+          font-size: 10px;
+          background: #001e69;
+          padding: 0px 8px;
+          -webkit-border-radius: 16px;
+          -moz-border-radius: 16px;
+          -ms-border-radius: 16px;
+          -o-border-radius: 16px;
+          border-radius: 16px; }
+        
+        .floating-input-admin:not(:placeholder-shown) {
+          color: #5282fa;
+          border: 1px solid #E0E2DB; }
+          .floating-input-admin:not(:placeholder-shown) ~ label {
+            top: 0;
+            font-size: 14px;
+            color:#5282fa;
+            background: #001e69;
+            padding: 2px 11px;
+            border-radius: 10%;
+        }
+
+        /*  /////////////////////// */
+
+
+
   .login-content .custom-control-label.control-label-1 {
     line-height: 24px; }
   .login-content .auth-card {
@@ -19893,6 +19955,12 @@ fieldset[disabled] .btn {
     display: flex;
     justify-content: center;
     align-items: center; }
+    .login-content .admin-content-left {
+      min-height: 480px;
+      display: flex;
+      color: white;
+      justify-content: center;
+      align-items: center; }
 
 .floating-label {
   position: relative;
@@ -23580,9 +23648,24 @@ ul.iq-contact-rest li a p {
 
   }
 
+  .button-submit-login-admin{
+    background-color:#5282fa; 
+    color: white;
+    line-height: 0;
+    padding: 20px 30px;
+    border: none;
+    border-radius: 10px;
+    
+
+  }
+
   .button-submit-login-p a{
     color: #CC059A;
   }
   .button-submit-login:disabled{
     opacity: 50%;
+  }
+
+  .bg-admin{
+    background-color: #001e69;
   }

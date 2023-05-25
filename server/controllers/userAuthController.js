@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import sentOtp from '../helpers/sentOtp.js'
 import crypto from 'crypto'
 import { log } from 'console'
+import userModel from '../models/UserModel.js'
 
 
 
@@ -102,7 +103,7 @@ export async function userVerifySignup(req,res){
 
 export async function userLogin(req,res){
     try{
-        const {email} = req.body
+        const {email,password} = req.body
         const user=await usermodel.findOne({email})
         if(!user){
             return res.json({err:true,message:'User Already Exist'})
@@ -133,6 +134,98 @@ export async function userLogin(req,res){
         res.json({err:false})
     }
 }
+
+export async function userForgot(req,res){
+    try{
+        console.log('enterrrr');
+        const {email}=req.body
+        log(req.body)
+        const user=await userModel.findOne({email})
+        console.log(user);
+        if(!user){
+            return res.json({err:true,message:'user not found'})
+        }
+        let otp=Math.ceil((Math.random()*1000000)+100000)
+        let otpSent=await sentOtp(email,otp)
+        const token=jwt.sign(
+            {
+                otp:otp
+            },'myJwtsecretKey'
+        )
+        
+        return res.cookie("tempToken", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 1000 * 60 * 10,
+            sameSite: "none",
+        }).json({ err: false })
+
+
+    }
+    catch(err){
+        console.log(err);
+        res.json({err:true,error:err,message:'something went wrong'})
+    }
+}
+export async function verifyForgotOtp(req,res){
+    try{
+        const {otp}=req.body
+        const tempToken = req.cookies.tempToken
+
+        if(!tempToken){
+            console.log('heree');
+            return res.json({err:true,message:'Otp Session TimedOut'})
+        }
+
+        const verifiedTempToken = jwt.verify(tempToken,'myJwtsecretKey')
+        console.log(verifiedTempToken);
+        if(otp != verifiedTempToken.otp){
+            console.log('enterr');
+            return res.json({err:true,message:'invalid otp'})
+        }
+        return res.json({ err:false})
+
+
+    }
+    catch(err){
+        console.log(err);
+        res.json({error:err,err:true,message:'invalid Otp'})
+    }
+}
+
+export async function resetUserPassword(req,res){
+    try{
+        const {email,password,otp}=req.body
+        console.log('rdddd',req.body);
+        const tempToken = req.cookies.tempToken
+
+        if(!tempToken){
+            return res.json({err:true,message:'otp session out'})
+        }
+        const verifyTempToken = jwt.verify(tempToken,'myJwtsecretKey')
+
+        if(otp!=verifyTempToken.otp){
+            return res.json({err:true,message:'otp session out'})
+        }
+
+        const hashPassword = bcrypt.hashSync(password, salt);
+
+
+        await userModel.updateOne({ email }, {
+            $set: {
+                password: hashPassword
+            }
+        })
+        return res.json({ err: false })
+
+
+    }
+    catch(err){
+        console.log(err)
+        res.json({ error: err, err: true, message: "something went wrong" })
+    }
+}
+
 export const userLogout = async (req, res) => {
     res.cookie("token", "", {
         httpOnly: true,
@@ -148,11 +241,12 @@ export const checkUserLoggedIn = async (req, res) => {
         if (!token)
             return res.json({ loggedIn: false, error: true, message: "no token" });
 
-        const verifiedJWT = Jwt.verify(token, "myJwtsecretKey");
-        const user = await UserModel.findById(verifiedJWT.id, { password: 0 });
+        const verifiedJWT = jwt.verify(token, "myJwtsecretKey");
+        const user = await usermodel.findById(verifiedJWT.id, { password: 0 });
         if (!user) {
             return res.json({ loggedIn: false });
         }
+        console.log('hereee');
         return res.json({ user, loggedIn: true });
     } catch (err) {
         console.log(err)

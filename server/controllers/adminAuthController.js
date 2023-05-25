@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import AdminModel from '../models/AdminModel'
+import AdminModel from '../models/AdminModel.js'
 
 var salt = bcrypt.genSaltSync(10)
 
