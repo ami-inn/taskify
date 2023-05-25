@@ -7,7 +7,7 @@ function AdminHome() {
 
     async function logout(){
         if(window.confirm('are you sure you want to logout')){
-            await axios.get('/admin/logout')
+            await axios.get('/admin/auth/logout')
             dispatch({type:'refresh'})
         }
     }

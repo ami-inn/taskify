@@ -54,6 +54,8 @@ function App() {
       admin.login === false &&
       <>
       <Route path='/admin/login' element={<AdminLogin/>}></Route>
+      <Route path='/admin' element={<Navigate to='/admin/login'/>}></Route>
+      <Route path='/admin/*' element={<Navigate to='/admin/login'/>}></Route>
       </>
     }
 

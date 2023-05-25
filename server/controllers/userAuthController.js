@@ -246,7 +246,7 @@ export const checkUserLoggedIn = async (req, res) => {
         if (!user) {
             return res.json({ loggedIn: false });
         }
-        console.log('hereee');
+    
         return res.json({ user, loggedIn: true });
     } catch (err) {
         console.log(err)
