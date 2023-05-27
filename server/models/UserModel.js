@@ -29,7 +29,11 @@ const userSchema = new mongoose.Schema({
     ],
     workspaces: [{
      type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' 
-    }]
+    }],
+    block:{
+        type:Boolean,
+        default:false
+    }
 })
 
 const userModel=mongoose.model("User", userSchema)

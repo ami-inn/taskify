@@ -9,6 +9,8 @@ import userAuthRouter from './routers/userAuthRouter.js'
 import adminAuthRouter from './routers/adminAuthRouter.js'
 import adminRouter from './routers/adminRouter.js'
 import verifyAdmin from './middlewares/verifyAdmin.js'
+import verifyUser from './middlewares/verifyUser.js'
+import userRouter from './routers/userRouter.js'
 
 
 const app=express()
@@ -26,9 +28,10 @@ app.use(
 )
 
 dbConnect()
-app.use('/',userAuthRouter)
+app.use('/auth/',userAuthRouter)
 app.use('/admin/auth/',adminAuthRouter)
 app.use('/admin/',verifyAdmin,adminRouter)
+app.use('/',verifyUser,userRouter)
 
 app.listen(5000,()=>{
     console.log('server running on port 5000 hello')

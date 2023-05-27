@@ -13,7 +13,7 @@ function ForgotOtp({email}) {
     async function handleSubmit(e){
       
         e.preventDefault()
-        const {data}=await axios.post('/forgot/verify',{otp})
+        const {data}=await axios.post('/auth/forgot/verify',{otp})
         console.log(data);
         if(data.err){
             console.log('enteerr');
@@ -50,6 +50,12 @@ function ForgotOtp({email}) {
                               </div>
                             </div>
                           </div>
+
+                          {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
+
                           <button type="submit" className="button-submit-login">Submit</button>
                           <p className="mt-3 button-submit-login-p">
                             Otp Resends In <a href="#">56:00</a>

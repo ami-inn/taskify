@@ -61,6 +61,11 @@ function AdminLogin() {
                           </div>
                         </div>
                       </div>
+
+                      {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
                       <button type="submit" disabled={!validateForm} className="button-submit-login-admin">Log In</button>
                     </form>
                   </div>

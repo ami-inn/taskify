@@ -8,7 +8,8 @@ const workspaceSchema=new workspaceModel({
         type: String 
     },
     owner: { 
-        type: mongoose.Schema.Types.ObjectId, ref: 'User' 
+        type: mongoose.Schema.Types.ObjectId, ref: 'User' ,
+        required:true
     },
     admins: [{
          type: mongoose.Schema.Types.ObjectId, ref: 'User' 

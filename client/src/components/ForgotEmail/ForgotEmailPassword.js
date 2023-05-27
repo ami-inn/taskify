@@ -14,7 +14,7 @@ function ForgotEmailPassword({email,otp}) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    const {data}=await axios.post('forgot/reset',{otp,email,password})
+    const {data}=await axios.post('/auth/forgot/reset',{otp,email,password})
     if(data.err){
       console.log('enterr');
       setErrMessage(data.message)
@@ -59,6 +59,10 @@ function ForgotEmailPassword({email,otp}) {
                           </div>
                         </div>
                       </div>
+                      {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
                       <button type="submit" disabled={!validForm()}  className="button-submit-login">Submit</button>
                       <p className="mt-3 button-submit-login-p">
                         Go to <a href="#">Home</a>

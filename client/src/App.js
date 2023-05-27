@@ -13,6 +13,10 @@ import ForgotEmail from './components/ForgotEmail/ForgotEmail';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 import AdminHome from './components/AdminHome/AdminHome';
+import TempHome from './components/TempHome/TempHome';
+import AdminUsers from './components/AdminUsers/AdminUsers';
+import CreateWorkspace from './components/CreateWorkspace/CreateWorkspace';
+import UserWorkspace from './components/UserWorkspace/UserWorkspace';
 // ..
 AOS.init();
 
@@ -28,7 +32,7 @@ function App() {
 
   useEffect(() => {
     (async function () {
-      let { data } = await axios.get("/check");
+      let { data } = await axios.get("/auth/check");
       dispatch({ type: "user", payload: { login: data.loggedIn, details: data.user } })
       let { data: adminData } = await axios.get("/admin/auth/check");
       dispatch({ type: "admin", payload: { login: adminData.loggedIn, details: adminData.admin } })
@@ -47,6 +51,7 @@ function App() {
       <>
       <Route path='/admin/login' element={<Navigate to='/admin'/>}></Route>
       <Route path='/admin/' element={<AdminHome/>}></Route>
+      <Route path='/admin/users' element={<AdminUsers/>}/>
       </>
     }
 
@@ -56,6 +61,32 @@ function App() {
       <Route path='/admin/login' element={<AdminLogin/>}></Route>
       <Route path='/admin' element={<Navigate to='/admin/login'/>}></Route>
       <Route path='/admin/*' element={<Navigate to='/admin/login'/>}></Route>
+      </>
+    }
+    {/* user side */}
+
+    {
+      user.login &&
+      <>
+         <Route path='/login' element={<Navigate to={'/temphome'}/>}></Route>
+         <Route path='/signup' element={<Navigate to="/temphome" />} />
+         <Route path='/' element={<Navigate to="/temphome" />} />
+         <Route path='/tempHome' element={<TempHome/>} />
+         <Route path='/workspace' element={<UserWorkspace/>}/>
+
+      </>
+    }
+
+{
+      user.login === false &&
+      <>
+       <Route path='/login' element={<UserLogin/>} />
+       <Route path='/signup' element={<UserSignup/>} />
+       <Route path='/forgot' element={<ForgotEmail/>} />
+       <Route path='/' element={<UserLanding/>} />
+        <Route path='/temphome' element={<Navigate to={'/'}/>} />
+      
+
       </>
     }
 

@@ -37,7 +37,7 @@ function UserSignup() {
        
         e.preventDefault();
         if (!validationErr()) {
-          let {data}=await axios.post("/signup", {
+          let {data}=await axios.post("/auth/signup", {
             name, email, password, confPassword,lastname,phoneNumber
           });
           if(!data.error){
@@ -91,8 +91,9 @@ function UserSignup() {
                         </div>
                         <div className="col-lg-6">
                           <div className="floating-label form-group">
-                            <input className="floating-input form-control" value={phoneNumber} onChange={(e)=>{setPhoneNumber(e.target.value)}}  type="number" placeholder=" " required />
+                            <input className="floating-input form-control" value={phoneNumber} onChange={(e)=>{setPhoneNumber(e.target.value)}}  type="tel" pattern='[0-9]{3}[0-9]{3}[0-9]{4}' placeholder=" " required />
                             <label>Phone No.</label>
+                            
                           </div>
                         </div>
                         <div className="col-lg-6">
@@ -108,6 +109,12 @@ function UserSignup() {
                           </div>
                         </div>
                       </div>
+
+                      {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
+
                       <button type="submit" disabled={validationErr()} className="button-submit-login">Sign Up</button>
                       <p className="mt-3 button-submit-login-p">
                         Already have an Account <Link to='/login'>Sign In</Link>

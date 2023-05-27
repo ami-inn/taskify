@@ -22,6 +22,7 @@ export async function userSignup(req,res){
         }
 
         let otp=Math.ceil(Math.random()*1000000)
+        console.log(otp);
 
         let otpSent=await sentOtp(email,otp)
 
@@ -106,12 +107,15 @@ export async function userLogin(req,res){
         const {email,password} = req.body
         const user=await usermodel.findOne({email})
         if(!user){
-            return res.json({err:true,message:'User Already Exist'})
+            return res.json({error:true,message:'User Already Exist'})
         }
         const userValid = bcrypt.compareSync(password,user.password)
 
         if(!userValid){
             return res.json({error:true,message:'wrong password'})
+        }
+        if(user.block){
+            return res.json({error: true, message: "You are blocked" })
         }
         const token=jwt.sign({
             id:user._id
@@ -247,6 +251,9 @@ export const checkUserLoggedIn = async (req, res) => {
             return res.json({ loggedIn: false });
         }
     
+        if (user.block) {
+            return res.json({ loggedIn: false });
+        }
         return res.json({ user, loggedIn: true });
     } catch (err) {
         console.log(err)

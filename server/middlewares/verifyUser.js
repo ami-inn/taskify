@@ -11,7 +11,7 @@ const verifyUser=async function(req,res,next){
 
         }
         
-        const verifiedJWT = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const verifiedJWT = jwt.verify(token,'myJwtsecretKey' );
 
         const user=await userModel.findById(verifiedJWT.id,{password:0})
 

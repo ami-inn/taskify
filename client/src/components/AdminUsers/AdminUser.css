@@ -1,0 +1,27 @@
+
+.dataTables_wrapper{
+    position: relative;
+    clear: both;
+    }
+    
+    .dataTables_wrapper .dataTables_length {
+        margin-bottom: 20px;
+        color: #605C8D;
+        float: left;
+    }
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 20px;
+        float: right;
+        text-align: right;
+        color: #605C8D;
+        
+    }
+    .blockedrow td{
+       
+        color: rgb(244, 67, 67);
+    }
+    .activerow{
+       
+        color: rgb(0, 0, 0);
+    }
+    

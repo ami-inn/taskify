@@ -29,7 +29,7 @@ function UserLogin() {
         e.preventDefault();
     
         if (!validationErr()) {
-          let { data } = await axios.post("/login", {
+          let { data } = await axios.post("/auth/login", {
             email,
             password,
           });
@@ -71,6 +71,10 @@ function UserLogin() {
                               <label>Password</label>
                             </div>
                           </div>
+                          {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
                           <div className="col-lg-6">
                             <div className="custom-control custom-checkbox mb-3">
                               <input type="checkbox" className="custom-control-input" id="customCheck1"  checked={isChecked}onChange={() => setIsChecked(!isChecked)} />
@@ -78,13 +82,16 @@ function UserLogin() {
                             </div>
                           </div>
                           <div className="col-lg-6">
-                            <a href="auth-recoverpw.html" className="text-white float-right">Forgot Password?</a>
+                            <Link to={'/forgot'} className="text-white float-right">Forgot Password?</Link>
                           </div>
                         </div>
                         <button type="submit" disabled={validationErr()} className="button-submit-login">Sign In</button>
                         <p className="mt-3 button-submit-login-p">
                           Create an Account <Link to='/signup' >Sign Up</Link>
                         </p>
+
+                       
+                      
                       </form>
                     </div>
                   </div>

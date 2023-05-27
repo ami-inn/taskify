@@ -27,7 +27,7 @@ function UserLanding() {
             <li><a className="nav-link scrollto" href="#services">Services</a></li>
             <li><a className="nav-link scrollto" href="#team">Team</a></li>
             <li><a href="blog.html">Blog</a></li>
-            <li><Link className="getstarted scrollto" to="/signup">Get Started</Link></li>
+            <li><Link className="getstarted scrollto" to="/login">Get Started</Link></li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle" />
         </nav>{/* .navbar */}
@@ -45,7 +45,7 @@ function UserLanding() {
               isn’t.</h2>
             <div data-aos="fade-up" data-aos-delay={600}>
               <div className="text-center text-lg-start">
-                <Link to="/signup" className="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                <Link to="/login" className="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
                   <span>Sign up its free</span>
                   <i className="bi bi-arrow-right" />
                 </Link>

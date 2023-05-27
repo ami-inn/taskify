@@ -1,24 +1,27 @@
-import axios from 'axios'
-import React from 'react'
-import { useDispatch } from 'react-redux'
+
+import * as React from 'react' 
+import AdminSidebar from '../AdminSidebar/AdminSidebar';
+import AdminHeader from '../AdminHeader/AdminHeader';
 
 function AdminHome() {
-    const dispatch = useDispatch()
 
-    async function logout(){
-        if(window.confirm('are you sure you want to logout')){
-            await axios.get('/admin/auth/logout')
-            dispatch({type:'refresh'})
-        }
-    }
+
+
 
   return (
-    <div>
-        <h1 onClick={logout}>logout</h1>
+    <div className="wrapper">
+      {/* <h1 onClick={logout}>logout</h1> */}
+
+      <AdminSidebar page={'dashboard'} />
+      <AdminHeader/>
       
+
+     
+    
     </div>
-  )
+
+    
+  );
 }
 
-export default AdminHome
-
+export default AdminHome;

@@ -12,19 +12,19 @@ function VerifyOtp(props) {
 
     async function handleSubmit(e){
         e.preventDefault()
-        let { data } = await axios.post("/signup/verify", { otp, ...props.data });
+        let { data } = await axios.post("/auth/signup/verify", { otp, ...props.data });
         if(data.err){
             setErrorMessage(data.message)
         }else{
-            alert('success')
+            // alert('success')
             dispatch({type:'refresh'})
         }
     }
 
   return (
-    <div className='body'>
+  
 
-<div className="wrapper">
+          <div className="wrapper">
   <section className="login-content">
     <div className="container">
       <div className="row align-items-center justify-content-center height-self-center">
@@ -62,9 +62,9 @@ function VerifyOtp(props) {
       </div>
     </div>
   </section>
-</div>
+          </div>
       
-    </div>
+    
   )
 }
 

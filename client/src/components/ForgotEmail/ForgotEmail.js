@@ -24,7 +24,7 @@ function ForgotEmail() {
 
     async function handleSubmit(e){
         e.preventDefault()
-        const {data}= await axios.post("/forgot", {email});
+        const {data}= await axios.post("/auth/forgot", {email});
         
         if(data.err){
             setErrorMessage(data.message)
@@ -61,6 +61,12 @@ function ForgotEmail() {
                                     </div>
                                   </div>
                                 </div>
+
+                                {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
+
                                 <button type="submit" disabled={!validForm()} className="button-submit-login">Submit</button>
                               </form>
                             </div>
