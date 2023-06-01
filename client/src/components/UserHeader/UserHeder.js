@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import img1 from "../../assets/images/user/01.jpg";
 import { RiSearch2Line } from "react-icons/ri";
+import axios from "axios";
+
 
 function UserHeder() {
   const [isOpen, setIsOpen] = useState(false);
   const [openMessage,setopenMessage]=useState(false)
   const [openNoti,setopenNoti]=useState(false)
+  
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  React.useEffect(()=>{
-    
-  })
+
 
   return (
     <div className="iq-top-navbar fixed">

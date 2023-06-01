@@ -31,3 +31,24 @@ export async function createWorkspace(req,res){
         console.log(err)
     }
 }
+
+
+export async function workspaceValid(req,res){
+
+    try{
+        console.log('enterrr');
+        const {id}=req.params
+        const {userId} = req.query;
+         
+        console.log(id);
+        console.log(userId);
+
+
+
+    }
+    catch(err){
+        console.log(err)
+        return res.json({err:false,message:'error'})
+    }
+
+}

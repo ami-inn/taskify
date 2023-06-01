@@ -4,8 +4,49 @@ import UserHeder from '../UserHeader/UserHeder'
 import img1 from '../../assets/images/user/01.jpg'
 import img2 from '../../assets/images/user/02.jpg'
 import img3 from '../../assets/images/user/03.jpg'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function UserWorkspace() {
+
+  const {id}=useParams()
+
+  const user=useSelector((state)=>{
+    
+    return state.user.details
+
+})
+console.log(user._d);
+
+
+  React.useEffect(()=>{
+    
+    (
+      async function(){
+        try{
+          console.log('jdkjldkjlhjfdh');
+          const {data}=await axios.get(`/workspace/${id}?userId=${user._id}`)
+          console.log(data);
+          if(!data.err){
+            alert('dkfk')
+          }else{
+            alert('err')
+          }
+
+        }
+        catch(err){
+          console.log(err);
+        }
+
+      }
+    
+  
+  )()
+  
+
+},[])
+
   return (
     <div className='wrapper'>
     <UserSidebar/>
