@@ -7,7 +7,7 @@ import img3 from '../../assets/images/user/03.jpg'
 
 function UserWorkspace() {
   return (
-    <div>
+    <div className='wrapper'>
     <UserSidebar/>
      <UserHeder/>
 
@@ -569,7 +569,7 @@ function UserWorkspace() {
     </div>
     {/* Page end  */}
   </div>
-</div>
+     </div>
     </div>
   )
 }

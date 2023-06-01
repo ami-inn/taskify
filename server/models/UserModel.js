@@ -27,9 +27,16 @@ const userSchema = new mongoose.Schema({
     roles: [
         String
     ],
-    workspaces: [{
+    createdWorkspaces: [{
      type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' 
     }],
+    workspaces: [{
+        workspace: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Workspace',
+        },
+        role: String, 
+      }],
     block:{
         type:Boolean,
         default:false

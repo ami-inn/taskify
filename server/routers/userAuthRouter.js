@@ -1,5 +1,5 @@
 import express from 'express'
-import { checkUserLoggedIn, resetUserPassword, userForgot, userLogin, userLogout, userSignup, userVerifySignup, verifyForgotOtp } from '../controllers/userAuthController.js'
+import { checkUserLoggedIn, clearOtp, resendOtp, resetUserPassword, userForgot, userLogin, userLogout, userSignup, userVerifySignup, verifyForgotOtp } from '../controllers/userAuthController.js'
 
 
 
@@ -15,6 +15,8 @@ router.post('/forgot',userForgot)
 router.post('/forgot/verify',verifyForgotOtp)
 router.post('/forgot/reset',resetUserPassword)
 router.get('/check',checkUserLoggedIn)
+router.get('/clear-otp',clearOtp)
+router.get('/resend-otp',resendOtp)
 
 
 

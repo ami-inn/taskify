@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import VerifyOtp from '../VerifyOtp/VerifyOtp'
 import { Link } from 'react-router-dom'
+import zxcvbn from 'zxcvbn';
+
 
 
 function UserSignup() {
@@ -13,6 +15,7 @@ function UserSignup() {
     const [email,setEmail]=useState('')
     const [lastname,setLastname]=useState('')
     const [password,setPassword]=useState('')
+    // const [passwordStrength,setPasswordStrength]=useState('') //for password strength in frontend display
     const [confPassword,setConfPassword]=useState('')
     const [errMessage,setErrMessage]=useState(null)
     const [phoneNumber,setPhoneNumber]=useState()
@@ -50,6 +53,21 @@ function UserSignup() {
           }
         }
       }
+
+      // const checkPasswordStrength=(password)=>{
+
+      //   const result = zxcvbn(password)
+
+      //   console.log(result)
+      //   const strengthScore=result.score
+      //   setPasswordStrength(strengthScore)
+
+      //   if(strengthScore<3){
+      //     setPasswordStrength('weak')
+      //   }
+
+      // }
+      
 
 
   return (
@@ -98,7 +116,8 @@ function UserSignup() {
                         </div>
                         <div className="col-lg-6">
                           <div className="floating-label form-group">
-                            <input className="floating-input form-control" value={password}  onChange={(e)=>{setPassword(e.target.value)}}  type="password" placeholder=" " />
+                            <input className="floating-input form-control" value={password}  onChange={(e)=>{setPassword(e.target.value);}}  type="password" placeholder=" " />
+                            {/* checkPasswordStrength(e.target.value) */}
                             <label>Password</label>
                           </div>
                         </div>
@@ -109,11 +128,16 @@ function UserSignup() {
                           </div>
                         </div>
                       </div>
+           
 
                       {
                           errMessage &&
                           <p className='errMessageText'>{errMessage}</p>
                         }
+                          {/* {
+                          passwordStrength === 'weak' &&
+                          <p className='errMessageText'>Password Is Not Strong Enough</p>
+                        } */}
 
                       <button type="submit" disabled={validationErr()} className="button-submit-login">Sign Up</button>
                       <p className="mt-3 button-submit-login-p">

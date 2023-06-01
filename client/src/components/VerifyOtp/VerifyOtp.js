@@ -1,24 +1,82 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SignupImg from '../../assets/images/login/01.png'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 
 function VerifyOtp(props) {
 
+  
     const [errMessage,setErrorMessage]=useState('')
     const [otp,setOtp]=useState('')
+    const [countdown,setCountdown]=useState(60)
+    const [resendAllowed,setResendAllowed] = useState(true)
     const dispatch=useDispatch()
 
 
-    async function handleSubmit(e){
+    async function handleSubmitt(e){
         e.preventDefault()
+        console.log('herreee6465446565');
+        console.log( { otp, ...props.data });
         let { data } = await axios.post("/auth/signup/verify", { otp, ...props.data });
+        console.log(data);
         if(data.err){
+          alert('error')
             setErrorMessage(data.message)
         }else{
-            // alert('success')
+            alert('success')
             dispatch({type:'refresh'})
         }
+    }
+
+
+    async function resendOtp(){
+      let {data}=await axios.get('/auth/resend-otp',{params:{email:props.data.email}})
+
+      if(!data.err){
+        console.log(data)
+        setCountdown(60);
+        setResendAllowed(false);
+
+      }else{
+        
+        console.log('errorrr')
+      }
+
+    }
+
+    useEffect(()=>{
+      const timer=setInterval(()=>{
+        setCountdown((prevCountdown)=>prevCountdown-1)
+      },1000)
+
+      return () => {
+        clearInterval(timer);
+      };
+    },[])
+
+    useEffect(() => {
+      if (countdown === 0) {
+        clearOtp()
+        setResendAllowed(true);
+      }
+    }, [countdown]);
+
+    const clearOtp=async ()=>{
+      try{
+       let {data}= await axios.get('/auth/clear-otp')
+
+       if(data.err){
+        console.log(data.err);
+       }else{
+        setErrorMessage(data.message)
+        console.log(data);
+       }
+
+
+
+      }catch(error){
+        console.log(error)
+      }
     }
 
   return (
@@ -36,7 +94,7 @@ function VerifyOtp(props) {
                   <div className="p-3">
                     <h2 className="mb-2 text-white">Sign In</h2>
                     <p>Enter Your Otp</p>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmitt}>
                       <div className="row">
                         <div className="col-lg-12">
                           <div className="floating-label form-group">
@@ -46,9 +104,18 @@ function VerifyOtp(props) {
                         </div>
                       </div>
                       <button type="submit" disabled={otp.trim() == ""} className="button-submit-login">Submit</button>
-                      <p className="mt-3 button-submit-login-p">
-                        Otp Resends In <a href="#">56:00</a>
+      
+                        <p className="mt-3 button-submit-login-p">
+                        Otp Resends In {countdown>0? <a>{countdown}</a>:''}
                       </p>
+
+                      {
+                        resendAllowed===true ?  <p className="mt-3 button-submit-login-p" onClick={resendOtp}>Resend</p>:<p>fh</p>
+                      }
+
+                      <p>{errMessage}</p>
+
+                    
                     </form>
                   </div>
                 </div>

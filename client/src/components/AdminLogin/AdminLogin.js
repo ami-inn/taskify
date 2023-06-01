@@ -1,5 +1,6 @@
 import React, { useDebugValue, useState } from 'react'
-import '../../styles/LandingPage.css'
+// import '../../styles/LandingPage.css'
+import landingCss from '../../styles/LandingPage.module.css'
 import adminLoginImg from '../../assets/images/error/02.png'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'

@@ -23,6 +23,7 @@
     "mongoose": "^7.2.0",
     "nodemailer": "^6.9.2",
     "nodemon": "^2.0.22",
-    "razorpay": "^2.8.6"
+    "razorpay": "^2.8.6",
+    "zxcvbn": "^4.4.2"
   }
 }

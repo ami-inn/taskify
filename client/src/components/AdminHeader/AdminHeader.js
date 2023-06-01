@@ -24,7 +24,8 @@ function AdminHeader() {
           </a>
         </div>
         <div className="navbar-breadcrumb">
-          <h5>Dashboard</h5>
+          {/* <h5>Dashboard</h5> */}
+          <a onClick={logout}>Logout</a>
         </div>
         <div className="d-flex align-items-center">
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">

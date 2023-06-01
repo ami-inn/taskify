@@ -1936,6 +1936,12 @@ textarea.form-control {
   .dropdown-toggle:empty::after {
     margin-left: 0; }
 
+    .dropdownMenu{
+      position: relative;
+    
+    }
+
+
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -2104,7 +2110,9 @@ textarea.form-control {
     background-color: transparent; }
 
 .dropdown-menu.show {
-  display: block; }
+  
+  display: block; 
+}
 
 .dropdown-header {
   display: block;
@@ -2892,8 +2900,15 @@ textarea.form-control {
     justify-content: flex-start; }
     .navbar-expand-lg .navbar-nav {
       flex-direction: row; }
+
+
       .navbar-expand-lg .navbar-nav .dropdown-menu {
-        position: absolute; }
+        
+        position: absolute; 
+      }
+
+
+
       .navbar-expand-lg .navbar-nav .nav-link {
         padding-right: 0.5rem;
         padding-left: 0.5rem; }
@@ -7858,7 +7873,9 @@ body.sidebar-main .iq-top-navbar {
       font-size: 18px;
       padding: 0 20px;
       display: block;
-      line-height: 73px; }
+      line-height: 73px;
+      cursor: pointer;
+     }
       .navbar-list li > a > img {
         width: 50px;
         height: 50px;
@@ -7908,10 +7925,11 @@ body.sidebar-main .iq-top-navbar {
       flex: 1;
       font-size: 14px; }
   .navbar-list .caption-content {
+    
     line-height: normal; }
     .navbar-list .caption-content li > a {
       font-size: 16px;
-      line-height: 26px; }
+      line-height: 26px }
 
 .badge-card {
   border-radius: 5px !important; }
@@ -8183,7 +8201,7 @@ body.sidebar-main .iq-top-navbar {
   outline: none; }
 
 .navbar-expand-lg .navbar-nav .dropdown-menu {
-  position: absolute;
+  position:absolute;
   -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   -webkit-transform: translateY(100%);
@@ -8192,7 +8210,8 @@ body.sidebar-main .iq-top-navbar {
   -moz-transition: all 0.3s ease-in-out;
   -ms-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out; }
+  transition: all 0.3s ease-in-out; 
+}
 
 .profile-detail {
   position: relative; }

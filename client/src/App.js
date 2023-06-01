@@ -72,7 +72,8 @@ function App() {
          <Route path='/signup' element={<Navigate to="/temphome" />} />
          <Route path='/' element={<Navigate to="/temphome" />} />
          <Route path='/tempHome' element={<TempHome/>} />
-         <Route path='/workspace' element={<UserWorkspace/>}/>
+         <Route path='/workspace/:id' element={<UserWorkspace/>}/>
+         <Route path='/create-workspace' element={<CreateWorkspace/>} />
 
       </>
     }
