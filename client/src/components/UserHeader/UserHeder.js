@@ -1,13 +1,29 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import img1 from "../../assets/images/user/01.jpg";
 import { RiSearch2Line } from "react-icons/ri";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
-function UserHeder() {
+function UserHeder({workspace}) {
+  
   const [isOpen, setIsOpen] = useState(false);
   const [openMessage,setopenMessage]=useState(false)
   const [openNoti,setopenNoti]=useState(false)
+  const [openLogout,setopenLogout]=useState(false)
+
+  const dispatch = useDispatch()
+  async function handleLogout(){
+    await axios.get('/auth/logout');
+    dispatch({type:'refresh'})
+  }
   
 
   const toggleDropdown = () => {
@@ -27,7 +43,7 @@ function UserHeder() {
             </a>
           </div>
           <div className="navbar-breadcrumb">
-            <h5>Dashboard</h5>
+            <h5>{workspace.name}</h5>
           </div>
           <div className="d-flex align-items-center">
             <button
@@ -393,7 +409,7 @@ function UserHeder() {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         />
                       </svg>
-                      <a href="../backend/auth-sign-in.html">Logout</a>
+                      <a onClick={()=>{setopenLogout(!openLogout)}}>Logout</a>
                     </li>
                   </ul>
                 </li>
@@ -402,6 +418,31 @@ function UserHeder() {
           </div>
         </nav>
       </div>
+
+
+                        {/* logout dialogue */}
+                        <Dialog
+        open={openLogout}
+        onClose={()=>{setopenLogout(!openLogout)}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you Sure Do You Want To Leave ?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Thank you for using our services! Remember to log out to ensure the security of your account.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>{setopenLogout(!openLogout)}}>Disagree</Button>
+          <Button onClick={handleLogout} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 }

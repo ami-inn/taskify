@@ -38,10 +38,33 @@ export async function workspaceValid(req,res){
     try{
         console.log('enterrr');
         const {id}=req.params
-        const {userId} = req.query;
-         
+        const {userId} = req.query;  
         console.log(id);
         console.log(userId);
+
+        const user=await userModel.findById(userId)
+        console.log(user);
+
+        if(!user){
+            console.log('1');
+            return res.json({err:true,message:'user not found'})
+        }
+
+        const workspaceExists = user.createdWorkspaces.includes(id)
+
+        if(!workspaceExists){
+            console.log('2');
+            return res.json({err:true,message:'workspace not found'})
+        }
+
+        const workspace = await workspaceModel.findById(id)
+
+        if(!workspace){
+            console.log('3');
+            return res.json({err:true,message:'workspace not found'})
+        }
+
+        return res.json({ error: false, message: 'Workspace found', workspace });
 
 
 

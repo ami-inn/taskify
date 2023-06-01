@@ -36,6 +36,7 @@ function CreateWorkspace() {
         if(!data.error){
           console.log(data);
           alert('success')
+          dispatch({type:"workspace", payload:data.workspaceId})
           navigate('/workspace/'+data.workspaceId)
         }else{
           alert()

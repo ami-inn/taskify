@@ -17,6 +17,7 @@ import TempHome from './components/TempHome/TempHome';
 import AdminUsers from './components/AdminUsers/AdminUsers';
 import CreateWorkspace from './components/CreateWorkspace/CreateWorkspace';
 import UserWorkspace from './components/UserWorkspace/UserWorkspace';
+import UserTeam from './components/UserTeam/UserTeam';
 // ..
 AOS.init();
 
@@ -73,7 +74,10 @@ function App() {
          <Route path='/' element={<Navigate to="/temphome" />} />
          <Route path='/tempHome' element={<TempHome/>} />
          <Route path='/workspace/:id' element={<UserWorkspace/>}/>
+         <Route path='/workspace' element={<UserWorkspace/>}/>
          <Route path='/create-workspace' element={<CreateWorkspace/>} />
+         <Route path='/team' element={<UserTeam/>} />
+
 
       </>
     }
