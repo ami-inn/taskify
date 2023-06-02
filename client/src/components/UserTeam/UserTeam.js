@@ -52,7 +52,7 @@ function UserTeam() {
   return (
     <div className='wrapper'>
         <UserSidebar page={'team'}/>
-        <UserHeder workspace={workspace}/>
+        <UserHeder/>
 
         <div className="content-page">
   <div className="container-fluid">

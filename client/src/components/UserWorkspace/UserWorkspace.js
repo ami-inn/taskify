@@ -92,7 +92,7 @@ function UserWorkspace() {
 
 
         <UserSidebar page={'dashboard'}/>
-        <UserHeder workspace={workspace}/>
+        <UserHeder/>
 
     
   

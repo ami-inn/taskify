@@ -1,6 +1,8 @@
+
 import axios from 'axios'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 function TempHome() {
 
@@ -17,6 +19,7 @@ function TempHome() {
     <div>
 
         <h3 onClick={logout}>logout</h3>
+        <Link to={'/create-workspace'}>create workspace</Link>
       
     </div>
 

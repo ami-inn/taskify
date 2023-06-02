@@ -2,7 +2,7 @@ import  { useEffect, useState } from "react";
 import img1 from "../../assets/images/user/01.jpg";
 import { RiSearch2Line } from "react-icons/ri";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -10,14 +10,57 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Link, Navigate } from "react-router-dom";
 
 
-function UserHeder({workspace}) {
+function UserHeder() {
+  const workspaceId = useSelector((state)=>state.currentWorkspace)
+  console.log(workspaceId)
+  const [workspace,setworkSpace]=useState('')
+    React.useEffect(()=>{
+    
+        (
+          async function(){
+            try{
+             
+              console.log({workspaceId});
+              const {data}=await axios.get(`/workspace/${workspaceId}?userId=${user._id}`)
+              console.log(data);
+         
+              if(!data.err){
+                console.log(data);
+                console.log(data.workspace);
+                setworkSpace(data.workspace)
+                // alert('success')
+              }else{
+                
+                Navigate('/create-workspace')
+              }
+    
+            }
+            catch(err){
+    
+              console.log(err);
+            }
+    
+          }
+        
+      
+      )()
+      
+    
+    },[])
   
   const [isOpen, setIsOpen] = useState(false);
   const [openMessage,setopenMessage]=useState(false)
   const [openNoti,setopenNoti]=useState(false)
   const [openLogout,setopenLogout]=useState(false)
+
+  const user=useSelector((state)=>{
+    
+    return state.user.details
+
+})
 
   const dispatch = useDispatch()
   async function handleLogout(){
@@ -29,6 +72,8 @@ function UserHeder({workspace}) {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  console.log(workspace);
 
 
 
@@ -356,12 +401,12 @@ function UserHeder({workspace}) {
                     className="search-toggle dropdown-toggle  d-flex align-items-center"
                   >
                     <img
-                      src={img1}
+                      src='https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg'
                       className="img-fluid rounded-circle"
                       alt="user"
                     />
                     <div className="caption ml-3">
-                      <h6 className="mb-0 line-height">Savannah Nguyen</h6>
+                      <h6 className="mb-0 line-height">{user.name}</h6>
                     </div>
                   </a>
 
@@ -391,6 +436,12 @@ function UserHeder({workspace}) {
                       </svg>
                       <a href="../app/user-profile-edit.html">Edit Profile</a>
                     </li>
+                    <li class="dropdown-item d-flex svg-icon">
+                                          <svg class="svg-icon mr-0 text-primary" id="h-01-p" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                          </svg>
+                                          <Link to={'/profile'}>My Profile</Link>
+                                      </li>
 
                     <li className="dropdown-item  d-flex svg-icon border-top">
                       <svg

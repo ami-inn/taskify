@@ -18,6 +18,7 @@ import AdminUsers from './components/AdminUsers/AdminUsers';
 import CreateWorkspace from './components/CreateWorkspace/CreateWorkspace';
 import UserWorkspace from './components/UserWorkspace/UserWorkspace';
 import UserTeam from './components/UserTeam/UserTeam';
+import UserProfile from './components/UserProfile/UserProfile';
 // ..
 AOS.init();
 
@@ -77,6 +78,7 @@ function App() {
          <Route path='/workspace' element={<UserWorkspace/>}/>
          <Route path='/create-workspace' element={<CreateWorkspace/>} />
          <Route path='/team' element={<UserTeam/>} />
+         <Route path='/profile' element={<UserProfile/>} />
 
 
       </>
