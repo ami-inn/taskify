@@ -19,6 +19,7 @@ import CreateWorkspace from './components/CreateWorkspace/CreateWorkspace';
 import UserWorkspace from './components/UserWorkspace/UserWorkspace';
 import UserTeam from './components/UserTeam/UserTeam';
 import UserProfile from './components/UserProfile/UserProfile';
+import EditProfile from './components/EditProfile/EditProfile';
 // ..
 AOS.init();
 
@@ -79,6 +80,8 @@ function App() {
          <Route path='/create-workspace' element={<CreateWorkspace/>} />
          <Route path='/team' element={<UserTeam/>} />
          <Route path='/profile' element={<UserProfile/>} />
+         <Route path='/edit-profile/:id' element={<EditProfile/>} />
+
 
 
       </>

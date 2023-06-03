@@ -58,7 +58,7 @@ function CreateWorkspace() {
                 <div className="d-flex align-items-center auth-content">
                   <div className="col-lg-6 bg-primary content-left">
                     <div className="p-3">
-                      <img src={user.profile} className="rounded avatar-80 mb-3" alt />
+                      <img src={user.profile.url} className="rounded avatar-80 mb-3" alt />
                       <h2 className="mb-2 text-white">Hi ! {user.name}</h2>
                       <p>Create An Workspace  To Continue</p>
                       <form onSubmit={handleSubmit}>

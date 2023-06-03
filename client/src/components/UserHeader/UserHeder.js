@@ -84,7 +84,7 @@ function UserHeder() {
           <div className="iq-navbar-logo d-flex align-items-center justify-content-between">
             <i className="ri-menu-line wrapper-menu" />
             <a href="../backend/index.html" className="header-logo">
-              <h4 className="logo-title text-uppercase">Webkit</h4>
+              <h4 className="logo-title text-uppercase">Taskify</h4>
             </a>
           </div>
           <div className="navbar-breadcrumb">
@@ -401,7 +401,7 @@ function UserHeder() {
                     className="search-toggle dropdown-toggle  d-flex align-items-center"
                   >
                     <img
-                      src='https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg'
+                      src={user.profile.url}
                       className="img-fluid rounded-circle"
                       alt="user"
                     />
@@ -434,7 +434,7 @@ function UserHeder() {
                           d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                         />
                       </svg>
-                      <a href="../app/user-profile-edit.html">Edit Profile</a>
+                      <Link to={`/edit-profile/${user._id}`}>Edit Profile</Link>
                     </li>
                     <li class="dropdown-item d-flex svg-icon">
                                           <svg class="svg-icon mr-0 text-primary" id="h-01-p" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -38,7 +38,7 @@ function UserProfile() {
             <div className="card-body">
               <div className="d-flex align-items-center mb-3">
                 <div className="profile-img position-relative">
-                  <img src={user.profile} className="img-fluid rounded avatar-110" alt="profile-image" />
+                  <img src={user.profile.url} className="img-fluid rounded avatar-110" alt="profile-image" />
                 </div>
                 <div className="ml-3">
                   <h4 className="mb-1">{user.name}</h4>
@@ -74,7 +74,7 @@ function UserProfile() {
                     <svg className="svg-icon mr-3" height={16} width={16} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <p className="mb-0">{user.email}</p>   
+                    <p className="mb-0">{user.about}</p>   
                   </div>
                 </li>
               </ul>
@@ -107,43 +107,28 @@ function UserProfile() {
                             <h4 className="card-title">Personal Skills</h4>
                           </div>
                         </div>
-                        <div className="card-body p-4">
-                          <div className="p-2 bg-warning rounded w-100 mb-3">
+                        <div className="card-body skillBoady p-4">
+
+                        {
+                          user.skills.map((skill,index)=>
+                          (
+                            <div className="p-2  rounded w-100 mb-3">
                             <div className="d-flex align-items-center">
-                              <span className="skill-number">1.</span>
-                              <p className="mb-0">Creative spirit</p>   
+                              <span className="skill-number">{index+1}</span>
+                              <p className="mb-0">{skill}</p>   
                             </div>
                           </div>
-                          <div className="p-2 bg-danger rounded w-100 mb-3">
-                            <div className="d-flex align-items-center">
-                              <span className="skill-number">2.</span>
-                              <p className="mb-0">Management</p>   
-                            </div>
-                          </div>
-                          <div className="p-2 bg-info rounded w-100 mb-3">
-                            <div className="d-flex align-items-center">
-                              <span className="skill-number">3.</span>
-                              <p className="mb-0">Organized</p>   
-                            </div>
-                          </div>
-                          <div className="p-2 bg-success rounded w-100 mb-3">
-                            <div className="d-flex align-items-center">
-                              <span className="skill-number">4.</span>
-                              <p className="mb-0">Team Player</p>   
-                            </div>
-                          </div>
-                          <div className="p-2 bg-danger rounded w-100">
-                            <div className="d-flex align-items-center">
-                              <span className="skill-number">5.</span>
-                              <p className="mb-0">Professional</p>   
-                            </div>
-                          </div>
+                          )
+                          )
+
+                        }
+                       
                         </div>
                       </div>
                     </div>
                     <div className="col-lg-8">
                       <div className="card card-block card-stretch">
-                        <div className="card-body p-3">
+                        <div className="card-body  p-3">
                           <div className="row align-items-center text-center py-2">
                             <div className="profile-info col-xl-3 col-sm-6 mb-3 mb-lg-0">
                               <div className="profile-icon icon m-auto rounded bg-warning">

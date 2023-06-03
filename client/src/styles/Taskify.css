@@ -19279,6 +19279,7 @@ textarea.form-control {
     overflow: hidden; }
   .uploader-file input[type="file"] {
     display: none; }
+
   .uploader-file div {
     margin: 0 0 0.5rem 0;
     color: #5f6982; }
@@ -23106,7 +23107,11 @@ fieldset[disabled] .btn {
   font-size: 1.5em; }
 
 .file-upload {
-  display: none; }
+  
+  display: none;
+ 
+   }
+  
 
 .upload_profile {
   position: relative; }
@@ -23691,4 +23696,92 @@ ul.iq-contact-rest li a p {
   .errMessageText{
     color:#ff358d;
     font-weight: bold;
+  }
+  .skillsBox{
+    
+    width:250px;
+    
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+    box-sizing: border-box;
+    box-shadow: inset(0 0 15px rgba(0,0,0,0.5));
+  }
+  .skillsBox li{
+   background:rgb(208,216,255,.1);
+    display: flex;
+    gap: 10px;
+    padding: 5px 6px;
+    color: darkslateblue;
+    transition: .5s;
+    margin: 3px 0;
+    cursor: pointer;
+
+  }
+  .skillsBox li:nth-child(1){
+    color: black;
+    background: rgb(208,216,255,.6);
+  }
+  .skillsBox li:nth-child(2){
+    color: black;
+    background: rgb(208,216,255,.4);
+  }
+  .skillsBox li:nth-child(3){
+    color: black;
+    background: rgb(208,216,255,.3);
+  }
+  .skillsBox li:nth-child(4){
+    color: black;
+    background: rgb(208,216,255,.2);
+  }
+  .skillsBox li:nth-child(5){
+    color: black;
+    background: rgb(208,216,255,.2);
+  }
+  .skillsBox li span:nth-child(1){
+    color: #000930;
+    width: 150px;
+    padding: 5px;
+    
+  }
+ 
+  .skillsBox li span:nth-child(2){
+  
+    width: 30px;
+  }
+  .skillsBox li .skillIcon{
+    color: #000930;
+    transition: 0.1s ease-in;
+  }
+  .skillsBox li .skillIcon:hover{
+    color: #000930;
+      color: #ff7369;
+  }
+
+  .skillsBox li:hover{
+    transform:scale(1.06);
+    background: white;
+  }
+
+  .card-block .skillBoady{
+
+  }
+  .skillBoady > div:nth-child(1) {
+  background: violet;
+  }
+  
+  .skillBoady > div:nth-child(2) {
+    background-color: blue !important;
+  }
+  
+  .skillBoady > div:nth-child(3) {
+    background-color: green;
+  }
+  
+  .skillBoady > div:nth-child(4) {
+    background-color: yellow;
+  }
+  
+  .skillBoady > div:nth-child(5) {
+    background-color: orange;
   }
