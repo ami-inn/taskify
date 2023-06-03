@@ -1,5 +1,6 @@
 import userModel from "../models/UserModel.js"
 import workspaceModel from '../models/WorkspaceModel.js'
+import cloudinary from '../config/cloudinary.js'
 
 
 export async function createWorkspace(req,res){
@@ -74,4 +75,61 @@ export async function workspaceValid(req,res){
         return res.json({err:false,message:'error'})
     }
 
+}
+
+export async function editProfileDetails(req,res){
+    try{
+        console.log('enterrr');
+        const{image,name,phone,about,skills,jobtype}=req.body
+        console.log(req.body);
+        const id=req.params.id
+
+        if(image){
+            console.log('imndnfj');
+        
+            const data=await cloudinary.uploader.upload(image,{
+                folder:'taskify'
+            })
+            const  updates={
+                profile:data,
+                name,
+                about,
+                skills,
+                jobtype,
+                phone
+            }
+            const updateUser = await userModel.findByIdAndUpdate(id,updates,{new:true})
+            console.log(updateUser);
+            res.json({data:updateUser,message:'updated',error:false})
+        }else{
+
+            console.log('giuogffiudsahdiaih');
+
+           
+            console.log(id);
+            const  updates={
+                name,
+                about,
+                skills,
+                jobtype,
+                phone
+            }
+            try{
+                const updateUser = await userModel.findByIdAndUpdate(id,updates,{new:true})
+                console.log(updateUser);
+                res.json({data:updateUser,message:'updated',error:false})
+
+            }
+            catch(err){
+                console.log(err);
+                res.json({error:true,message:'failed to update user'})
+            }
+            
+        }
+
+    }
+    catch(err){
+        console.log(err)
+        res.json({err:true,err,message:'something went wrong'})
+        }
 }

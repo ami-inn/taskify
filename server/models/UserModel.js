@@ -42,9 +42,15 @@ const userSchema = new mongoose.Schema({
         default:false
     },
     profile:{
-        type:String,
-        default:"https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg"
-    },
+
+      type:Object,
+      default:{
+        url:"https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg"
+
+      }
+
+  
+           },
     jobtype:{
         type:String,
         default:'not set'
