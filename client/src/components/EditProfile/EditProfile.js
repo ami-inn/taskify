@@ -4,6 +4,7 @@ import UserHeder from '../UserHeader/UserHeder'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { RiDeleteBack2Fill, RiDeleteBackFill, RiDeleteBin2Fill, RiDeleteBinFill, RiPenNibFill } from 'react-icons/ri'
+
 import axios from 'axios'
 
 function EditProfile() {
@@ -21,9 +22,21 @@ function EditProfile() {
     const [newSkill, setNewSkill] = useState("");
     const [errMessage, setErrorMessage] = useState('')
     const [finalImage,setFinalImage] = useState(null)
+    const [openForm,setOpenForm]=useState(1)
+    const [newPassword,setnewPassword]=useState('')
+    const [confirmPassword,setConfirmPassword]=useState('')
+    const [oldPassword,setOldPassword]=useState('')
+    const [successMessage,setSuccessMessage]=useState('')
+    const [twitter,setTwitter]=useState('')
+    const [instagram,setInstagram]=useState('')
+    const [facebook,setFacebook]=useState('')
     const {id}=useParams()
     const navigate=useNavigate()
     const dispatch=useDispatch()
+
+    const formOpen=(formId)=>{
+      setOpenForm(formId)
+    }
 
 
     const isValidFileUploaded=(file)=>{
@@ -150,6 +163,59 @@ function EditProfile() {
     },[])
 
 
+    // forgot password
+
+     const handleChangePassword = async (e) =>{
+      e.preventDefault()
+      if(newPassword !== confirmPassword){
+        setErrorMessage('the passwords are not match')
+        return
+      }
+
+      try{
+        
+     const {data}= await axios.patch('/change-password/'+id,{oldPassword,newPassword})
+
+     console.log(data);
+     if(data.error){
+      console.log(data.message)
+      setErrorMessage(data.message)
+     }else{
+      setSuccessMessage(data.message)
+      dispatch({type:'refresh'})
+     }
+        
+      }catch(err){
+        console.log(err);
+      }
+
+
+     }
+
+
+    //  update socialLinks
+
+    const handleSocialLink = async (e) =>{
+      e.preventDefault()
+
+      try{
+
+        const {data}=await axios.patch('/update-sociallinks/'+id,{instagram,facebook,twitter})
+
+        if(data.error){
+          alert('err')
+          console.log(data);
+          
+        }else{
+          alert('sucdes')
+          dispatch({type:'refresh'})
+        }
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+
 
 
 
@@ -170,23 +236,23 @@ function EditProfile() {
           <div className="card-body p-0">
             <div className="iq-edit-list usr-edit">
               <ul className="iq-edit-profile d-flex nav nav-pills">
-                <li className="col-md-3 p-0">
-                  <a className="nav-link active" data-toggle="pill" href="#personal-information">
+                <li className="col-md-3 p-0"  style={{cursor:'pointer'}}>
+                  <a className={`nav-link ${openForm===1?'active':''}`} onClick={()=>{formOpen(1)}} data-toggle="pill">
                     Personal Information
                   </a>
                 </li>
-                <li className="col-md-3 p-0">
-                  <a className="nav-link" data-toggle="pill" href="#chang-pwd">
+                <li className="col-md-3 p-0" style={{cursor:'pointer'}}>
+                  <a className={`nav-link ${openForm===2?'active':''}`} onClick={()=>{formOpen(2)}} data-toggle="pill" >
                     Change Password
                   </a>
                 </li>
-                <li className="col-md-3 p-0">
-                  <a className="nav-link" data-toggle="pill" href="#emailandsms">
+                <li className="col-md-3 p-0" style={{cursor:'pointer'}}>
+                  <a className={`nav-link ${openForm===3?'active':''}`}data-toggle="pill" onClick={()=>{formOpen(3)}} >
                     Email and SMS
                   </a>
                 </li>
-                <li className="col-md-3 p-0">
-                  <a className="nav-link" data-toggle="pill" href="#manage-contact">
+                <li className="col-md-3 p-0" style={{cursor:'pointer'}}>
+                  <a className={`nav-link ${openForm===4?'active':''}`} data-toggle="pill" onClick={()=>{formOpen(4)}} >
                     Manage Contact
                   </a>
                 </li>
@@ -198,7 +264,7 @@ function EditProfile() {
       <div className="col-lg-12">
         <div className="iq-edit-list-data">
           <div className="tab-content">
-            <div className="tab-pane fade active show" id="personal-information" role="tabpanel">
+            <div className={`tab-pane fade ${openForm===1 ? 'active show':''}`} id="personal-information" role="tabpanel">
               <div className="card">
                 <div className="card-header d-flex justify-content-between">
                   <div className="iq-header-title">
@@ -271,7 +337,9 @@ function EditProfile() {
                 </div>
               </div>
             </div>
-            <div className="tab-pane fade" id="chang-pwd" role="tabpanel">
+
+
+            <div className={`tab-pane fade ${openForm===2 ? 'active show':''}`} id="chang-pwd" role="tabpanel">
               <div className="card">
                 <div className="card-header d-flex justify-content-between">
                   <div className="iq-header-title">
@@ -279,27 +347,35 @@ function EditProfile() {
                   </div>
                 </div>
                 <div className="card-body">
-                  <form>
+                  <form onSubmit={handleChangePassword}>
                     <div className="form-group">
                       <label htmlFor="cpass">Current Password:</label>
                       <a href="javascripe:void();" className="float-right">Forgot Password</a>
-                      <input type="Password" className="form-control" id="cpass" defaultValue />
+                      <input type="Password" className="form-control" id="cpass" value={oldPassword} onChange={(e)=>{setOldPassword(e.target.value)}}  />
                     </div>
                     <div className="form-group">
                       <label htmlFor="npass">New Password:</label>
-                      <input type="Password" className="form-control" id="npass" defaultValue />
+                      <input type="Password" className="form-control" value={newPassword} id="npass" onChange={(e)=>{setnewPassword(e.target.value)}}  defaultValue />
                     </div>
                     <div className="form-group">
                       <label htmlFor="vpass">Verify Password:</label>
-                      <input type="Password" className="form-control" id="vpass" defaultValue />
+                      <input type="Password" className="form-control" value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}  id="vpass" defaultValue />
                     </div>
+                    {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
+                            {
+                          successMessage &&
+                          <p className='succMessageText'>{successMessage}</p>
+                        }
                     <button type="submit" className="btn btn-primary mr-2">Submit</button>
                     <button type="reset" className="btn iq-bg-danger">Cancel</button>
                   </form>
                 </div>
               </div>
             </div>
-            <div className="tab-pane fade" id="emailandsms" role="tabpanel">
+            <div className={`tab-pane fade ${openForm===3 ? 'active show':''}`} id="emailandsms" role="tabpanel">
               <div className="card">
                 <div className="card-header d-flex justify-content-between">
                   <div className="iq-header-title">
@@ -362,26 +438,30 @@ function EditProfile() {
                 </div>
               </div>
             </div>
-            <div className="tab-pane fade" id="manage-contact" role="tabpanel">
+            <div className={`tab-pane fade ${openForm===4 ? 'active show':''}`} id="manage-contact" role="tabpanel">
               <div className="card">
                 <div className="card-header d-flex justify-content-between">
                   <div className="iq-header-title">
-                    <h4 className="card-title">Manage Contact</h4>
+                    <h4 className="card-title">Manage Social Links</h4>
                   </div>
                 </div>
                 <div className="card-body">
-                  <form>
+                  <form onSubmit={handleSocialLink}>
                     <div className="form-group">
-                      <label htmlFor="cno">Contact Number:</label>
-                      <input type="text" className="form-control" id="cno" defaultValue="001 2536 123 458" />
+                      <label htmlFor="cno">Email:</label>
+                      <input type="text" className="form-control" id="cno" defaultValue={user.email} disabled />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="email">Email:</label>
-                      <input type="text" className="form-control" id="email" defaultValue="Barryjone@demo.com" />
+                      <label htmlFor="insta">Instagram:</label>
+                      <input type="text" className="form-control" id="insta" defaultValue={user.instagram} onChange={(e)=>{setInstagram(e.target.value)}}  />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="url">Url:</label>
-                      <input type="text" className="form-control" id="url" defaultValue="https://getbootstrap.com" />
+                      <label htmlFor="twit">Twitter:</label>
+                      <input type="text" className="form-control" id="twit" defaultValue={user.twitter}  onChange={(e)=>{setTwitter(e.target.value)}} />
+                    </div>
+                      <div className="form-group">
+                      <label htmlFor="fb">facebook:</label>
+                      <input type="text" className="form-control" id="fb" defaultValue={user.facebook} onChange={(e)=>{setFacebook(e.target.value)}} />
                     </div>
                     <button type="submit" className="btn btn-primary mr-2">Submit</button>
                     <button type="reset" className="btn iq-bg-danger">Cancel</button>

@@ -23785,3 +23785,12 @@ ul.iq-contact-rest li a p {
   .skillBoady > div:nth-child(5) {
     background-color: orange;
   }
+
+  .errMessageText{
+    color: red;
+  }
+  
+  .succMessageText{
+    color:green;
+  }
+  

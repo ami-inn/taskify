@@ -1,10 +1,12 @@
 import express from 'express'
-import { createWorkspace, editProfileDetails, workspaceValid } from '../controllers/userController.js'
+import { changePassord, createWorkspace, editProfileDetails, updateSocial, workspaceValid } from '../controllers/userController.js'
 
 const Router=express.Router()
 
 Router.get('/workspace/:id',workspaceValid)
 Router.post('/create-workspace',createWorkspace)
 Router.patch('/edit-profile/:id',editProfileDetails)
+Router.patch('/change-password/:id',changePassord)
+Router.patch('/update-sociallinks/:id',updateSocial)
 
 export default Router
