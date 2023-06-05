@@ -206,3 +206,22 @@ export async function updateSocial(req,res){
         res.json({error:true,message:'uncaught error'})
     }
 }
+
+export async function showWorkspaces(req,res){
+    try{
+        console.log('workspacees');
+        const id=req.params.id
+
+        const workspace=await workspaceModel.find({owner:id}).exec()
+
+        console.log(workspace);
+        if(!workspace){
+            return res.json({error:true,message:'no workspace found'})
+        }
+        res.json({error:false,message:'workspace founded',workspace})
+
+    }
+    catch(err){
+         res.json({error:true,message:'some error found'})
+    }
+}

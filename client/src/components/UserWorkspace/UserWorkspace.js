@@ -20,6 +20,7 @@ import UserDashboard from '../UserDashboard/UserDashboard'
 function UserWorkspace() {
 
   const {id}=useParams()
+  console.log(id);
   const workspaceId = useSelector((state)=>state.currentWorkspace)
   console.log(workspaceId)
   const navigate = useNavigate()
@@ -29,6 +30,7 @@ function UserWorkspace() {
   const [openMessage,setopenMessage]=useState(false)
   const [openNoti,setopenNoti]=useState(false)
   const [openLogout,setopenLogout]=useState(false)
+  
 
  
   async function handleLogout(){
@@ -67,6 +69,7 @@ function UserWorkspace() {
             console.log(data);
             console.log(data.workspace);
             setworkSpace(data.workspace)
+            dispatch({type:'workspace',payload:data.workspace._id})
             // alert('success')
           }else{
             alert('error')

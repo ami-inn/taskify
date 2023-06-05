@@ -9,18 +9,7 @@ import zxcvbn from 'zxcvbn';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-// import PersonIcon from '@mui/icons-material/Person';
-// import AddIcon from '@mui/icons-material/Add';
-import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors';
+
 
 
 
@@ -37,6 +26,7 @@ function UserSignup() {
     const dispatch = useDispatch()
     const [showOtpPage, setShowOtpPage] = useState(false)
     const [open, setOpen] = React.useState(false);
+  
     const handleClose = () => {
       setOpen(false);
     };
