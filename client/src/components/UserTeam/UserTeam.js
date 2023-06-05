@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import img1 from '../../assets/images/user/01.jpg'
+import InviteUserModal from '../InviteUserModal/InviteUserModal'
 
 function UserTeam() {
     const workspaceId = useSelector((state)=>state.currentWorkspace)
@@ -50,6 +51,7 @@ function UserTeam() {
     },[])
 
   return (
+    
     <div className='wrapper'>
         <UserSidebar page={'team'}/>
         <UserHeder/>
@@ -256,6 +258,9 @@ function UserTeam() {
     {/* Page end  */}
   </div>
 </div>
+
+
+    
       
     </div>
   )

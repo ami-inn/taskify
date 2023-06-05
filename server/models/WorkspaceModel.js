@@ -19,7 +19,16 @@ const workspaceSchema=new mongoose.Schema({
     }],
     spaces: [{
          type: mongoose.Schema.Types.ObjectId, ref: 'Space' 
-    }]
+    }],
+    active:{
+        type:Boolean,
+        default:true
+    },
+    createdDate: {
+        type: Date,
+        default: Date.now,
+      },
+
 })
 
 

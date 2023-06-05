@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../styles/Taskify.css'
 import SignupImg from '../../assets/images/login/01.png'
 import { useDispatch } from 'react-redux'
@@ -6,6 +6,21 @@ import axios from 'axios'
 import VerifyOtp from '../VerifyOtp/VerifyOtp'
 import { Link } from 'react-router-dom'
 import zxcvbn from 'zxcvbn';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+// import PersonIcon from '@mui/icons-material/Person';
+// import AddIcon from '@mui/icons-material/Add';
+import Typography from '@mui/material/Typography';
+import { blue } from '@mui/material/colors';
 
 
 
@@ -21,7 +36,18 @@ function UserSignup() {
     const [phoneNumber,setPhoneNumber]=useState()
     const dispatch = useDispatch()
     const [showOtpPage, setShowOtpPage] = useState(false)
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleOpen = () => {
+      setOpen(true);
+    };
 
+    useEffect(() => {
+      // Stop the backdrop when the component is rendered
+      handleClose();
+    }, [showOtpPage]);
     
     function validationErr() {
         if (
@@ -139,7 +165,7 @@ function UserSignup() {
                           <p className='errMessageText'>Password Is Not Strong Enough</p>
                         } */}
 
-                      <button type="submit" disabled={validationErr()} className="button-submit-login">Sign Up</button>
+                      <button type="submit" onClick={handleOpen} disabled={validationErr()} className="button-submit-login">Sign Up</button>
                       <p className="mt-3 button-submit-login-p">
                         Already have an Account <Link to='/login'>Sign In</Link>
                       </p>
@@ -159,6 +185,14 @@ function UserSignup() {
 </div>: <VerifyOtp data={{name, email, password, confPassword,lastname,phoneNumber}} />
         }
 
+
+<Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
 
     </div>

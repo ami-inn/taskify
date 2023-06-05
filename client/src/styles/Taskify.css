@@ -23249,7 +23249,7 @@ ul.iq-contact-rest li a p {
   border: 5px solid #fff; }
 
 .card-profile {
-  margin-top: -120px;
+  margin-top: 3px;
   font-size: 16px; }
 
 .skill-number {
@@ -23767,23 +23767,43 @@ ul.iq-contact-rest li a p {
 
   }
   .skillBoady > div:nth-child(1) {
-  background: violet;
+  background:rgb(87,115,255,.8);
+  color: white;
+  font-size: 15px;
+  font-family: var(--font-family-sans-serif);
+  font-weight: 500;
   }
   
   .skillBoady > div:nth-child(2) {
-    background-color: blue !important;
+    background:rgb(166, 41, 135);
+    color: white;
+  font-size: 15px;
+  font-family: var(--font-family-sans-serif);
+  font-weight: 500;
   }
   
   .skillBoady > div:nth-child(3) {
-    background-color: green;
+    background:rgb(166, 102, 13);
+    color: white;
+    font-size: 15px;
+    font-family: var(--font-family-sans-serif);
+    font-weight: 500;
   }
   
   .skillBoady > div:nth-child(4) {
-    background-color: yellow;
+    background:rgb(62, 222, 198);
+    color: white;
+    font-size: 15px;
+    font-family: var(--font-family-sans-serif);
+    font-weight: 500;
   }
   
   .skillBoady > div:nth-child(5) {
-    background-color: orange;
+    background:rgb(186, 73, 93);
+    color: white;
+    font-size: 15px;
+    font-family: var(--font-family-sans-serif);
+    font-weight: 500;
   }
 
   .errMessageText{

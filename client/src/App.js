@@ -20,6 +20,7 @@ import UserWorkspace from './components/UserWorkspace/UserWorkspace';
 import UserTeam from './components/UserTeam/UserTeam';
 import UserProfile from './components/UserProfile/UserProfile';
 import EditProfile from './components/EditProfile/EditProfile';
+import AdminWorkspace from './components/AdminWorkspace/AdminWorkspace';
 // ..
 AOS.init();
 
@@ -55,6 +56,7 @@ function App() {
       <Route path='/admin/login' element={<Navigate to='/admin'/>}></Route>
       <Route path='/admin/' element={<AdminHome/>}></Route>
       <Route path='/admin/users' element={<AdminUsers/>}/>
+      <Route path='/admin/workspaces' element={<AdminWorkspace/>}/>
       </>
     }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import UserHeder from '../UserHeader/UserHeder'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import { useSelector } from 'react-redux'
@@ -8,11 +8,17 @@ import { RiFacebookBoxFill, RiInstagramFill, RiTwitterFill } from 'react-icons/r
 
 
 function UserProfile() {
+
+  const [form,setopenForm]=useState(1)
     const user=useSelector((state)=>{
     
         return state.user.details
     
     })
+
+    const handleFormId=(formId)=>{
+      setopenForm(formId)
+    }
   return (
     <div className='wrapper'>
     <UserSidebar page={'dashboard'}/>    
@@ -21,20 +27,21 @@ function UserProfile() {
    
     <div className="content-page">
     <div className="container-fluid">
-      <div className="row">
+      {/* for banner image */}
+      {/* <div className="row">
         <div className="col-lg-12">
           <div className="card car-transparent">
             <div className="card-body p-0">
               <div className="profile-image position-relative">
-                <img src={tempProfo} className="img-fluid rounded w-100" alt="profile-image" />
+                <img src={user.profile.url} className="img-fluid rounded w-100" alt="profile-image" />
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="row m-sm-0 px-3">            
         <div className="col-lg-4 card-profile">
-          <div className="card card-block card-stretch card-height">
+          <div className="card card-block card-stretch">
             <div className="card-body">
               <div className="d-flex align-items-center mb-3">
                 <div className="profile-img position-relative">
@@ -43,19 +50,16 @@ function UserProfile() {
                 <div className="ml-3">
                   <h4 className="mb-1">{user.name}</h4>
                   <p className="mb-2">{user.jobtype}</p>
-                  <a href="#" className="btn btn-primary font-size-14">Contact</a>
+                 
                 </div>
               </div>
-              <p>
-                {user.phone}
-              </p>
+
               <ul className="list-inline p-0 m-0">
                 <li className="mb-2">
                   <div className="d-flex align-items-center">
-                    <svg className="svg-icon mr-3" height={16} width={16} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
+                  <svg class="svg-icon mr-3" height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                              </svg>
                     <p className="mb-0">{user.about}</p>   
                   </div>
                 </li>
@@ -74,7 +78,7 @@ function UserProfile() {
                     <svg className="svg-icon mr-3" height={16} width={16} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <p className="mb-0">{user.about}</p>   
+                    <p className="mb-0">{user.email}</p>   
                   </div>
                 </li>
               </ul>
@@ -89,16 +93,16 @@ function UserProfile() {
                 
                 
                 <li className="nav-item">
-                  <a className="nav-link active show" data-toggle="pill" href="#profile2" role="tab" aria-selected="false">Personal Information</a>
+                  <a className={`nav-link ${form===1?'active show' :''}`} data-toggle="pill" onClick={()=>{handleFormId(1)}} role="tab" aria-selected="false">Personal Information</a>
                 </li>
              
                 <li className="nav-item">
-                  <a id="view-btn" className="nav-link" data-toggle="pill" href="#profile5" role="tab" aria-selected="true">About</a>
+                  <a id="view-btn" className={`nav-link ${form===2?'active show' :''}`} data-toggle="pill" onClick={()=>{handleFormId(2)}} role="tab" aria-selected="true">About</a>
                 </li>
               </ul>
               <div className="profile-content tab-content">
                
-                <div id="profile2" className="tab-pane fade active show">
+                <div id="profile2" className={`tab-pane fade ${form ===1?'active show':''} `}>
                   <div className="row">
                     <div className="col-lg-4">
                       <div className="card card-block card-stretch mb-0">
@@ -137,7 +141,7 @@ function UserProfile() {
                                 </svg>
                               </div>
                               <h5 className="mb-2 mt-3 icon-text-warning">15+</h5>
-                              <p className="mb-0">Awards</p>
+                              <p className="mb-0">spaces</p>
                             </div>
                             <div className="profile-info col-xl-3 col-sm-6 mb-3 mb-lg-0">
                               <div className="profile-icon icon m-auto rounded bg-info">
@@ -146,7 +150,7 @@ function UserProfile() {
                                 </svg>
                               </div>
                               <h5 className="mb-2 mt-3 icon-text-info">35+</h5>
-                              <p className="mb-0">Certificate</p>
+                              <p className="mb-0">Admins</p>
                             </div>
                             <div className="profile-info col-xl-3 col-sm-6 mb-3 mb-sm-0">
                               <div className="profile-icon icon m-auto rounded bg-danger">
@@ -155,7 +159,7 @@ function UserProfile() {
                                 </svg>
                               </div>
                               <h5 className="mb-2 mt-3 icon-text-danger">04+</h5>
-                              <p className="mb-0">Experience</p>
+                              <p className="mb-0">Tasks</p>
                             </div>
                             <div className="profile-info col-xl-3 col-sm-6">
                               <div className="profile-icon icon m-auto rounded bg-success">
@@ -164,7 +168,7 @@ function UserProfile() {
                                 </svg>
                               </div>
                               <h5 className="mb-2 mt-3 icon-text-success">90+</h5>
-                              <p className="mb-0">Participated</p>
+                              <p className="mb-0">members</p>
                             </div>
                           </div>
                         </div>
@@ -203,17 +207,9 @@ function UserProfile() {
 
              
                
-                <div id="profile5" className="tab-pane fade">
-                  <p>I'm Web Developer from California. I code and design websites worldwide. Mauris variustellus vitae 
-                    tristique sagittis. Sed aliquet, est nec auctor aliquet, orci ex vestibulum ex, non pharetra lacus
-                    erat ac nulla.</p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis mattis nam ipsum pharetra porttitor eu 
-                    orci, nisi. Magnis elementum vitae eu, dui et. Tempus etiam feugiat sem augue sed sed. Tristique 
-                    feugiat mi feugiat integer consectetur sit enim penatibus. Quis sagittis proin fermentum tempus 
-                    uspendisse ultricies. Tellus sapien, convallis proin pretium.</p>
-                  <p className="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis mattis nam ipsum pharetra porttitor eu.
-                    Tristique feugiat mi feugiat integer consectetur sit enim penatibus. Quis sagittis proin fermentum tempus 
-                    uspendisse ultricies. Tellus sapien, convallis proin pretium.</p>
+                <div id="profile5" className={`tab-pane fade ${form ===2?'active show':''} `}>
+                  <p>{user.about}</p>
+                 
                 </div>
               </div>
             </div>
