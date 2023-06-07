@@ -66,6 +66,7 @@ function App() {
       <Route path='/admin/login' element={<AdminLogin/>}></Route>
       <Route path='/admin' element={<Navigate to='/admin/login'/>}></Route>
       <Route path='/admin/*' element={<Navigate to='/admin/login'/>}></Route>
+      <Route path='/admin/workspaces' element={<Navigate to='/admin/login'/>}/>
       </>
     }
     {/* user side */}
@@ -73,9 +74,9 @@ function App() {
     {
       user.login &&
       <>
-         <Route path='/login' element={<Navigate to={'/temphome'}/>}></Route>
-         <Route path='/signup' element={<Navigate to="/temphome" />} />
-         <Route path='/' element={<Navigate to="/temphome" />} />
+         <Route path='/login' element={<Navigate to={'/create-workspace'}/>}></Route>
+         <Route path='/signup' element={<Navigate to="/create-workspace" />} />
+         <Route path='/' element={<Navigate to="/create-workspace" />} />
          <Route path='/tempHome' element={<TempHome/>} />
          <Route path='/workspace/:id' element={<UserWorkspace/>}/>
          <Route path='/workspace' element={<UserWorkspace/>}/>
@@ -97,6 +98,12 @@ function App() {
        <Route path='/forgot' element={<ForgotEmail/>} />
        <Route path='/' element={<UserLanding/>} />
         <Route path='/temphome' element={<Navigate to={'/'}/>} />
+        <Route path='/workspace/:id' element={<Navigate to={'/'}/>} />
+         <Route path='/workspace' element={<Navigate to={'/'}/>}  />
+         <Route path='/create-workspace' element={<Navigate to={'/'}/>}  />
+         <Route path='/team' element={<Navigate to={'/'}/>} />
+         <Route path='/profile' element={<Navigate to={'/'}/>}  />
+         <Route path='/edit-profile/:id' element={<Navigate to={'/'}/>}  />
       
 
       </>

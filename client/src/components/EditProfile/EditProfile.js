@@ -30,6 +30,7 @@ function EditProfile() {
     const [twitter,setTwitter]=useState('')
     const [instagram,setInstagram]=useState('')
     const [facebook,setFacebook]=useState('')
+    const [selectedImage,setSelectedImage]=useState(null)
     const {id}=useParams()
     const navigate=useNavigate()
     const dispatch=useDispatch()
@@ -46,6 +47,14 @@ function EditProfile() {
     }
 
     const handleImage=(e)=>{
+      const file = e.target.files[0]
+      if(file){
+        const reader = new FileReader()
+        reader.onload=()=>{
+          setSelectedImage(reader.result)
+        }
+        reader.readAsDataURL(file);
+      }
       console.log('hereeee');
       if(isValidFileUploaded(e.target.files[0])){
           setImage(e.target.files[0])
@@ -62,6 +71,9 @@ function EditProfile() {
       setFinalImage(reader.result)
     }
   }
+
+
+  
 
     
 
@@ -277,7 +289,7 @@ function EditProfile() {
                       <div className="col-md-12">
                         <div className="profile-img-edit">
                           <div className="crm-profile-img-edit">
-                            <img className="crm-profile-pic rounded-circle avatar-100" src={user.profile.url} alt="profile-pic" />
+                            <img className="crm-profile-pic rounded-circle avatar-100" src={selectedImage||user.profile.url} alt="profile-pic" />
                             <div className="crm-p-image bg-primary">
                               <label htmlFor="file-upload"><RiPenNibFill className="las la-pen upload-button" style={{color:'white',cursor:'pointer'}}/></label>
                               <input className="file-upload" id='file-upload' type="file" accept="image/*"  onChange={handleImage} />

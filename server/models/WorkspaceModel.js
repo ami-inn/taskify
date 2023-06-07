@@ -28,6 +28,7 @@ const workspaceSchema=new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+      invitationToken: { type: String }
 
 })
 

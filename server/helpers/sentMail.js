@@ -1,26 +1,26 @@
 import nodemailer from 'nodemailer'
 
 
-export default function sentMail(email,message1,message2){
+export default function sentMail(email,message1,subject){
     return new Promise((resolve, reject) => {
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 465,
             secure: true,
             auth: {
-              user: process.env.EMAIL,
-              pass: process.env.PASSWORD,
+              user: 'amipk2001@gmail.com',
+              pass: 'gzpenpqheyoeplcl',
             },
         })
 
         var mailOptions={
-            from: process.env.EMAIL,
+            from: 'amipk2001@gmail.com',
             to: email,
-            subject: "DocOnline",
+            subject: {subject},
             html: `
             <h1>Taskify</h1>
               <h2>${message1}</h2>
-              <h3>${message2}</h3>
+            
             `,
           }
 

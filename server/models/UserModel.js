@@ -87,6 +87,11 @@ const userSchema = new mongoose.Schema({
         maxlength: 100,
         default:'no facebook link set'
       },
+      invitations: [{
+        workspace: { type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' },
+        invitationToken: { type: String },
+        role: { type: String },
+      }]
 
     
 })

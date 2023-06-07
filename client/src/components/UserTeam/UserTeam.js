@@ -10,6 +10,7 @@ import InviteUserModal from '../InviteUserModal/InviteUserModal'
 function UserTeam() {
     const workspaceId = useSelector((state)=>state.currentWorkspace)
     const [tableView,settableView]=useState(true)
+    const [modalview,setModalview]=useState(false)
     const user=useSelector((state)=>{
     
         return state.user.details
@@ -82,7 +83,7 @@ function UserTeam() {
                   </div>
                 </div>
                 <div className="pl-3 border-left btn-new">
-                  <a href="#" className="btn btn-primary" data-target="#new-user-modal" data-toggle="modal">Invite New user</a>
+                  <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-user-modal" data-toggle="modal">Invite New user</a>
                 </div>
               </div>
             </div>
@@ -257,8 +258,12 @@ function UserTeam() {
    
     {/* Page end  */}
   </div>
-</div>
+        </div>
 
+
+      {
+        modalview===true?<InviteUserModal/>:''
+      }
 
     
       

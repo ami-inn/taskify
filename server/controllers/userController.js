@@ -3,6 +3,8 @@ import workspaceModel from '../models/WorkspaceModel.js'
 import cloudinary from '../config/cloudinary.js'
 import bcrypt from 'bcryptjs'
 import zxcvbn from 'zxcvbn'
+import {generatInvitationToken} from '../helpers/generateToken.js'
+import sentMail from "../helpers/sentMail.js"
 
 
 var salt = bcrypt.genSaltSync(10)
@@ -21,9 +23,11 @@ export async function createWorkspace(req,res){
             console.log('enterreed not user');
             return res.json({error:true,message:'user not found'})
         }
+        const invitationToken=generatInvitationToken()
+        console.log(invitationToken);
 
         const workspace = await workspaceModel.create({
-            name,description,owner:user._id
+            name,description,owner:user._id,invitationToken
         })
         workspace.admins.push(user._id)
         await workspace.save()
@@ -212,7 +216,7 @@ export async function showWorkspaces(req,res){
         console.log('workspacees');
         const id=req.params.id
 
-        const workspace=await workspaceModel.find({owner:id}).exec()
+        const workspace=await workspaceModel.find({owner:id,active: true}).exec()
 
         console.log(workspace);
         if(!workspace){
@@ -223,5 +227,95 @@ export async function showWorkspaces(req,res){
     }
     catch(err){
          res.json({error:true,message:'some error found'})
+    }
+}
+
+
+
+
+
+
+
+
+// for email invitation
+
+export async function acceptInvitation(req,res){
+    try{
+        const{token,role,responce}=req.body
+
+        const user = await userModel.findOne({invitationToken:token})
+
+        if(!user){
+            return res.json({message:'invalid invitation token'})
+        }
+        const workspace = await workspaceModel.findOne({invitationToken:token})
+
+        if(!workspace){
+            return res.json({message:'invalid invitation token'})
+        }
+
+        workspace.members.push(user._id)
+
+        await workspace.save()
+
+        user.workspaces.push({workspace:workspace._id,role})
+        user.invitationToken=null
+        await user.save()
+        return res.json({error:false,message:'invitation accepted successfully'})
+    }
+    catch(err){
+        console.log(err);
+        return res.json({error:true,message:'internal server error'})
+    }
+}
+
+export const inviteUserToWorkspace=async (req,res)=>{
+    const {email,workspaceId,role}=req.body
+
+    try{
+
+        console.log('enterrrrrrrrr');
+
+        const user = await userModel.findOne({email})
+
+        if(!user){
+            return res.json({message:'user not found'})
+        }
+
+        const workspace = await workspaceModel.findById(workspaceId)
+
+        if(!workspace){
+            return res.json({error:true,message:'worksapce not found'})
+        }
+        const isMember=workspace.members.includes(user._id)
+
+        if(isMember){
+            return res.json({error:true,message:'user already exists'})
+        }
+
+        const invitationToken = generatInvitationToken();
+
+        const invitation={
+            workspace:workspace._id,
+            invitationToken,
+            role
+        }
+
+        user.invitations.push(invitation)
+
+        await user.save()
+       
+
+
+        const invitationLink = `http://localhost:3000/invitation?token=${invitationToken}`;
+
+        let sentEmail=await sentMail(email,`you have an email req to join ${workspace.name} as ${role}  you can accept or reject it click the below link ${invitationLink}`,'team invitation link ')
+
+        return res.json({error:false,message:'invitation sent successfully'})
+
+    }
+    catch(err){
+        console.log(err)
+        return res.json({error:true,message:'internal server error'})
     }
 }
