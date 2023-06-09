@@ -4,7 +4,8 @@ const initialState={
     user:{login:null},
     admin:{login:null},
     currentWorkspace:null,
-    refresh:true
+    refresh:true,
+    workspaces:{}
 }
 
 function reducer(state=initialState, action){
@@ -12,6 +13,7 @@ function reducer(state=initialState, action){
         case 'user': return {...state, user:action.payload};
         case 'admin': return {...state, admin:action.payload};
         case 'workspace': return {...state, currentWorkspace:action.payload};
+        case 'addWorkspace': return {...state,workspaces:{...state.workspaces,[action.payload.id]:action.payload.workspace}}
         
         case 'refresh': return {...state, refresh:!state.refresh};
         default: return state;

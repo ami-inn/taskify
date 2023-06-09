@@ -9,6 +9,10 @@ import InviteUserModal from '../InviteUserModal/InviteUserModal'
 
 function UserTeam() {
     const workspaceId = useSelector((state)=>state.currentWorkspace)
+    const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+
+    console.log(currentWorkspace,'its the workspace detailssssss');
+
     const [tableView,settableView]=useState(true)
     const [modalview,setModalview]=useState(false)
     const user=useSelector((state)=>{
@@ -16,25 +20,34 @@ function UserTeam() {
         return state.user.details
     
     })
-    const [workspace,setworkSpace]=useState('')
+    const [workspace,setworkSpace]=useState(null)
+
     React.useEffect(()=>{
     
         (
           async function(){
             try{
              
-              console.log({workspaceId});
-              const {data}=await axios.get(`/workspace/${workspaceId}?userId=${user._id}`)
-              console.log(data);
+             
+              const {data}=await axios.get(`/workspace-details/${workspaceId}`)
+             
          
               if(!data.err){
-                console.log(data);
-                console.log(data.workspace);
+              
+                setworkSpace(data.workspace)
+                console.log('workspaceeee',workspace);
                 setworkSpace(data.workspace)
                 // alert('success')
               }else{
+
+                console.log(data.workspace);
+                console.log('success');
+                // alert('error')
+
+               
                 
-                Navigate('/create-workspace')
+                
+                // Navigate('/create-workspace')
               }
     
             }
@@ -50,6 +63,10 @@ function UserTeam() {
       
     
     },[])
+
+    if (!workspace) {
+      return <div>Loading...</div>;
+    }
 
   return (
     
@@ -96,75 +113,65 @@ function UserTeam() {
 
 <div id="grid" className="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
 <div className="row">
-  <div className="col-lg-4 col-md-6">
-    <div className="card-transparent card-block card-stretch card-height">
-      <div className="card-body text-center p-0">                            
-        <div className="item">
-          <div className="odr-img">
-            <img src={img1} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
-          </div>                        
-          <div className="odr-content rounded">                                          
-            <h4 className="mb-2">Ruben Franci</h4>
-            <p className="mb-3">rubenfranci@gmail.com</p>
-            <ul className="list-unstyled mb-3">
-              <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
-              <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
-              <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
-            </ul>                                    
-            <div className="pt-3 border-top">
-              <a href="#" className="btn btn-primary">Message</a>
-            </div>
-          </div>
+
+  {workspace.admins.map((admin)=>(
+
+<div className="col-lg-4 col-md-6">
+<div className="card-transparent card-block card-stretch card-height">
+  <div className="card-body text-center p-0">                            
+    <div className="item">
+      <div className="odr-img">
+        <img src={admin.profile.url} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
+      </div>                        
+      <div className="odr-content rounded">                                          
+        <h4 className="mb-2">{admin.name}</h4>
+        <p className="mb-3">{admin.email}</p>
+        <ul className="list-unstyled mb-3">
+          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
+        </ul>                                    
+        <div className="pt-3 border-top">
+          <a href="#" className="btn btn-primary">Admin</a>
         </div>
       </div>
     </div>
   </div>
-  <div className="col-lg-4 col-md-6">
-    <div className="card-transparent card-block card-stretch card-height">
-      <div className="card-body text-center p-0">                            
-        <div className="item">
-          <div className="odr-img">
-            <img src={img1} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
-          </div>                        
-          <div className="odr-content rounded">                                          
-            <h4 className="mb-2">Kaylynn Press</h4>
-            <p className="mb-3">kaylynnpress@gmail.com</p>
-            <ul className="list-unstyled mb-3">
-              <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
-              <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
-              <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
-            </ul>                                    
-            <div className="pt-3 border-top">
-              <a href="#" className="btn btn-primary">Message</a>
-            </div>
-          </div>
+</div>
+</div>
+
+  ))}
+
+{workspace.members.map((member)=>(
+
+<div className="col-lg-4 col-md-6">
+<div className="card-transparent card-block card-stretch card-height">
+  <div className="card-body text-center p-0">                            
+    <div className="item">
+      <div className="odr-img">
+        <img src={member.profile.url} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
+      </div>                        
+      <div className="odr-content rounded">                                          
+        <h4 className="mb-2">{member.name}</h4>
+        <p className="mb-3">{member.email}</p>
+        <ul className="list-unstyled mb-3">
+          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
+        </ul>                                    
+        <div className="pt-3 border-top">
+          <a href="#" className="btn btn-primary">Member</a>
         </div>
       </div>
     </div>
   </div>
-  <div className="col-lg-4 col-md-6">
-    <div className="card-transparent card-block card-stretch card-height">
-      <div className="card-body text-center p-0">                            
-        <div className="item">
-          <div className="odr-img">
-            <img src={img1} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
-          </div>                        
-          <div className="odr-content rounded">                                          
-            <h4 className="mb-2">Corey Press</h4>
-            <p className="mb-3">coreypress@gmail.com</p>
-            <ul className="list-unstyled mb-3">
-              <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
-              <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
-              <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
-            </ul>                                    
-            <div className="pt-3 border-top">
-              <a href="#" className="btn btn-primary">Message</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+
+  ))}
+
+ 
+
  
 </div>
 </div>
@@ -173,39 +180,18 @@ function UserTeam() {
 <div className="table-responsive rounded bg-white mb-4">
   <table className="table mb-0 table-borderless tbl-server-info">
     <tbody>
-      <tr>
+   
+
+      {workspace.admins.map((admin)=>
+      (
+        <tr>
         <td>
           <div className="media align-items-center">
-            <img src={img1} className="img-fluid rounded-circle avatar-40" alt="image" />
-            <h5 className="ml-3">Paityn Siphron</h5>
+            <img src={admin.profile.url} className="img-fluid rounded-circle avatar-40" alt="image" />
+            <h5 className="ml-3">{admin.name}</h5>
           </div>
         </td>
-        <td>paitynsiphron@gmail.com</td>
-        <td>
-          <div className="media align-items-center">
-            <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-mail-open-line m-0" /></div>
-            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></div>
-          </div>
-        </td>
-        <td>
-          <a href="#" className="btn btn-primary">Message</a>
-        </td>
-        <td>
-          <div className="d-flex align-items-center">
-            <a href="#" className="text-body"><i className="las la-pen mr-3" /></a>
-            <a href="#" className="text-body"><i className="las la-trash-alt mr-0" /></a>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div className="media align-items-center">
-            <img src={img1} className="img-fluid rounded-circle avatar-40" alt="image" />
-            <h5 className="ml-3">Kaylynn Press</h5>
-          </div>
-        </td>
-        <td>kaylynnpress@gmail.com</td>
+        <td>{admin.name}</td>
         <td>
           <div className="media align-items-center">
             <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-mail-open-line m-0" /></div>
@@ -214,7 +200,7 @@ function UserTeam() {
           </div>
         </td>
         <td>
-          <a href="#" className="btn btn-primary">Message</a>
+          <a href="#" className="btn btn-primary">Admin</a>
         </td>
         <td>
           <div className="d-flex align-items-center">
@@ -223,31 +209,43 @@ function UserTeam() {
           </div>
         </td>
       </tr>
+      )
+      )}
+
+      {
+        workspace.members.map((member)=>
+        (
+          
       <tr>
-        <td>
-          <div className="media align-items-center">
-            <img src={img1} className="img-fluid rounded-circle avatar-40" alt="image" />
-            <h5 className="ml-3">Corey Press</h5>
-          </div>
-        </td>
-        <td>coreypress@gmail.com</td>
-        <td>
-          <div className="media align-items-center">
-            <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-mail-open-line m-0" /></div>
-            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></div>
-          </div>
-        </td>
-        <td>
-          <a href="#" className="btn btn-primary">Message</a>
-        </td>
-        <td>
-          <div className="d-flex align-items-center">
-            <a href="#" className="text-body"><i className="las la-pen mr-3" /></a>
-            <a href="#" className="text-body"><i className="las la-trash-alt mr-0" /></a>
-          </div>
-        </td>
-      </tr>
+      <td>
+        <div className="media align-items-center">
+          <img src={member.profile.url} className="img-fluid rounded-circle avatar-40" alt="image" />
+          <h5 className="ml-3">{member.name}</h5>
+        </div>
+      </td>
+      <td>{member.email}</td>
+      <td>
+        <div className="media align-items-center">
+          <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-mail-open-line m-0" /></div>
+          <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-chat-3-line m-0" /></div>
+          <div className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></div>
+        </div>
+      </td>
+      <td>
+        <a href="#" className="btn btn-primary">Member</a>
+      </td>
+      <td>
+        <div className="d-flex align-items-center">
+          <a href="#" className="text-body"><i className="las la-pen mr-3" /></a>
+          <a href="#" className="text-body"><i className="las la-trash-alt mr-0" /></a>
+        </div>
+      </td>
+    </tr>
+        ))
+      }
+
+
+     
      
     </tbody>
   </table>

@@ -56,6 +56,13 @@ function CreateWorkspace() {
       if (!data.error) {
         console.log(data);
         dispatch({ type: "workspace", payload: data.workspaceId });
+        dispatch({
+          type: 'addWorkspace',
+          payload: {
+            id: data.workspaceId,
+            workspace: data.workspace
+          }
+        });
         navigate("/workspace/" + data.workspaceId);
       } else {
         alert();

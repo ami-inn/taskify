@@ -35,7 +35,7 @@ export async function createWorkspace(req,res){
         user.createdWorkspaces.push(workspace._id);
         await user.save();
 
-        return res.json({error:false,message:'successfully created',workspaceId:workspace._id})
+        return res.json({error:false,message:'successfully created',workspaceId:workspace._id,workspace})
     }
     catch(err){
         console.log(err)
@@ -60,10 +60,14 @@ export async function workspaceValid(req,res){
             return res.json({err:true,message:'user not found'})
         }
 
-        const workspaceExists = user.createdWorkspaces.includes(id)
+        const createdWorkspaces = user.createdWorkspaces.includes(id)
+        const joinedWorkspaces = user.workspaces.some((workspace) => workspace.workspace.toString() === id);
+        console.log('here we go','64804ebf1b852bb92da43a5a',id);
+        console.log('joined workspace',joinedWorkspaces);
 
-        if(!workspaceExists){
-            console.log('2');
+        if(!createdWorkspaces && !joinedWorkspaces){
+            console.log('err 2');
+
             return res.json({err:true,message:'workspace not found'})
         }
 
@@ -82,6 +86,29 @@ export async function workspaceValid(req,res){
     catch(err){
         console.log(err)
         return res.json({err:false,message:'error'})
+    }
+
+}
+
+export async function workspaceDetails(req,res){
+
+    try{
+        console.log('its heeeerere');
+        const workspace = await workspaceModel.findById(req.params.id)
+      .populate('admins') // Populate admins with user details excluding the password field
+      .populate('members');
+    
+
+        console.log('workspace',workspace);
+        // res.json({err:false,message:'seucess'})
+        res.json({err:false,message:'success',workspace})
+        
+        
+
+    }
+    catch(err){
+        console.log(err)
+
     }
 
 }
@@ -240,28 +267,69 @@ export async function showWorkspaces(req,res){
 // for email invitation
 
 export async function acceptInvitation(req,res){
+    const{token,accepted}=req.body
     try{
-        const{token,role,responce}=req.body
 
-        const user = await userModel.findOne({invitationToken:token})
+        console.log('herere');
+
+        const user = await userModel.findOne({ 'invitations.invitationToken': token });
+
+            // Find the invitation by the invitation token
+    // const user = await userModel.findOneAndUpdate(
+    //     { 'invitations.invitationToken': token },
+    //     { $pull: { invitations: { invitationToken: token } } },
+    //     { new: true }
+    //   );
+  
 
         if(!user){
-            return res.json({message:'invalid invitation token'})
+            console.log('error 1');
+            return res.json({error:true,message:'invitation not found'})
         }
-        const workspace = await workspaceModel.findOne({invitationToken:token})
+        console.log(user);
+        const invitation = user.invitations.find((invite) => invite.invitationToken === token);
+        
+        console.log('invitationnnnn',invitation);
+
+        
+        if(!invitation){
+            console.log('error 2');
+            return res.json({error:true,message:'invitation not found'})
+        }
+
+        const workspace = await workspaceModel.findById(invitation.workspace)
 
         if(!workspace){
-            return res.json({message:'invalid invitation token'})
+            console.log('error 3');
+            return res.json({error:true,message:'workspace not found'})
         }
 
-        workspace.members.push(user._id)
+        const isMember=workspace.members.includes(user._id)
+        if(isMember){
+            console.log('error 4');
+            return res.json({message:'user is already a memeber of the worksapce'})
+        }
 
-        await workspace.save()
+        if(accepted){
+            console.log('enterreddd');
+            workspace.members.push(user._id)
+            await workspace.save()
 
-        user.workspaces.push({workspace:workspace._id,role})
-        user.invitationToken=null
-        await user.save()
-        return res.json({error:false,message:'invitation accepted successfully'})
+            const workspaceInfo= {
+                workspace:workspace._id,
+                role:invitation.role
+            }
+            user.workspaces.push(workspaceInfo)
+            await user.save()
+        }else{
+        console.log('enter else');
+        }
+        // Remove the invitation from the user's invitations array
+    user.invitations = user.invitations.filter((invite) => invite.invitationToken !== token);
+    await user.save();
+
+    return res.json({error:false,message:'invitation handled successfully',workspace})
+
     }
     catch(err){
         console.log(err);
@@ -279,21 +347,26 @@ export const inviteUserToWorkspace=async (req,res)=>{
         const user = await userModel.findOne({email})
 
         if(!user){
-            return res.json({message:'user not found'})
+            console.log('error 1');
+            return res.json({error:true,message:'user not found'})
         }
 
         const workspace = await workspaceModel.findById(workspaceId)
 
         if(!workspace){
+            console.log('error 2');
             return res.json({error:true,message:'worksapce not found'})
         }
         const isMember=workspace.members.includes(user._id)
 
         if(isMember){
+            console.log('isError');
             return res.json({error:true,message:'user already exists'})
         }
 
         const invitationToken = generatInvitationToken();
+
+      
 
         const invitation={
             workspace:workspace._id,
@@ -304,6 +377,11 @@ export const inviteUserToWorkspace=async (req,res)=>{
         user.invitations.push(invitation)
 
         await user.save()
+
+        console.log('finished',user);
+
+
+        
        
 
 

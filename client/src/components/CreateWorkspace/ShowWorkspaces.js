@@ -14,21 +14,58 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
 export default function ShowWorkspaces(props) {
   const { onClose, selectedValue, open ,workspaces} = props;
   const navigate = useNavigate()
+  const dispatch=useDispatch()
 
   console.log(workspaces);
+
+  const user=useSelector((state)=>{
+    
+    return state.user.details
+
+})
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value) => {
-    navigate("/workspace/" + value);
+  const handleListItemClick = async (value) => {
+
+    try{
+      
+    const{data}=await axios.get(`/workspace/${value}?userId=${user._id}`)
+
+    if(!data.error){
+
+      dispatch({ type: "workspace", payload: data.workspace._id });
+      dispatch({
+        type: 'addWorkspace',
+        payload: {
+          id: data.workspace._id,
+          workspace: data.workspace
+        }
+      });
+
+      navigate("/workspace/" + value);
+      alert('success')
+    }else{
+      alert('error')
+    }
+    
+ 
+
+    }
+    catch(err){
+      console.log(err);
+    }
+
     
   };
   

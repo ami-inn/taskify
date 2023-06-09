@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer'
 
 
 export default function sentMail(email,message1,subject){
+  console.log('herere');
     return new Promise((resolve, reject) => {
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",

@@ -21,6 +21,7 @@ import UserTeam from './components/UserTeam/UserTeam';
 import UserProfile from './components/UserProfile/UserProfile';
 import EditProfile from './components/EditProfile/EditProfile';
 import AdminWorkspace from './components/AdminWorkspace/AdminWorkspace';
+import InvitationReq from './components/InvitationReq/InvitationReq';
 // ..
 AOS.init();
 
@@ -84,6 +85,7 @@ function App() {
          <Route path='/team' element={<UserTeam/>} />
          <Route path='/profile' element={<UserProfile/>} />
          <Route path='/edit-profile/:id' element={<EditProfile/>} />
+         <Route path='/invitation' element={<InvitationReq/>}/>
 
 
 
@@ -104,7 +106,7 @@ function App() {
          <Route path='/team' element={<Navigate to={'/'}/>} />
          <Route path='/profile' element={<Navigate to={'/'}/>}  />
          <Route path='/edit-profile/:id' element={<Navigate to={'/'}/>}  />
-      
+         <Route path='/invitation' element={<InvitationReq/>}/>
 
       </>
     }
