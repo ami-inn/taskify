@@ -17,14 +17,17 @@ import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
 import ShowWorkspaces from "./ShowWorkspaces";
+import JoinedWorkspace from "./JoinedWorkspace";
 
 function CreateWorkspace() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
+  const [jopen,setJopen]=useState(false);
   const [selectedValue, setSelectedValue] = useState("ameen");
   const [errMessage, setErrorMessage] = useState("");
   const [workspaces, setWorkspaces] = useState([]);
+  const [joinedWorkspaces, setJoinedWorkspaces] = useState([])
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,7 +83,9 @@ function CreateWorkspace() {
         } else {
           console.log(response.data);
          
-          setWorkspaces(response.data.workspace);
+          setWorkspaces(response.data.createdWorkspaces);
+          setJoinedWorkspaces(response.data.joinedWorkspaces)
+          console.log(workspaces.length,workspaces);
         }
       } catch (err) {
         console.log(err);
@@ -97,6 +102,12 @@ function CreateWorkspace() {
         open={open}
         selectedValue={selectedValue}
         workspaces={workspaces}
+      />
+      <JoinedWorkspace
+      onClose={handleClose}
+      open={jopen}
+      slelectedValue={selectedValue}
+      workspaces={joinedWorkspaces}
       />
       <section className="login-content">
         <div className="container">
@@ -146,6 +157,7 @@ function CreateWorkspace() {
                             </div>
                           </div>
                          {workspaces.length>0? <p onClick={() => setOpen(true)}>show workspaces</p>:''}
+                         {joinedWorkspaces.length>0? <p onClick={() => setJopen(true)}>show joined workspaces</p>:''}
                           <button
                             type="submit"
                             disabled={validForm()}

@@ -8,18 +8,20 @@ import img1 from '../../assets/images/user/01.jpg'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
 
 function UserTeam() {
+  const user=useSelector((state)=>{
+    
+    return state.user.details
+
+})
     const workspaceId = useSelector((state)=>state.currentWorkspace)
     const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+    const isAdmin = currentWorkspace.admins.includes(user._id)
 
     console.log(currentWorkspace,'its the workspace detailssssss');
 
     const [tableView,settableView]=useState(true)
     const [modalview,setModalview]=useState(false)
-    const user=useSelector((state)=>{
-    
-        return state.user.details
-    
-    })
+  
     const [workspace,setworkSpace]=useState(null)
 
     React.useEffect(()=>{
@@ -99,9 +101,16 @@ function UserTeam() {
                     </div>
                   </div>
                 </div>
-                <div className="pl-3 border-left btn-new">
-                  <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-user-modal" data-toggle="modal">Invite New user</a>
-                </div>
+
+                {isAdmin?
+               <div className="pl-3 border-left btn-new">
+               <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-user-modal" data-toggle="modal">Invite New user</a>
+             </div>:''  
+              }
+
+               
+
+
               </div>
             </div>
           </div>

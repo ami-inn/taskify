@@ -243,13 +243,22 @@ export async function showWorkspaces(req,res){
         console.log('workspacees');
         const id=req.params.id
 
-        const workspace=await workspaceModel.find({owner:id,active: true}).exec()
+        const user = await userModel.findById(id)
+        .populate('createdWorkspaces')
+        .populate({path:'workspaces.workspace'})
+        .exec();
 
-        console.log(workspace);
-        if(!workspace){
-            return res.json({error:true,message:'no workspace found'})
-        }
-        res.json({error:false,message:'workspace founded',workspace})
+        console.log('user',user);
+
+        if (!user) {
+            return res.json({ error: true, message: 'User not found' });
+          }
+          const createdWorkspaces = user.createdWorkspaces;
+    const joinedWorkspaces = user.workspaces.map(({ workspace }) => workspace);
+
+    console.log('created',createdWorkspaces);
+    console.log('joined workspaces',joinedWorkspaces);
+        res.json({error:false,message:'workspace founded',createdWorkspaces,joinedWorkspaces})
 
     }
     catch(err){
