@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import workspaceImg from "../../assets/images/login/Lily.png";
 
 function InvitationReq() {
 
@@ -61,18 +62,59 @@ function InvitationReq() {
 
 
   return (
-    <div>
-    <h1>Invitation Response Page</h1>
-    <p>Invitation Token: {invitationToken}</p>
+    
 
-    {invitationToken && accepted===null && (
-      <div>
-        <p>Do you accept the invitation?</p>
-        <button onClick={handleAccept}>Accept</button>
-        <button onClick={handleReject}>Reject</button>
-      </div>
+       
+     <div className="wrapper">
+  <section className="login-content">
+    <div className="container">
+      <div className="row align-items-center justify-content-center height-self-center">
+        <div className="col-lg-8">
+          <div className="card auth-card">
+            <div className="card-body p-0">
+              <div className="d-flex align-items-center auth-content">
+                <div className="col-lg-6 bg-primary content-left">
+
+                {invitationToken && accepted===null && (
+                  
+                  <div className="p-3">
+                    {/* <img src="../assets/images/login/mail.png" className="img-fluid" width={80} alt /> */}
+                    <h2 className="mt-3 mb-0 text-white">Accept !</h2>
+                    <p className="cnf-mail mb-1">You're invited to the Taskify workspace. Collaborate effortlessly, track tasks, and achieve project success with the team!</p>
+                    <div className="d-inline-block w-100">
+                      <a  className="btn  mt-3" style={{background:'violet'}} onClick={handleAccept}>Accept</a>
+                    </div>
+                    <div className="d-inline-block w-100">
+                      <a  className="btn  mt-3" style={{background:'violet'}} onClick={handleReject}>Reject</a>
+                    </div>
+                  </div>
+    
     )}
-  </div>
+
+
+
+                </div>
+                <div className="col-lg-6 content-right">
+                  <img src={workspaceImg} className="img-fluid image-right" alt />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+
+
+
+   
+
+  
+  
   )
 }
 

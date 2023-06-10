@@ -108,20 +108,7 @@ function UserHeder() {
               <ul className="navbar-nav ml-auto navbar-list align-items-center">
 
                 <li>
-                  <div className="iq-search-bar device-search">
-                    <form action="#" className="searchbox">
-                      <a className="search-link" href="#">
-                        <i>
-                          <RiSearch2Line />
-                        </i>
-                      </a>
-                      <input
-                        type="text"
-                        className="text search-input"
-                        placeholder="Search here..."
-                      />
-                    </form>
-                  </div>
+                 
                 </li>
 
                 <li className={openMessage?"nav-item nav-icon nav-item-icon dropdown show":"nav-item nav-icon nav-item-icon dropdown"}>

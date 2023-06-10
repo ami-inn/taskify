@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
 import img1 from '../../assets/images/user/01.jpg'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
-import { RiChat1Line, RiDeleteBin3Fill, RiPencilFill } from 'react-icons/ri'
+import { RiChat1Line, RiDeleteBin3Fill, RiPencilFill, RiSearch2Line } from 'react-icons/ri'
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Backdrop, CircularProgress } from '@mui/material'
+import SnackBar from '../SnackBar/SnackBar'
 
 function UserTeam() {
   const user=useSelector((state)=>{
@@ -32,8 +33,11 @@ function UserTeam() {
 
     const [tableView,settableView]=useState(true)
     const [modalview,setModalview]=useState(false)
-  
+    const [severity, setSeverity] = useState('');
+    const [message, setMessage] = useState('');
     const [workspace,setworkSpace]=useState(null)
+    const [snackOpen,setSnackOpen]=useState(false)
+    const [searchQuery,setSearchQuery]=useState('')
 
     React.useEffect(()=>{
     
@@ -76,7 +80,7 @@ function UserTeam() {
       )()
       
     
-    },[])
+    },[searchQuery,workspaceId])
 
     
 
@@ -95,11 +99,16 @@ function UserTeam() {
         console.log(data);
 
         if(!data.error){
-          console.log('heree');
-          alert('succes')
+          console.log('sucessssssssssssssssssssssssss');
+         setSeverity('success')
+         setMessage(data.message)
+         setSnackOpen(true)
           dispatch({type:'refresh'})
         }else{
-          alert('errorr')
+          setSeverity('error')
+          setMessage(data.message)
+          setSnackOpen(true)
+          // alert('errorr')
         }
 
       }
@@ -128,6 +137,20 @@ function UserTeam() {
           <div className="card-body">
             <div className="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
               <h5>Your Team</h5>
+              <div className="iq-search-bar device-search">
+                    <form action="#" className="searchbox">
+                      <a className="search-link" href="#">
+                        <i>
+                          <RiSearch2Line />
+                        </i>
+                      </a>
+                      <input
+                        type="text"
+                        className="text search-input"
+                        placeholder="Search here..."
+                      />
+                    </form>
+                  </div>
               <div className="d-flex align-items-center">                                
                 <div className="list-grid-toggle d-flex align-items-center mr-3">
                   <div data-toggle-extra="tab" data-target-extra="#grid" onClick={()=>{settableView(!tableView)}} className={tableView?'active':''}>
@@ -238,33 +261,10 @@ function UserTeam() {
     <tbody>
    
 
-      {workspace&&workspace.admin&&workspace.admins.map((admin)=>
-      (
-        <tr>
-        <td>
-          <div className="media align-items-center">
-            <img src={admin.profile.url} className="img-fluid rounded-circle avatar-40" alt="image" />
-            <h5 className="ml-3">{admin.name}</h5>
-          </div>
-        </td>
-        <td>{admin.name}</td>
-        <td>
-          <div className="media align-items-center">
-            <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
-            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
-          </div>
-        </td>
-        <td>
-          <a href="#" className="btn btn-primary">Admin</a>
-        </td>
-       
-      </tr>
-      )
-      )}
+   
 
       {
-       workspace&&workspace.members&& workspace.members.map((member)=>
+        workspace.members.map((member)=>
         (
           
       <tr>
@@ -277,7 +277,7 @@ function UserTeam() {
       <td>{member.email}</td>
       <td>
       <div className="media align-items-center">
-            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
+            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => handleDeleteMember(member._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
             <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
@@ -287,8 +287,39 @@ function UserTeam() {
       </td>
     
     </tr>
+
         ))
       }
+
+{
+        workspace.admins.map((admin)=>
+        (
+          
+      <tr>
+      <td>
+        <div className="media align-items-center">
+          <img src={admin.profile.url} className="img-fluid rounded-circle avatar-40" alt="image" />
+          <h5 className="ml-3">{admin.name}</h5>
+        </div>
+      </td>
+      <td>{admin.email}</td>
+      <td>
+      <div className="media align-items-center">
+            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => handleDeleteMember(admin._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
+            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
+          </div>
+      </td>
+      <td>
+        <a href="#" className="btn btn-primary">Admin</a>
+      </td>
+    
+    </tr>
+
+        ))
+      }
+
+      
 
 
      
@@ -303,6 +334,9 @@ function UserTeam() {
     {/* Page end  */}
   </div>
         </div>
+        {console.log(snackOpen,'sanckopennnnn ')}
+
+        
 
 
       {
@@ -310,7 +344,10 @@ function UserTeam() {
       }
 
 
-
+       {
+       
+        snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
+       }
 
     
       

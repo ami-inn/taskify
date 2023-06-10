@@ -27,6 +27,9 @@ function InviteUserModal(props) {
       if(response.data.error){
         // alert('err')
         console.log('errror');
+        setLoading(false)
+        alert('erro')
+        console.log(response.data.message);
       }else{
         setLoading(false)
 
