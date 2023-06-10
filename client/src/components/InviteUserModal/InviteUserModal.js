@@ -1,3 +1,4 @@
+import { Backdrop, CircularProgress } from '@mui/material';
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -7,6 +8,7 @@ function InviteUserModal(props) {
   const {modalview} = props;
 
   const [email,setEmail]=useState('')
+  const [loading,setLoading]=useState(false)
  
   const [role,setRole]=useState('')
 
@@ -19,13 +21,16 @@ function InviteUserModal(props) {
     e.preventDefault()
 
     try{
+      setLoading(true)
       const response = await axios.post('/inviteUsers',{email,workspaceId,role})
 
       if(response.data.error){
-        alert('err')
+        // alert('err')
+        console.log('errror');
       }else{
+        setLoading(false)
 
-        alert('success')
+        console.log("sucesss");
       }
     }
     catch(err){
@@ -37,6 +42,10 @@ function InviteUserModal(props) {
   const handleCancel = ()=>{
     console.log('hereee');
     props.setModalview(false)
+  }
+
+  const handleBackdropClose=()=>{
+    setLoading(false)
   }
 
   return (
@@ -58,16 +67,7 @@ function InviteUserModal(props) {
               <input type="email" className="form-control" id="exampleInputText006" placeholder="Enter your Email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
             </div>
           </div>
-          <div className="col-lg-6">
-            <div className="form-group mb-3">
-              <label htmlFor="exampleInputText2" className="h5">Type</label>
-              <select name="type" className="selectpicker form-control" data-style="py-0">
-                <option>Type</option>
-                <option>Trainee</option>
-                <option>Employee</option>
-              </select>
-            </div>
-          </div>
+         
           <div className="col-lg-6">
             <div className="form-group mb-3">
               <label htmlFor="exampleInputText2" className="h5">Role</label>
@@ -92,6 +92,15 @@ function InviteUserModal(props) {
       </form>
     </div>
   </div>
+
+  <Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+  open={loading}
+  // onClick={handleBackdropClose}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>
+
 </div>
    
   )

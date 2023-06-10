@@ -3,7 +3,7 @@ import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import img1 from '../../assets/images/user/01.jpg'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
 import { RiChat1Line, RiDeleteBin3Fill, RiPencilFill } from 'react-icons/ri'
@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { Backdrop, CircularProgress } from '@mui/material'
 
 function UserTeam() {
   const user=useSelector((state)=>{
@@ -22,7 +23,10 @@ function UserTeam() {
     const workspaceId = useSelector((state)=>state.currentWorkspace)
     const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
     const isAdmin = currentWorkspace.admins.includes(user._id)
+    const isOwner = currentWorkspace.owner.toString() === user._id;
+    console.log('isowner',isOwner);
     const dispatch = useDispatch()
+    const navigate= useNavigate()
 
     console.log(currentWorkspace,'its the workspace detailssssss');
 
@@ -42,15 +46,16 @@ function UserTeam() {
              
          
               if(!data.err){
-              
+                console.log('data',data);
                 setworkSpace(data.workspace)
                 console.log('workspaceeee',workspace);
-                setworkSpace(data.workspace)
+              
                 // alert('success')
               }else{
 
                 console.log(data.workspace);
-                console.log('success');
+                console.log('error');
+
                 // alert('error')
 
                
@@ -73,6 +78,7 @@ function UserTeam() {
     
     },[])
 
+    
 
     const handleDeleteMember = async (memberId)=>{
       try{
@@ -81,15 +87,19 @@ function UserTeam() {
           console.log('only admin can delete users ');
           return ;
         }
+        
         console.log('here delte section');
 
         const {data}=await axios.delete(`/workspace/${workspaceId}/members/${memberId}`)
 
-        if(!data.err){
-          
+        console.log(data);
+
+        if(!data.error){
+          console.log('heree');
+          alert('succes')
           dispatch({type:'refresh'})
         }else{
-          alert('error')
+          alert('errorr')
         }
 
       }
@@ -101,6 +111,8 @@ function UserTeam() {
     if (!workspace) {
       return <div>Loading...</div>;
     }
+
+    console.log('workspace details',workspace);
 
   return (
     
@@ -155,7 +167,8 @@ function UserTeam() {
 <div id="grid" className="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
 <div className="row">
 
-  {workspace.admins.map((admin)=>(
+  {
+  workspace&&workspace.admins&&workspace.admins.map((admin)=>(
 
 <div className="col-lg-4 col-md-6">
 <div className="card-transparent card-block card-stretch card-height">
@@ -181,9 +194,11 @@ function UserTeam() {
 </div>
 </div>
 
-  ))}
+  ))
+  
+  }
 
-{workspace.members.map((member)=>(
+{workspace&&workspace.members&&workspace.members.map((member)=>(
 
 <div className="col-lg-4 col-md-6">
 <div className="card-transparent card-block card-stretch card-height">
@@ -223,7 +238,7 @@ function UserTeam() {
     <tbody>
    
 
-      {workspace.admins.map((admin)=>
+      {workspace&&workspace.admin&&workspace.admins.map((admin)=>
       (
         <tr>
         <td>
@@ -249,7 +264,7 @@ function UserTeam() {
       )}
 
       {
-        workspace.members.map((member)=>
+       workspace&&workspace.members&& workspace.members.map((member)=>
         (
           
       <tr>
@@ -293,6 +308,9 @@ function UserTeam() {
       {
         modalview===true&&<InviteUserModal modalview={modalview} setModalview={setModalview}/>
       }
+
+
+
 
     
       

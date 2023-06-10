@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs'
 import zxcvbn from 'zxcvbn'
 import {generatInvitationToken} from '../helpers/generateToken.js'
 import sentMail from "../helpers/sentMail.js"
+import mongoose from "mongoose"
 
 
 var salt = bcrypt.genSaltSync(10)
@@ -426,7 +427,28 @@ export const deleteMembers=async(req,res)=>{
 
          //pulling the workspace members from that specific user
 
-         workspace.members.pull(memberId)
+        //  the re is new the new code
+
+        const isOwner = workspace.owner.equals(memberId);
+        console.log('owner',workspace.owner._id,memberId);
+        console.log(isOwner);
+
+        if(isOwner===true){
+            return res.json({error:true,message:'you cant delete the owner'})
+        }
+
+        const isAdmin = workspace.admins.includes(memberId)
+
+        if(isAdmin){
+            console.log('admin deletre');
+            workspace.admins.pull(memberId)
+            // workspace.admins = workspace.admins.filter((adminId) => adminId !== memberId);
+            console.log(workspace.admins);
+        }else{
+            workspace.members.pull(memberId)
+        }
+
+         
          await workspace.save()
 
 
@@ -448,7 +470,7 @@ export const deleteMembers=async(req,res)=>{
     }
     catch(err){
         console.log(err)
-        response.json({error:true,message:'internal server error'})
+        res.json({error:true,message:'internal server error'})
     }
 
 
