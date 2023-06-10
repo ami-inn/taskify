@@ -321,7 +321,14 @@ export async function acceptInvitation(req,res){
 
         if(accepted){
             console.log('enterreddd');
-            workspace.members.push(user._id)
+
+            if(invitation.role === 'admin'){
+                workspace.admins.push(user._id)
+            }else{
+                workspace.members.push(user._id)
+            }
+
+          
             await workspace.save()
 
             const workspaceInfo= {
@@ -405,4 +412,44 @@ export const inviteUserToWorkspace=async (req,res)=>{
         console.log(err)
         return res.json({error:true,message:'internal server error'})
     }
+}
+
+export const deleteMembers=async(req,res)=>{
+
+    try{
+
+        const{workspaceId,memberId}=req.params
+        console.log(req.params);
+         const workspace = await workspaceModel.findById(workspaceId)
+         
+         console.log('workspace',workspace);
+
+         //pulling the workspace members from that specific user
+
+         workspace.members.pull(memberId)
+         await workspace.save()
+
+
+        //  finding the user and remove the workspace id from that specific user
+        const user =await userModel.findById(memberId)
+
+        if(!user){
+            res.json({error:true,message:'user not found'})
+        }
+
+        user.workspaces=user.workspaces.filter((w)=>{
+            w.workspace.toString()!== workspaceId
+        })
+
+        console.log(user);
+        await user.save()
+        res.json({ error:false, message: 'Member deleted successfully' });
+
+    }
+    catch(err){
+        console.log(err)
+        response.json({error:true,message:'internal server error'})
+    }
+
+
 }

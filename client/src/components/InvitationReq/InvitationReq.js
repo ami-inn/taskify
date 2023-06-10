@@ -33,7 +33,7 @@ function InvitationReq() {
             alert('err')
             console.log(response.data.message);
           }else{
-            navigate('/workspace/'+response.data.workspace._id)
+            navigate('/create-workspace')
           }
 
         }
@@ -48,6 +48,18 @@ function InvitationReq() {
         sendInvitationResponse()
       }
     },[invitationToken,accepted])
+
+    // const fetchData = async ()=>{
+    //   try{
+
+    //   }
+    //   catch(err){
+    //     console.log('err');
+    //   }
+    // }
+
+
+
   return (
     <div>
     <h1>Invitation Response Page</h1>

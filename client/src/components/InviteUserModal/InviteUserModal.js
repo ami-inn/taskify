@@ -2,11 +2,14 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-function InviteUserModal() {
+function InviteUserModal(props) {
+
+  const {modalview} = props;
 
   const [email,setEmail]=useState('')
  
   const [role,setRole]=useState('')
+
 
 
   const workspaceId = useSelector((state)=>state.currentWorkspace)
@@ -31,9 +34,13 @@ function InviteUserModal() {
     setEmail('')
     setRole('')
   }
+  const handleCancel = ()=>{
+    console.log('hereee');
+    props.setModalview(false)
+  }
 
   return (
-  <div className="modal fade bd-example-modal-lg show" role="dialog" aria-modal="true" id="new-user-modal" style={{display:'block', paddingRight:'4px' }}>
+  <div className={`modal fade bd-example-modal-lg ${modalview===true?'show':''}`} role="dialog" aria-modal="true" id="new-user-modal" style={{display:'block', paddingRight:'4px' }}>
   <div className="modal-dialog  modal-dialog-centered modal-lg" role="document">
     <div className="modal-content">
       <div className="modal-header d-block text-center pb-3 border-bttom">
@@ -77,7 +84,7 @@ function InviteUserModal() {
           <div className="col-lg-12">
             <div className="d-flex flex-wrap align-items-ceter justify-content-center mt-2">
               <div className="btn btn-primary mr-3" onClick={handleSubmit} data-dismiss="modal">Save</div>
-              <div className="btn btn-primary" data-dismiss="modal">Cancel</div>
+              <div className="btn btn-primary" data-dismiss="modal" onClick={handleCancel}>Cancel</div>
             </div>
           </div>
         </div>

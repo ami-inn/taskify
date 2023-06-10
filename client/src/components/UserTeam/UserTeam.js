@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import img1 from '../../assets/images/user/01.jpg'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
+import { RiChat1Line, RiDeleteBin3Fill, RiPencilFill } from 'react-icons/ri'
+import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 function UserTeam() {
   const user=useSelector((state)=>{
@@ -16,6 +22,7 @@ function UserTeam() {
     const workspaceId = useSelector((state)=>state.currentWorkspace)
     const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
     const isAdmin = currentWorkspace.admins.includes(user._id)
+    const dispatch = useDispatch()
 
     console.log(currentWorkspace,'its the workspace detailssssss');
 
@@ -66,6 +73,31 @@ function UserTeam() {
     
     },[])
 
+
+    const handleDeleteMember = async (memberId)=>{
+      try{
+
+        if(!isAdmin){
+          console.log('only admin can delete users ');
+          return ;
+        }
+        console.log('here delte section');
+
+        const {data}=await axios.delete(`/workspace/${workspaceId}/members/${memberId}`)
+
+        if(!data.err){
+          
+          dispatch({type:'refresh'})
+        }else{
+          alert('error')
+        }
+
+      }
+      catch(err){
+        console.log(err,'err');
+      }
+    }
+
     if (!workspace) {
       return <div>Loading...</div>;
     }
@@ -104,7 +136,7 @@ function UserTeam() {
 
                 {isAdmin?
                <div className="pl-3 border-left btn-new">
-               <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-user-modal" data-toggle="modal">Invite New user</a>
+               <a onClick={()=>{setModalview(true)}} className="btn btn-primary " data-target="#new-user-modal" data-toggle="modal" style={{color:'white'}}>Invite New user</a>
              </div>:''  
               }
 
@@ -136,9 +168,9 @@ function UserTeam() {
         <h4 className="mb-2">{admin.name}</h4>
         <p className="mb-3">{admin.email}</p>
         <ul className="list-unstyled mb-3">
-          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
-          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
-          <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
+          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => handleDeleteMember(admin._id)}><RiDeleteBin3Fill  /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
           <a href="#" className="btn btn-primary">Admin</a>
@@ -164,9 +196,9 @@ function UserTeam() {
         <h4 className="mb-2">{member.name}</h4>
         <p className="mb-3">{member.email}</p>
         <ul className="list-unstyled mb-3">
-          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-mail-open-line m-0" /></li>
-          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i className="ri-chat-3-line m-0" /></li>
-          <li className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></li>
+        <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => handleDeleteMember(member._id)}><RiDeleteBin3Fill  /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
           <a href="#" className="btn btn-primary">Member</a>
@@ -203,20 +235,15 @@ function UserTeam() {
         <td>{admin.name}</td>
         <td>
           <div className="media align-items-center">
-            <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-mail-open-line m-0" /></div>
-            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></div>
+            <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
+            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
         </td>
         <td>
           <a href="#" className="btn btn-primary">Admin</a>
         </td>
-        <td>
-          <div className="d-flex align-items-center">
-            <a href="#" className="text-body"><i className="las la-pen mr-3" /></a>
-            <a href="#" className="text-body"><i className="las la-trash-alt mr-0" /></a>
-          </div>
-        </td>
+       
       </tr>
       )
       )}
@@ -234,21 +261,16 @@ function UserTeam() {
       </td>
       <td>{member.email}</td>
       <td>
-        <div className="media align-items-center">
-          <div className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-mail-open-line m-0" /></div>
-          <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><i className="ri-chat-3-line m-0" /></div>
-          <div className="bg-success-light rounded-circle iq-card-icon-small"><i className="ri-phone-line m-0" /></div>
-        </div>
+      <div className="media align-items-center">
+            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
+            <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
+          </div>
       </td>
       <td>
         <a href="#" className="btn btn-primary">Member</a>
       </td>
-      <td>
-        <div className="d-flex align-items-center">
-          <a href="#" className="text-body"><i className="las la-pen mr-3" /></a>
-          <a href="#" className="text-body"><i className="las la-trash-alt mr-0" /></a>
-        </div>
-      </td>
+    
     </tr>
         ))
       }
@@ -269,7 +291,7 @@ function UserTeam() {
 
 
       {
-        modalview===true?<InviteUserModal/>:''
+        modalview===true&&<InviteUserModal modalview={modalview} setModalview={setModalview}/>
       }
 
     
