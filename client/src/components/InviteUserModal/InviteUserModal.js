@@ -32,7 +32,7 @@ function InviteUserModal(props) {
         console.log(response.data.message);
       }else{
         setLoading(false)
-
+        props.setModalview(false)
         console.log("sucesss");
       }
     }

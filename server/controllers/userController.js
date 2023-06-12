@@ -481,14 +481,29 @@ export const deleteMembers=async(req,res)=>{
 export const createProject=async (req,res)=>{
     try{
 
-        const {name,description,workspaceId} = req.body
+        const { name, category, members, dueDate, creator, workspace,priority } = req.body;
 
-        const newProject = new ProjectModel({name,description})
-        await newProject.save()
+        console.log('entered heredd on project create');
+        console.log(req.body);
 
-        const workspace = await workspaceModel.findByIdAndUpdate(workspaceId,{
-            $push:{projects:newProject._id}
-        })
+        const newProject = new ProjectModel({
+            name,
+            category,
+            members,
+            dueDate,
+            creator,
+            priority
+          });
+
+          await newProject.save();
+
+          const updatedWorkspace = await workspaceModel.findByIdAndUpdate(
+            workspace,
+            {
+              $push: { projects: newProject._id },
+            },
+            { new: true }
+          );
 
         res.json({error:false,message:'updated successfully'})
 

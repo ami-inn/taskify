@@ -87,7 +87,7 @@ function App() {
          <Route path='/profile' element={<UserProfile/>} />
          <Route path='/edit-profile/:id' element={<EditProfile/>} />
          <Route path='/invitation' element={<InvitationReq/>}/>
-         <Route path='/project' element={<Project/>}/>
+         <Route path='/projects' element={<Project/>}/>
 
 
       </>
