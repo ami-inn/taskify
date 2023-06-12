@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { Backdrop, CircularProgress } from '@mui/material'
+import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
 
 function UserTeam() {
@@ -38,6 +38,8 @@ function UserTeam() {
     const [workspace,setworkSpace]=useState(null)
     const [snackOpen,setSnackOpen]=useState(false)
     const [searchQuery,setSearchQuery]=useState('')
+    const [warnModal,setWarnModal]=useState(false)
+    const [memberId,setMemberId]=useState('')
 
     React.useEffect(()=>{
     
@@ -51,8 +53,19 @@ function UserTeam() {
          
               if(!data.err){
                 console.log('data',data);
-                setworkSpace(data.workspace)
+                // setworkSpace(data.workspace)
                 console.log('workspaceeee',workspace);
+
+                const filteredMembers = data.workspace.members.filter(member =>
+                  member.name.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+                const filteredAdmins = data.workspace.admins.filter(admin =>
+                  admin.name.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+                setworkSpace({
+                  members: filteredMembers,
+                  admins: filteredAdmins
+                });
               
                 // alert('success')
               }else{
@@ -82,15 +95,23 @@ function UserTeam() {
     
     },[searchQuery,workspaceId])
 
+    const handleSearch = event => {
+      setSearchQuery(event.target.value);
+    };
+
     
 
     const handleDeleteMember = async (memberId)=>{
       try{
 
         if(!isAdmin){
-          console.log('only admin can delete users ');
+          setSeverity('warning')
+          setMessage('you are not an admin')
+          setSnackOpen(true)
           return ;
         }
+
+        
         
         console.log('here delte section');
 
@@ -99,12 +120,14 @@ function UserTeam() {
         console.log(data);
 
         if(!data.error){
+          setWarnModal(false)
           console.log('sucessssssssssssssssssssssssss');
          setSeverity('success')
          setMessage(data.message)
          setSnackOpen(true)
           dispatch({type:'refresh'})
         }else{
+          setWarnModal(false)
           setSeverity('error')
           setMessage(data.message)
           setSnackOpen(true)
@@ -122,6 +145,13 @@ function UserTeam() {
     }
 
     console.log('workspace details',workspace);
+
+    const setOpenWarnModal=(id)=>{
+      console.log('entered here on wanrn modal');
+      setMemberId(id)
+      setWarnModal(true)
+
+    }
 
   return (
     
@@ -148,6 +178,8 @@ function UserTeam() {
                         type="text"
                         className="text search-input"
                         placeholder="Search here..."
+                        value={searchQuery}
+                        onChange={handleSearch}
                       />
                     </form>
                   </div>
@@ -204,7 +236,7 @@ function UserTeam() {
         <h4 className="mb-2">{admin.name}</h4>
         <p className="mb-3">{admin.email}</p>
         <ul className="list-unstyled mb-3">
-          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => handleDeleteMember(admin._id)}><RiDeleteBin3Fill  /></li>
+          <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill  /></li>
           <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
           <li className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
@@ -234,7 +266,7 @@ function UserTeam() {
         <h4 className="mb-2">{member.name}</h4>
         <p className="mb-3">{member.email}</p>
         <ul className="list-unstyled mb-3">
-        <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => handleDeleteMember(member._id)}><RiDeleteBin3Fill  /></li>
+        <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill  /></li>
           <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
           <li className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
@@ -277,7 +309,7 @@ function UserTeam() {
       <td>{member.email}</td>
       <td>
       <div className="media align-items-center">
-            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => handleDeleteMember(member._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
+            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
             <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
@@ -305,7 +337,7 @@ function UserTeam() {
       <td>{admin.email}</td>
       <td>
       <div className="media align-items-center">
-            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => handleDeleteMember(admin._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
+            <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
             <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
@@ -349,6 +381,28 @@ function UserTeam() {
         snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
        }
 
+
+<Dialog
+        open={warnModal}
+        onClose={()=>{setWarnModal(!warnModal)}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you Sure Do You Want To Delete ?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Are You Sure Do You Want to Delete This Member 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>{setWarnModal(!warnModal)}}>cancel</Button>
+          <Button onClick={() => handleDeleteMember(memberId)} autoFocus>
+            Accept
+          </Button>
+        </DialogActions>
+      </Dialog>
     
       
     </div>

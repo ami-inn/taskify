@@ -6,6 +6,7 @@ import zxcvbn from 'zxcvbn'
 import {generatInvitationToken} from '../helpers/generateToken.js'
 import sentMail from "../helpers/sentMail.js"
 import mongoose from "mongoose"
+import ProjectModel from "../models/ProjectModel.js"
 
 
 var salt = bcrypt.genSaltSync(10)
@@ -420,6 +421,7 @@ export const deleteMembers=async(req,res)=>{
     try{
 
         const{workspaceId,memberId}=req.params
+        
         console.log(req.params);
          const workspace = await workspaceModel.findById(workspaceId)
          
@@ -474,4 +476,25 @@ export const deleteMembers=async(req,res)=>{
     }
 
 
+}
+
+export const createProject=async (req,res)=>{
+    try{
+
+        const {name,description,workspaceId} = req.body
+
+        const newProject = new ProjectModel({name,description})
+        await newProject.save()
+
+        const workspace = await workspaceModel.findByIdAndUpdate(workspaceId,{
+            $push:{projects:newProject._id}
+        })
+
+        res.json({error:false,message:'updated successfully'})
+
+    }
+    catch(err){
+        console.log(err);
+        return res.json({error:true,message:'internal server error',project:newProject,workspace})
+    }
 }

@@ -15,7 +15,11 @@ function reducer(state=initialState, action){
         case 'workspace': return {...state, currentWorkspace:action.payload};
         case 'addWorkspace': return {...state,workspaces:{...state.workspaces,[action.payload.id]:action.payload.workspace}}
         
-        case 'refresh': return {...state, refresh:!state.refresh};
+        case 'refresh': return {...state, refresh:!state.refresh}; //old
+
+        // case 'refresh':
+        //     return { ...state, refresh: action.payload };
+
         default: return state;
     }
 

@@ -13,6 +13,7 @@ Router.post('/inviteUsers',inviteUserToWorkspace)
 Router.post('/invitation/response',acceptInvitation)
 Router.get('/workspace-details/:id',workspaceDetails)
 Router.delete('/workspace/:workspaceId/members/:memberId',deleteMembers)
+Router.post('/create-project',)
 
 
 

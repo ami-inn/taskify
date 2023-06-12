@@ -17,8 +17,9 @@ const workspaceSchema=new mongoose.Schema({
     members: [{
          type: mongoose.Schema.Types.ObjectId, ref: 'User' 
     }],
-    spaces: [{
-         type: mongoose.Schema.Types.ObjectId, ref: 'Space' 
+    projects: [{   // Updated field name from "spaces" to "projects"
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Project'  // Updated reference from "Space" to "Project"
     }],
     active:{
         type:Boolean,

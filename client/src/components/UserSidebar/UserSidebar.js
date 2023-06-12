@@ -32,15 +32,15 @@ function UserSidebar({page}) {
             <span className="ml-4">Dashboards</span>
           </Link>
         </li>
-        <li className>
-          <a href="../backend/page-project.html" className="svg-icon">                        
+        <li className={page=='project'&&'active'}>
+          <Link to={'/projects'} className="svg-icon">                        
             <svg className="svg-icon" width={25} height={25} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 6 2 18 2 18 9" />
               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
               <rect x={6} y={14} width={12} height={8} />
             </svg>
-            <span className="ml-4">Spaces</span>
-          </a>
+            <span className="ml-4">Projects</span>
+          </Link>
         </li>
         <li className>
           <a href="../backend/page-task.html" className="svg-icon">                        
