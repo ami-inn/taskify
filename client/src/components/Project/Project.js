@@ -1,11 +1,53 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import NewProject from './NewProject'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { RiDeleteBin2Fill, RiStarFill } from 'react-icons/ri'
 
 function Project() {
+  const user=useSelector((state)=>{
+    
+    return state.user.details
+
+})
     const [modalview,setModalview]=useState(false)
+    const [project,setProject] = useState([])
+    const [refresh,setrefresh]=useState(false)
     console.log(modalview);
+    const workspaceId = useSelector((state)=>state.currentWorkspace)
+
+    useEffect(()=>{
+        console.log('use effect');
+        fetchProjects()
+    },[])
+
+
+    const fetchProjects = async () =>{
+        console.log('her to fetch');
+        try{
+
+            const response = await axios.get(`/workspace-projects/${workspaceId}`)
+
+            if(response.data.error){
+                console.log('err');
+                alert('error')
+            }else{
+                console.log(response.data);
+                const {workspace}=response.data
+                setProject(workspace.projects)
+            }
+
+        }
+        catch(err){
+            console.log(err);
+            console.log('errorrrrrr');
+        }
+    }
+    console.log('projects',project);
+
+
   return (
     <div className='wrapper'>
 
@@ -45,29 +87,44 @@ function Project() {
     </div>
     <div id="grid" className="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
       <div className="row">
-        <div className="col-lg-4 col-md-6">
-          <div className="card card-block card-stretch card-height">
-            <div className="card-body">
-              <div className="d-flex align-items-center justify-content-between mb-4">
-                <div id="circle-progress-01" className="circle-progress-01 circle-progress circle-progress-primary" data-min-value={0} data-max-value={100} data-value={25} data-type="percent" />
-                <i className="ri-star-fill m-0 text-warning" />
-              </div>
-              <h5 className="mb-1">Theme development</h5>
-              <p className="mb-3">Preparing framework of block-based WordPress Theme.</p>
-              <div className="d-flex align-items-center justify-content-between pt-3 border-top">
-                <div className="iq-media-group">
-                  <a href="#" className="iq-media">
-                    <img className="img-fluid avatar-40 rounded-circle" src="../assets/images/user/05.jpg" alt />
-                  </a>
-                  <a href="#" className="iq-media">
-                    <img className="img-fluid avatar-40 rounded-circle" src="../assets/images/user/06.jpg" alt />
-                  </a>
-                </div>
-                <a className="btn btn-white text-primary link-shadow">High</a>
-              </div>
-            </div>
-          </div>
-        </div>
+
+      {project.map((project)=>(
+
+<div className="col-lg-4 col-md-6">
+<div className="card card-block card-stretch card-height">
+  <div className="card-body">
+    <div className="d-flex align-items-center justify-content-between mb-4">
+
+      
+      <svg version="1.1" width="100" height="100" viewBox="0 0 100 100" class="circle-progress"><circle class="circle-progress-circle" cx="50" cy="50" r="47" fill="none" stroke="#ddd" stroke-width="8"></circle><path d="M 50 3 A 47 47 0 0 1 97 50" class="circle-progress-value" fill="none" stroke="#00E699" stroke-width="8"></path><text class="circle-progress-text" x="50" y="50" font="16px Arial, sans-serif" text-anchor="middle" fill="#999" dy="0.4em">25%</text></svg>
+      <RiDeleteBin2Fill className="ri-star-fill m-0" style={{color:'#fa4356',fontSize:'20px',cursor:'pointer'}} ></RiDeleteBin2Fill>
+    </div>
+    <h5 className="mb-1">{project.name}</h5>
+    <p className="mb-3">{project.category}</p>
+    <div className="d-flex align-items-center justify-content-between pt-3 border-top">
+      <div className="iq-media-group">
+
+        {project.members.map((member)=>(
+          <a href="#" className="iq-media">
+         <img className="img-fluid avatar-40 rounded-circle" src={member.profile.url} alt />
+         </a>
+        ))}
+          <a href="#" className="iq-media">
+         <img className="img-fluid avatar-40 rounded-circle" src={project.creator.profile.url} alt />
+         </a>
+
+       
+       
+      </div>
+      <a className="btn btn-white text-primary link-shadow">{project.priority}</a>
+    </div>
+  </div>
+</div>
+</div>
+
+      ))}
+
+       
        
       </div>
     </div>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux'
+import SnackBar from '../SnackBar/SnackBar';
 
 function NewProject(props) {
 
@@ -12,8 +13,13 @@ function NewProject(props) {
     const [category,setCategory]=useState('')
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [dueDate,setDueDate]=useState('')
-    const [priotity,setpriority]=useState('')
+    const [priority,setpriority]=useState('')
     const [displaySelectedMembers, setDisplaySelectedMembers] = useState([]);
+   
+    const [severity, setSeverity] = useState('');
+    const [message, setMessage] = useState('');
+    const [snackOpen,setSnackOpen] = useState(true)
+
     const dispatch = useDispatch()
 
     
@@ -85,16 +91,25 @@ function NewProject(props) {
             dueDate,
             creator:user._id,
             workspace:workspaceId,
-            priotity
+            priority
           })
 
           if(response.data.error){
+            setSeverity('error')
+            setMessage(response.data.message)
+            setSnackOpen(true)
             console.log('error',response.data)
             alert('error')
           }else{
-            console.log('success');
-            alert('success')
+            console.log('successsssssssss');
+           
+            setSeverity('success')
+           setMessage(response.data.message)
+           setSnackOpen(true)
+          
             dispatch({type:'refresh'})
+            console.log(snackOpen,'snack opennnnn');
+            props.setModalview(false)
           }
 
         
@@ -104,10 +119,13 @@ function NewProject(props) {
             console.log(error)
         }
       }
+
+      console.log('snack opennnnnnnnnnnnnnnnnnnnn',snackOpen);
     
 
   return (
 <div className={`modal fade ${modalview===true?'show':''}`} role="dialog" aria-modal="true" style={{display:'block', paddingRight:'4px' }}  id="new-project-modal">
+      
   <div className="modal-dialog  modal-dialog-centered" role="document">
     <div className="modal-content">
       <div className="modal-header d-block text-center pb-3 border-bttom">
@@ -118,7 +136,8 @@ function NewProject(props) {
         <div className="row">
           <div className="col-lg-12">
             <div className="form-group mb-3">
-              <label htmlFor="exampleInputText01" className="h5">Project Name*</label>
+            
+              <label htmlFor="exampleInputText01" className="h5">New Project</label>
               <input type="text" className="form-control" id="name" placeholder="Project Name" value={name} onChange={(e)=>{setName(e.target.value)}} />
             </div>
           </div>
@@ -166,9 +185,9 @@ function NewProject(props) {
       </div>
           <div className="col-lg-6">
             <div className="form-group mb-3">
-              <label htmlFor="exampleInputText2" className="h5">priotity</label>
-              <select name="type" className="selectpicker form-control" data-style="py-0" value={priotity} onChange={(e)=>{setpriority(e.target.value)}} >
-                <option>priotity</option>
+              <label htmlFor="exampleInputText2" className="h5">priority</label>
+              <select name="type" className="selectpicker form-control" data-style="py-0" value={priority} onChange={(e)=>{setpriority(e.target.value)}} >
+                <option>priority</option>
                 <option value={'low'}>Low</option>
                 <option value={'high'}>High</option>
                 <option value={'medium'}>Medium</option>
@@ -188,6 +207,13 @@ function NewProject(props) {
 
     </div>
   </div>
+
+
+
+   {/* <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  /> */}
+      
+    
+
 </div>
 
   )

@@ -481,10 +481,10 @@ export const deleteMembers=async(req,res)=>{
 export const createProject=async (req,res)=>{
     try{
 
-        const { name, category, members, dueDate, creator, workspace,priority } = req.body;
+        const { name, category, members, dueDate, creator, workspace,priority} = req.body;
 
         console.log('entered heredd on project create');
-        console.log(req.body);
+        console.log(req.body,'req.bodeeee');
 
         const newProject = new ProjectModel({
             name,
@@ -511,5 +511,32 @@ export const createProject=async (req,res)=>{
     catch(err){
         console.log(err);
         return res.json({error:true,message:'internal server error',project:newProject,workspace})
+    }
+}
+
+
+export const fetchWorkspaceProjects=async (req,res)=>{
+    try{
+        const { workspaceId } = req.params;
+
+        // Fetch the workspace with the provided workspaceId'
+        console.log('heree to fetch workspaceeeee');
+        const workspace = await workspaceModel
+        .findById(workspaceId)
+        .populate({
+          path: 'projects',
+          populate: [
+            { path: 'members', model: 'User' },
+            { path: 'creator', model: 'User' },
+          ],
+        });
+          console.log('workspace',workspace);
+    
+        res.json({ error:false, workspace });
+
+    }
+    catch(err){
+        console.log(err)
+        res.json({error:true})
     }
 }

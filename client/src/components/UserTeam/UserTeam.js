@@ -35,13 +35,16 @@ function UserTeam() {
     const [modalview,setModalview]=useState(false)
     const [severity, setSeverity] = useState('');
     const [message, setMessage] = useState('');
-    const [workspace,setworkSpace]=useState(null)
     const [snackOpen,setSnackOpen]=useState(false)
+    const [workspace,setworkSpace]=useState(null)
+   
     const [searchQuery,setSearchQuery]=useState('')
     const [warnModal,setWarnModal]=useState(false)
     const [memberId,setMemberId]=useState('')
+    const [refresh,setrefresh]=useState(false)
 
     React.useEffect(()=>{
+      console.log('use Effecttt');
     
         (
           async function(){
@@ -93,7 +96,7 @@ function UserTeam() {
       )()
       
     
-    },[searchQuery,workspaceId])
+    },[searchQuery,workspaceId,refresh])
 
     const handleSearch = event => {
       setSearchQuery(event.target.value);
@@ -125,7 +128,9 @@ function UserTeam() {
          setSeverity('success')
          setMessage(data.message)
          setSnackOpen(true)
-          dispatch({type:'refresh'})
+         setrefresh(!refresh)
+          // dispatch({type:'refresh'})
+         
         }else{
           setWarnModal(false)
           setSeverity('error')
