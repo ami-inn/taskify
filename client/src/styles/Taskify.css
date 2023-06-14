@@ -23894,3 +23894,23 @@ ul.iq-contact-rest li a p {
     transform:scale(1.06);
     background: white;
   }
+
+  .card-body .low-priority {
+    color: #f0a346;
+  }
+  
+  .card-body.medium-priority {
+    color:#de506f ;
+  }
+  
+  .card-body .high-priority {
+    color: #5ad6b7;
+  }
+
+  
+  
+  
+  
+  
+  
+  

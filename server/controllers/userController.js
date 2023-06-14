@@ -481,7 +481,7 @@ export const deleteMembers=async(req,res)=>{
 export const createProject=async (req,res)=>{
     try{
 
-        const { name, category, members, dueDate, creator, workspace,priority} = req.body;
+        const { name, category, members, dueDate, creator, workspace,priority,description} = req.body;
 
         console.log('entered heredd on project create');
         console.log(req.body,'req.bodeeee');
@@ -492,7 +492,8 @@ export const createProject=async (req,res)=>{
             members,
             dueDate,
             creator,
-            priority
+            priority,
+            description
           });
 
           await newProject.save();

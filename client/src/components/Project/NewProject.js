@@ -15,7 +15,7 @@ function NewProject(props) {
     const [dueDate,setDueDate]=useState('')
     const [priority,setpriority]=useState('')
     const [displaySelectedMembers, setDisplaySelectedMembers] = useState([]);
-   
+    const [description,setDescription]=useState('')
     const [severity, setSeverity] = useState('');
     const [message, setMessage] = useState('');
     const [snackOpen,setSnackOpen] = useState(true)
@@ -24,7 +24,7 @@ function NewProject(props) {
 
     
 
-    const {modalview}=props
+    const {modalview,setSuccess,success}=props
     console.log(props);
     const workspaceId = useSelector((state)=>state.currentWorkspace)
     const user=useSelector((state)=>{
@@ -91,7 +91,8 @@ function NewProject(props) {
             dueDate,
             creator:user._id,
             workspace:workspaceId,
-            priority
+            priority,
+            description
           })
 
           if(response.data.error){
@@ -102,6 +103,8 @@ function NewProject(props) {
             alert('error')
           }else{
             console.log('successsssssssss');
+
+            setSuccess(!success)
            
             setSeverity('success')
            setMessage(response.data.message)
@@ -141,6 +144,15 @@ function NewProject(props) {
               <input type="text" className="form-control" id="name" placeholder="Project Name" value={name} onChange={(e)=>{setName(e.target.value)}} />
             </div>
           </div>
+
+          <div className="col-lg-12">
+            <div className="form-group mb-3">
+            
+              <label htmlFor="exampleInputText01" className="h5">Description</label>
+              <input type="text" className="form-control" id="name" placeholder="Description" value={description} onChange={(e)=>{setDescription(e.target.value)}} />
+            </div>
+          </div>
+          
           <div className="col-lg-6">
             <div className="form-group mb-3">
               <label htmlFor="exampleInputText2" className="h5" name='format' id='format'>Categories *</label>

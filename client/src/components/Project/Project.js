@@ -10,11 +10,11 @@ import SnackBar from '../SnackBar/SnackBar'
 
 
 function Project() {
-  const user=useSelector((state)=>{
-    
-    return state.user.details
+  const workspaceId = useSelector((state)=>state.currentWorkspace)
+  const user=useSelector((state)=>{return state.user.details})
+  const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+  const isAdmin = currentWorkspace.admins.includes(user._id)
 
-})
     const [modalview,setModalview]=useState(false)
     const [project,setProject] = useState([])
     const [refresh,setrefresh]=useState(false)
@@ -24,13 +24,16 @@ function Project() {
     const [message, setMessage] = useState('');
     const [snackOpen,setSnackOpen]=useState(false)
     const [searchQuery,setSearchQuery]=useState('')
+    const [success,setSuccess]=useState(false)
     console.log(modalview);
-    const workspaceId = useSelector((state)=>state.currentWorkspace)
+
 
     useEffect(()=>{
         console.log('use effect');
         fetchProjects()
-    },[refresh])
+    },[refresh,success])
+
+
 
 
     const fetchProjects = async () =>{
@@ -147,7 +150,8 @@ function Project() {
            </div>
     
            <div className="pl-3 border-left btn-new">
-             <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Project</a>
+            {isAdmin? <a onClick={()=>{setModalview(true)}} className="btn btn-primary" style={{color:'white'}} data-target="#new-project-modal" data-toggle="modal">New Project</a>:''}
+            
            </div>
          </div>
        </div>
@@ -170,7 +174,7 @@ function Project() {
  <RiDeleteBin2Fill onClick={() => setOpenWarnModal(project._id)} className="ri-star-fill m-0" style={{color:'#fa4356',fontSize:'20px',cursor:'pointer'}} ></RiDeleteBin2Fill>
 </div>
 <h5 className="mb-1">{project.name}</h5>
-<p className="mb-3">{project.category}</p>
+<p className="mb-3">{project.description}</p>
 <div className="d-flex align-items-center justify-content-between pt-3 border-top">
  <div className="iq-media-group">
 
@@ -186,7 +190,9 @@ function Project() {
   
   
  </div>
- <a className="btn btn-white text-primary link-shadow">{project.priority}</a>
+ <a className={`btn btn-white  link-shadow ${
+    project.priority === 'low' ? 'low-priority' : project.priority === 'medium' ? 'medium-priority' : 'high-priority'
+  }`} >{project.priority}</a>
 </div>
 </div>
 </div>
@@ -236,7 +242,7 @@ function Project() {
     </div>
 
 {
-modalview===true && <NewProject modalview={modalview} setModalview={setModalview} />
+modalview===true && <NewProject modalview={modalview} setModalview={setModalview} success={success} setSuccess={setSuccess} />
 }
 
     </wrapper>
