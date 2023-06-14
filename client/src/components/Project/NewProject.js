@@ -143,7 +143,7 @@ function NewProject(props) {
           </div>
           <div className="col-lg-6">
             <div className="form-group mb-3">
-              <label htmlFor="exampleInputText2" className="h5">Categories *</label>
+              <label htmlFor="exampleInputText2" className="h5" name='format' id='format'>Categories *</label>
               <select name="type" className="selectpicker form-control" data-style="py-0" id='category' value={category} onChange={(e)=>{setCategory(e.target.value)}}>
                 <option>Category</option>
                 <option>Android</option>
@@ -174,15 +174,18 @@ function NewProject(props) {
               
               </select>
             </div>
-          </div>
-          <div>
+
+            <div style={{width:'50px'}}>
         
-        <ul className='skillsBox'>
+        <ul className='membersBox'>
           {displaySelectedMembers.map((member,index) => (
             <li className='skillsLisk' key={index}><span className='skill-text'>{member.name} </span> <span className='skillIcon' onClick={() => handleDeleteMember(index)}><RiDeleteBinFill  className='skilldeleteIcon'/></span></li>
           ))}
         </ul>
       </div>
+
+          </div>
+         
           <div className="col-lg-6">
             <div className="form-group mb-3">
               <label htmlFor="exampleInputText2" className="h5">priority</label>

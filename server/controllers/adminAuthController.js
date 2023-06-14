@@ -8,6 +8,7 @@ export async function adminLogin(req,res){
     try{
         const {email,password}=req.body
         const admin=await AdminModel.findOne({email})
+        console.log(admin);
 
         if(!admin){
             return res.json({err:true,message:'you have no admin access'})

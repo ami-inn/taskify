@@ -387,7 +387,7 @@ function UserTeam() {
        }
 
 
-<Dialog
+      <Dialog
         open={warnModal}
         onClose={()=>{setWarnModal(!warnModal)}}
         aria-labelledby="alert-dialog-title"

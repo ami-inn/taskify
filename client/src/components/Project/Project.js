@@ -4,7 +4,10 @@ import UserHeder from '../UserHeader/UserHeder'
 import NewProject from './NewProject'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { RiDeleteBin2Fill, RiStarFill } from 'react-icons/ri'
+import { RiDeleteBin2Fill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import SnackBar from '../SnackBar/SnackBar'
+
 
 function Project() {
   const user=useSelector((state)=>{
@@ -15,13 +18,19 @@ function Project() {
     const [modalview,setModalview]=useState(false)
     const [project,setProject] = useState([])
     const [refresh,setrefresh]=useState(false)
+    const [warnModal,setWarnModal]=useState(false)
+    const [projectId,setProjectId] = useState('')
+    const [severity, setSeverity] = useState('');
+    const [message, setMessage] = useState('');
+    const [snackOpen,setSnackOpen]=useState(false)
+    const [searchQuery,setSearchQuery]=useState('')
     console.log(modalview);
     const workspaceId = useSelector((state)=>state.currentWorkspace)
 
     useEffect(()=>{
         console.log('use effect');
         fetchProjects()
-    },[])
+    },[refresh])
 
 
     const fetchProjects = async () =>{
@@ -37,6 +46,7 @@ function Project() {
                 console.log(response.data);
                 const {workspace}=response.data
                 setProject(workspace.projects)
+                
             }
 
         }
@@ -46,97 +56,192 @@ function Project() {
         }
     }
     console.log('projects',project);
+    
+    const handleDelete= async(projectId)=>{
+      console.log('handleDelete');
+      try{
+        const response = await axios.delete(`/projects/${projectId}`,{data:{userId:user._id}})
+
+        if(response.data.error){
+          setWarnModal(false)
+          setSeverity('error')
+          setMessage(response.data.message)
+          setSnackOpen(true)
+        }else{
+          setWarnModal(false)
+          console.log('sucessssssssssssssssssssssssss');
+         setSeverity('success')
+         setMessage(response.data.message)
+         setSnackOpen(true)
+         setrefresh(!refresh)
+        }
+
+      }
+      catch(err){
+        console.log('error','delete project error');
+      }
+    }
+
+    const setOpenWarnModal=(id)=>{
+      console.log('entered here on wanrn modal');
+      setProjectId(id)
+      setWarnModal(true)
+
+    }
+
+    const handleSearch = (event) => {
+      setSearchQuery(event.target.value);
+    };
+  
+    const filteredProjects = project.filter((project) =>
+      project.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
 
   return (
+
+    <wrapper  className={`${modalview===true?'modal-open ':''} `} style={modalview ? { display: 'block', paddingRight: '4px' } : {}}>
+
     <div className='wrapper'>
 
         
-     <UserSidebar page={'project'}/>
-     <UserHeder/>
+<UserSidebar page={'project'}/>
+<UserHeder/>
 
 
-     <div className="content-page">
-  <div className="container-fluid">
-    <div className="row">
-      <div className="col-lg-12">
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
-              <h5>Your Projects</h5>
-              <div className="d-flex flex-wrap align-items-center justify-content-between">
-                <div className="dropdown status-dropdown mr-3">
-                  <div className="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
-                    <div className="btn bg-body"><span className="h6">Status :</span> In Progress<i className="ri-arrow-down-s-line ml-2 mr-0" /></div>
-                  </div>
-                  <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton03">
-                    <a className="dropdown-item" href="#"><i className="ri-mic-line mr-2" />In Progress</a>
-                    <a className="dropdown-item" href="#"><i className="ri-attachment-line mr-2" />Priority</a>
-                    <a className="dropdown-item" href="#"><i className="ri-file-copy-line mr-2" />Category</a> 
-                  </div>
-                </div>
-         
-                <div className="pl-3 border-left btn-new">
-                  <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Project</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="grid" className="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
-      <div className="row">
+<div className="content-page">
+<div className="container-fluid">
+<div className="row">
+ <div className="col-lg-12">
+   <div className="card">
+     <div className="card-body">
+       <div className="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+         <h5>Your Projects</h5>
+         <div className="iq-search-bar device-search">
+               <form action="#" className="searchbox">
+                 <a className="search-link" href="#">
+                   <i>
+                     <RiSearch2Line />
+                   </i>
+                 </a>
+                 <input
+                   type="text"
+                   className="text search-input"
+                   placeholder="Search here..."
+                   value={searchQuery}
+                   onChange={handleSearch}
+                 />
+               </form>
+             </div>
+         <div className="d-flex flex-wrap align-items-center justify-content-between">
+      
+           <div className="dropdown status-dropdown mr-3">
+             <div className="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
+               <div className="btn bg-body"><span className="h6">Status :</span> In Progress<i className="ri-arrow-down-s-line ml-2 mr-0" /></div>
+             </div>
+             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton03">
+               <a className="dropdown-item" href="#"><i className="ri-mic-line mr-2" />In Progress</a>
+               <a className="dropdown-item" href="#"><i className="ri-attachment-line mr-2" />Priority</a>
+               <a className="dropdown-item" href="#"><i className="ri-file-copy-line mr-2" />Category</a> 
+             </div>
+           </div>
+    
+           <div className="pl-3 border-left btn-new">
+             <a onClick={()=>{setModalview(true)}} className="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Project</a>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+<div id="grid" className="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
+ <div className="row">
 
-      {project.map((project)=>(
+ {filteredProjects.map((project)=>(
 
 <div className="col-lg-4 col-md-6">
 <div className="card card-block card-stretch card-height">
-  <div className="card-body">
-    <div className="d-flex align-items-center justify-content-between mb-4">
+<div className="card-body">
+<div className="d-flex align-items-center justify-content-between mb-4">
 
-      
-      <svg version="1.1" width="100" height="100" viewBox="0 0 100 100" class="circle-progress"><circle class="circle-progress-circle" cx="50" cy="50" r="47" fill="none" stroke="#ddd" stroke-width="8"></circle><path d="M 50 3 A 47 47 0 0 1 97 50" class="circle-progress-value" fill="none" stroke="#00E699" stroke-width="8"></path><text class="circle-progress-text" x="50" y="50" font="16px Arial, sans-serif" text-anchor="middle" fill="#999" dy="0.4em">25%</text></svg>
-      <RiDeleteBin2Fill className="ri-star-fill m-0" style={{color:'#fa4356',fontSize:'20px',cursor:'pointer'}} ></RiDeleteBin2Fill>
-    </div>
-    <h5 className="mb-1">{project.name}</h5>
-    <p className="mb-3">{project.category}</p>
-    <div className="d-flex align-items-center justify-content-between pt-3 border-top">
-      <div className="iq-media-group">
-
-        {project.members.map((member)=>(
-          <a href="#" className="iq-media">
-         <img className="img-fluid avatar-40 rounded-circle" src={member.profile.url} alt />
-         </a>
-        ))}
-          <a href="#" className="iq-media">
-         <img className="img-fluid avatar-40 rounded-circle" src={project.creator.profile.url} alt />
-         </a>
-
-       
-       
-      </div>
-      <a className="btn btn-white text-primary link-shadow">{project.priority}</a>
-    </div>
-  </div>
+ 
+ <svg version="1.1" width="100" height="100" viewBox="0 0 100 100" class="circle-progress"><circle class="circle-progress-circle" cx="50" cy="50" r="47" fill="none" stroke="#ddd" stroke-width="8"></circle><path d="M 50 3 A 47 47 0 0 1 97 50" class="circle-progress-value" fill="none" stroke="#00E699" stroke-width="8"></path><text class="circle-progress-text" x="50" y="50" font="16px Arial, sans-serif" text-anchor="middle" fill="#999" dy="0.4em">25%</text></svg>
+ <RiDeleteBin2Fill onClick={() => setOpenWarnModal(project._id)} className="ri-star-fill m-0" style={{color:'#fa4356',fontSize:'20px',cursor:'pointer'}} ></RiDeleteBin2Fill>
 </div>
-</div>
+<h5 className="mb-1">{project.name}</h5>
+<p className="mb-3">{project.category}</p>
+<div className="d-flex align-items-center justify-content-between pt-3 border-top">
+ <div className="iq-media-group">
 
-      ))}
+   {project.members.map((member)=>(
+     <a href="#" className="iq-media">
+    <img className="img-fluid avatar-40 rounded-circle" src={member.profile.url} alt />
+    </a>
+   ))}
+     <a href="#" className="iq-media">
+    <img className="img-fluid avatar-40 rounded-circle" src={project.creator.profile.url} alt />
+    </a>
 
-       
-       
-      </div>
-    </div>
   
-    {/* Page end  */}
-  </div>
+  
+ </div>
+ <a className="btn btn-white text-primary link-shadow">{project.priority}</a>
 </div>
-{
-    modalview===true && <NewProject modalview={modalview} setModalview={setModalview} />
-}
-      
+</div>
+</div>
+</div>
+
+ ))}
+
+  
+  
+ </div>
+</div>
+
+{/* Page end  */}
+</div>
+</div>
+
+
+
+ <Dialog
+   open={warnModal}
+   onClose={()=>{setWarnModal(!warnModal)}}
+   aria-labelledby="alert-dialog-title"
+   aria-describedby="alert-dialog-description"
+ >
+   <DialogTitle id="alert-dialog-title">
+     {"Are you Sure Do You Want To Delete ?"}
+   </DialogTitle>
+   <DialogContent>
+     <DialogContentText id="alert-dialog-description">
+     Are You Sure Do You Want to Delete This Project 
+     </DialogContentText>
+   </DialogContent>
+   <DialogActions>
+     <Button onClick={()=>{setWarnModal(!warnModal)}}>cancel</Button>
+     <Button onClick={() => handleDelete(projectId)} autoFocus>
+       Accept
+     </Button>
+   </DialogActions>
+ </Dialog>
+
+ 
+ {
+  
+  snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
+ }
+ 
     </div>
+
+{
+modalview===true && <NewProject modalview={modalview} setModalview={setModalview} />
+}
+
+    </wrapper>
+
+
   )
 }
 

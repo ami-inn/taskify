@@ -540,3 +540,33 @@ export const fetchWorkspaceProjects=async (req,res)=>{
         res.json({error:true})
     }
 }
+
+export const deleteProject = async (req,res)=>{
+    try{
+        console.log('here delete project');
+        const {projectId}=req.params
+        const {userId}=req.body
+        
+        const project = await ProjectModel.findById(projectId)
+
+        if(!project){
+            console.log('not enterr 1');
+            return res.json({error:true,message:'project not found'})
+        }
+
+        if(project.creator.toString() !== userId){
+            return res.json({error:true,message:'you are not the creator of this project'})
+        }
+
+        console.log('sucees');
+
+        await ProjectModel.deleteOne({ _id: projectId });
+
+        res.json({error:false,message:'project deleted '})
+
+    }
+    catch(err){
+        console.log(err)
+        res.json({error:true,message:'internal server error'})
+    }
+}
