@@ -23,6 +23,8 @@ import EditProfile from './components/EditProfile/EditProfile';
 import AdminWorkspace from './components/AdminWorkspace/AdminWorkspace';
 import InvitationReq from './components/InvitationReq/InvitationReq';
 import Project from './components/Project/Project';
+import TaskManage from './components/TaskManage/TaskManage';
+import ProjectTask from './components/Project/ProjectTask';
 
 // ..
 AOS.init();
@@ -89,7 +91,8 @@ function App() {
          <Route path='/edit-profile/:id' element={<EditProfile/>} />
          <Route path='/invitation' element={<InvitationReq/>}/>
          <Route path='/projects' element={<Project/>}/>
-         <Route path='/tasks' element={''}/>
+         <Route path='/project/:id' element={<ProjectTask/>}/>
+         <Route path='/tasks' element={<TaskManage/>}/>
 
 
       </>

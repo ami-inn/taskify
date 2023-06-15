@@ -4,9 +4,10 @@ import UserHeder from '../UserHeader/UserHeder'
 import NewProject from './NewProject'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { RiDeleteBin2Fill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
+import { RiArrowRightSFill, RiDeleteBin2Fill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
+import { Link } from 'react-router-dom'
 
 
 function Project() {
@@ -164,7 +165,8 @@ function Project() {
 
  {filteredProjects.map((project)=>(
 
-<div className="col-lg-4 col-md-6">
+  
+  <div className="col-lg-4 col-md-6"  >
 <div className="card card-block card-stretch card-height">
 <div className="card-body">
 <div className="d-flex align-items-center justify-content-between mb-4">
@@ -175,6 +177,7 @@ function Project() {
 </div>
 <h5 className="mb-1">{project.name}</h5>
 <p className="mb-3">{project.description}</p>
+<Link to={`/project/${project._id}`} style={{cursor:'pointer'}}>Open Project <RiArrowRightSFill/></Link>
 <div className="d-flex align-items-center justify-content-between pt-3 border-top">
  <div className="iq-media-group">
 
@@ -192,11 +195,14 @@ function Project() {
  </div>
  <a className={`btn btn-white  link-shadow ${
     project.priority === 'low' ? 'low-priority' : project.priority === 'medium' ? 'medium-priority' : 'high-priority'
-  }`} >{project.priority}</a>
+  }`} >{project.priority} priority</a>
 </div>
 </div>
 </div>
 </div>
+
+
+
 
  ))}
 
