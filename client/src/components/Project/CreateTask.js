@@ -200,9 +200,9 @@ function CreateTask(props) {
                  
                     <input type="text" onKeyPress={handleKeyPress} value={newSubtask} onChange={handleSubTaskChange} className="form-control" id="exampleInputText005" placeholder="Add List" />
 
-                    <ul className='skillsBox'>
+                    <ul className='subtaskBox'>
                   {subtasks.map((skill, index) => (
-                  <li className='skillsLisk' key={index}><span className='skill-text'>{subtasks} </span> <span className='skillIcon' onClick={() => handleDeleteSubtask(index)}><RiDeleteBinFill  className='skilldeleteIcon'/></span></li>
+                  <li className='subtaskList' key={index}><span className='subtask-text'>{subtasks} </span> <span className='subtaskIcon' onClick={() => handleDeleteSubtask(index)}><RiDeleteBinFill  className='subtaskdeleteIcon'/></span></li>
                    ))}
                  </ul>
 
