@@ -16,7 +16,7 @@ const taskSchema=new mongoose.Schema({
       ],
     completedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     workspace: { type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' },
-    project:{ type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
+    // project:{ type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
     approvalStatus: { type: Boolean,default:false },
 
     subtasks: [
@@ -30,6 +30,7 @@ const taskSchema=new mongoose.Schema({
       type:Object
       },
     ],
+    completed:{type:Boolean,default:false},
     priority: { type: String, enum: ['low', 'medium', 'high'] }
 })
 

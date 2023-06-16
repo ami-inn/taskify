@@ -99,15 +99,16 @@ function CreateTask(props) {
                 priority,
                 subtasks,
                 creatorId:user._id,
-                assigneeId
+                assigneeId,
+                projectId
             }
 
             const response= await axios.post('/create-task',task)
 
             if(response.data.error){
-                alert('error')
+                setErrorMessage(response.data.message)
             }else{
-                alert('success')
+                setNewTaskModal(false)
             }
 
         }
@@ -157,7 +158,7 @@ function CreateTask(props) {
                     <label htmlFor="exampleInputText2" className="h5">Assigned to</label>
                     <select name="type" value={assigneeId} onChange={(e)=>{setAssigneeId(e.target.value)}} className="selectpicker form-control" data-style="py-0">
                        
-                      <option>Memebers</option>
+                      <option>Memeber</option>
                         {
                             project.members?.map(member=>(
                                 
@@ -201,13 +202,19 @@ function CreateTask(props) {
                     <input type="text" onKeyPress={handleKeyPress} value={newSubtask} onChange={handleSubTaskChange} className="form-control" id="exampleInputText005" placeholder="Add List" />
 
                     <ul className='subtaskBox'>
-                  {subtasks.map((skill, index) => (
-                  <li className='subtaskList' key={index}><span className='subtask-text'>{subtasks} </span> <span className='subtaskIcon' onClick={() => handleDeleteSubtask(index)}><RiDeleteBinFill  className='subtaskdeleteIcon'/></span></li>
+                  {subtasks.map((subtask, index) => (
+                  <li className='subtaskList' key={index}><span className='subtask-text'>{subtask} </span> <span className='subtaskIcon' onClick={() => handleDeleteSubtask(index)}><RiDeleteBinFill  className='subtaskdeleteIcon'/></span></li>
                    ))}
                  </ul>
 
+                
+
                   </div>
                 </div>
+                {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
                
                 <div className="col-lg-12">
                   <div className="d-flex flex-wrap align-items-ceter justify-content-center mt-4">

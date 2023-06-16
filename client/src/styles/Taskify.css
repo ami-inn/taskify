@@ -23915,4 +23915,79 @@ ul.iq-contact-rest li a p {
   
   
   
+.subtaskBox{
+    
+  width:500px;
+  
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-sizing: border-box;
+  box-shadow: inset(0 0 15px rgba(0,0,0,0.5));
+  
+}
+.subtaskBox li{
+ background:rgb(208,216,255,.1);
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 3px 5px;
+  color: darkslateblue;
+  transition: .5s;
+  margin: 3px 0;
+  /* word-wrap: break-word; */
+  word-break: break-all;
+  cursor: pointer;
+
+}
+/* .subtask-text{
+  display: inline-block;
+  vertical-align: middle;
+} */
+.subtaskBox li:nth-child(1){
+  color: black;
+  background: rgb(208,216,255,.6);
+}
+.subtaskBox li:nth-child(2){
+  color: black;
+  background: rgb(208,216,255,.4);
+}
+.subtaskBox li:nth-child(3){
+  color: black;
+  background: rgb(208,216,255,.3);
+}
+.subtaskBox li:nth-child(4){
+  color: black;
+  background: rgb(208,216,255,.2);
+}
+.subtaskBox li:nth-child(5){
+  color: black;
+  background: rgb(208,216,255,.2);
+}
+.subtaskBox li span:nth-child(1){
+  color: #000930;
+  width: 300px;
+  padding: 5px;
+  
+}
+
+.subtaskBox li span:nth-child(2){
+
+  width: 30px;
+}
+.subtaskBox li .subtaskIcon{
+  color: #000930;
+  transition: 0.1s ease-in;
+}
+.subtaskBox li .subtaskIcon:hover{
+  color: #000930;
+    color: #ff7369;
+}
+
+.subtaskBox li:hover{
+  transform:scale(1.06);
+  background: white;
+}
+
   

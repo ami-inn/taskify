@@ -576,6 +576,7 @@ export const deleteProject = async (req,res)=>{
 export const fetchProjectDetails  = async (req,res)=>{
     try{
 
+        console.log('enterr herere');
         const projectId = req.params.id
 
         const project = await ProjectModel.findById(projectId).populate('members')
@@ -583,6 +584,8 @@ export const fetchProjectDetails  = async (req,res)=>{
         if(!project){
             return res.json({error:true,message:'no such workspace found'})
         }
+
+        console.log('projecttt with task',project);
 
         res.json({error:false,message:'get the project',project})
 
@@ -602,7 +605,10 @@ export const createTask=async (req,res)=>{
 
         const project = await ProjectModel.findById(projectId)
 
+        console.log(project);
+
         const projectDueDate = project.dueDate
+        console.log(projectDueDate);
 
         if(dueDate<=projectDueDate){
             return res.json({error:true,message:''})
@@ -625,5 +631,35 @@ export const createTask=async (req,res)=>{
     catch(err){
         console.log(err);
         res.json({error:true,message:'internal server error'})
+    }
+}
+
+export const fetchProjectTask=async (req,res)=>{
+    try{
+        const {id}=req.params
+        console.log('project idddd',id);
+
+        const project = await ProjectModel.findById(id).populate({
+            path:'tasks',
+            populate:[
+                {path:'assigneeId',model:'User'},
+                {path:'creatorId',model:'User'},
+
+            ]
+        })
+
+
+        if(!project){
+            return res.json({error:true,message:'project not found'})
+        }
+
+        console.log('its th project',project);
+
+        return res.json({error:false,message:'project deletecte',project})
+
+    }
+    catch(err){
+        console.log(err)
+        return res.json({error:true,message:'internal server error'})
     }
 }
