@@ -3,8 +3,10 @@ import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import CreateTask from './CreateTask'
 import { RiAlignJustify, RiEditBoxLine, RiSurveyLine } from 'react-icons/ri'
+import { useParams } from 'react-router-dom'
 
 function ProjectTask() {
+    const {id}=useParams()
     const [newTaskModal,setNewTaskModal] = useState(false)
   return (
     <wrapper className={` ${newTaskModal===true?'outwrap modal-open':''}`} style={newTaskModal ? { display: 'block', paddingRight: '4px' } : {}}>
@@ -182,7 +184,7 @@ function ProjectTask() {
     </div>
 
     {
-        newTaskModal===true && <CreateTask newTaskModal={newTaskModal} setNewTaskModal={setNewTaskModal}/>
+        newTaskModal===true && <CreateTask newTaskModal={newTaskModal} setNewTaskModal={setNewTaskModal} projectId={id}/>
     }
 
     </wrapper>

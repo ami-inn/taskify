@@ -1,5 +1,5 @@
 import express from 'express'
-import { acceptInvitation, changePassord, createProject, createWorkspace, deleteMembers, deleteProject, editProfileDetails, fetchWorkspaceProjects, inviteUserToWorkspace, showWorkspaces, updateSocial, workspaceDetails, workspaceValid } from '../controllers/userController.js'
+import { acceptInvitation, changePassord, createProject, createTask, createWorkspace, deleteMembers, deleteProject, editProfileDetails, fetchProjectDetails, fetchWorkspaceProjects, inviteUserToWorkspace, showWorkspaces, updateSocial, workspaceDetails, workspaceValid } from '../controllers/userController.js'
 
 const Router=express.Router()
 
@@ -16,6 +16,8 @@ Router.delete('/workspace/:workspaceId/members/:memberId',deleteMembers)
 Router.post('/create-project',createProject)
 Router.get('/workspace-projects/:workspaceId',fetchWorkspaceProjects)
 Router.delete('/projects/:projectId',deleteProject)
+Router.get('/project/:id',fetchProjectDetails)
+Router.post('/create-task',createTask)
 
 
 

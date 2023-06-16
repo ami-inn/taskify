@@ -7,6 +7,7 @@ import {generatInvitationToken} from '../helpers/generateToken.js'
 import sentMail from "../helpers/sentMail.js"
 import mongoose from "mongoose"
 import ProjectModel from "../models/ProjectModel.js"
+import TaskModel from "../models/TaskModel.js"
 
 
 var salt = bcrypt.genSaltSync(10)
@@ -568,6 +569,61 @@ export const deleteProject = async (req,res)=>{
     }
     catch(err){
         console.log(err)
+        res.json({error:true,message:'internal server error'})
+    }
+}
+
+export const fetchProjectDetails  = async (req,res)=>{
+    try{
+
+        const projectId = req.params.id
+
+        const project = await ProjectModel.findById(projectId).populate('members')
+
+        if(!project){
+            return res.json({error:true,message:'no such workspace found'})
+        }
+
+        res.json({error:false,message:'get the project',project})
+
+    }
+    catch(err){
+        return res.json({error:true,message:'internal server error'})
+        console.log(err)
+    }
+}
+
+export const createTask=async (req,res)=>{
+    try{
+
+        const {name,description,dueDate,assigneeId,creatorId,subtasks,projectId,priority}=req.body
+
+        console.log('reqboddddy',req.body);
+
+        const project = await ProjectModel.findById(projectId)
+
+        const projectDueDate = project.dueDate
+
+        if(dueDate<=projectDueDate){
+            return res.json({error:true,message:''})
+        }
+
+        const task=new TaskModel({
+            name,description,dueDate,assigneeId,creatorId,subtasks:req.body.subtasks.map((subtask)=>({name:subtask,completed:false})),priority
+        })
+
+        await task.save()
+
+        await ProjectModel.findByIdAndUpdate(projectId,{$push:{tasks:task._id}})
+
+        await userModel.findByIdAndUpdate(assigneeId,{$push:{assignedTasks:task._id}})
+
+        await userModel.findByIdAndUpdate(creatorId,{$push:{createdTasks:task._id}})
+
+        res.json({error:false,message:'created successfully'})
+    }
+    catch(err){
+        console.log(err);
         res.json({error:true,message:'internal server error'})
     }
 }

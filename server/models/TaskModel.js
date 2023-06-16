@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const taskSchema=new mongoose.Schema({
     name: { type: String, required: true },
@@ -16,6 +16,7 @@ const taskSchema=new mongoose.Schema({
       ],
     completedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     workspace: { type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' },
+    project:{ type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
     approvalStatus: { type: Boolean,default:false },
 
     subtasks: [
@@ -29,7 +30,7 @@ const taskSchema=new mongoose.Schema({
       type:Object
       },
     ],
-
+    priority: { type: String, enum: ['low', 'medium', 'high'] }
 })
 
 const TaskModel=mongoose.model("Task", taskSchema)
