@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import CreateTask from './CreateTask'
-import { RiAlignJustify, RiEditBoxLine, RiEye2Fill, RiEyeFill, RiSurveyLine } from 'react-icons/ri'
+import { RiAlignJustify, RiDeleteBack2Fill, RiDeleteBin2Fill, RiEditBoxLine, RiEye2Fill, RiEyeFill, RiSurveyLine, RiUser2Fill } from 'react-icons/ri'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import commentCss from '../../styles/TaskComment.module.css'
 import { useSelector } from 'react-redux'
+import SnackBar from '../SnackBar/SnackBar'
+
 
 function ProjectTask() {
     const {id}=useParams()
@@ -15,6 +17,9 @@ function ProjectTask() {
     const [tasks,setTasks]=useState([])
     const [refresh,setRefresh]=useState(false)
     const [comment,setComment]=useState('')
+    const [snackOpen,setSnackOpen]=useState(false)
+    const [severity,setSeverity]=useState('')
+    const [message,setMessage]=useState('')
     console.log(comment,'comment');
     // const [taskId,setTaskId]=useState('')
     const [colapseShowId,setColapseShowId]=useState(false)
@@ -58,9 +63,14 @@ function ProjectTask() {
         const response = await axios.post(`/task/${taskId}/comments`,{content:comment,postedBy: user._id})
 
         if(response.data.error){
-          alert('error')
+          setSnackOpen(true)
+          setSeverity('error')
+          setMessage(response.data.message)
         }else{
-          alert('success')
+          setRefresh(!refresh)
+          setSnackOpen(true)
+          setSeverity('success')
+          setMessage(response.data.message)
         }
 
       }
@@ -126,15 +136,18 @@ function ProjectTask() {
                           </div> */}
                           <div>
                             <h5 className="mb-2">{task.name}</h5>
+                            {/* <h6>assigned To : {task.assigneeId.name}</h6> */}
                             <div className="media align-items-center">
                               <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />5/10</div>
-                              <div className="btn bg-body"><RiSurveyLine className="ri-survey-line mr-2" />3</div>
+                              <div className="btn bg-body mr-3"><RiSurveyLine className="ri-survey-line mr-2" />{task.comments.length}</div>
+                              <div className="btn bg-body"><RiUser2Fill className="ri-survey-line mr-2" />{task.assigneeId.name}</div>
                             </div>
                           </div>
                         </div>
                         <div className="media align-items-center mt-md-0 mt-3">
                           <a  className="btn bg-secondary-light mr-3">{task.priority}</a>
-                          <a className="btn bg-secondary-light" onClick={()=>{handleModalToggle(task._id)}} data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiEyeFill className="ri-edit-box-line m-0" /></a>
+                          <a className="btn bg-primary-light mr-3" onClick={()=>{handleModalToggle(task._id)}} data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiEyeFill className="ri-edit-box-line m-0" /></a>
+                          <a className="btn bg-danger-light" onClick={()=>{handleModalToggle(task._id)}} data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiDeleteBack2Fill className="ri-edit-box-line m-0" /></a>
                         </div>
                       </div>  
                     </div>
@@ -233,114 +246,74 @@ function ProjectTask() {
                           </div>
                         </div>
 
+                        <div className={commentCss.block}>
+<div className={commentCss.blockHeader}>
+  <div className={commentCss.title}>
+    <h2>Comments</h2>
+    <div className={commentCss.tag}>12</div>
+  </div>
+</div>
+<div className={commentCss.writing}>
+  <input  className={commentCss.textarea} onChange={(e)=>{setComment(e.target.value)}} >
+ 
+  </input>
+  
+  <div className={commentCss.footer}>
+    <div className={commentCss.textFormat}>
+      <button className={commentCss.btn}><i className="ri-bold" /></button>
+      <button className={commentCss.btn}><i className="ri-italic" /></button>
+    </div>
+    <div className={commentCss.groupButton}>
+      <button className={commentCss.btn}><i className="ri-at-line" /></button>
+      <button className={`${commentCss.btn} ${commentCss.primary}`} onClick={()=>{handleCommentSubmit(task._id)}}>Send</button>
+    </div>
+  </div>
+</div>
 
+{
+  task.comments.map((comment)=>(
+
+    <div className={commentCss.comment}>
+  <div className={commentCss.userBanner}>
+    <div className={commentCss.user}>
+      <div className={commentCss.avatar}>
+        <img src={comment.postedBy.profile.url} />
+        <span className={`${commentCss.stat} ${commentCss.grey}`} />
+      </div>
+      <h5>{comment.postedBy.name}</h5>
+    </div>
+    <button className={`${commentCss.btn} ${commentCss.dropdown} `}><i className="ri-more-line" /></button>
+  </div>
+  <div className={commentCss.content}>
+    <p>{comment.content}</p>
+  </div>
+  <div className={commentCss.footer}>
+    <button className={commentCss.btn}><i className="ri-emotion-line" /></button>
+    {/* <div className="reactions">
+      <button className="btn react"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/325/thumbs-up_1f44d.png" alt />4</button>
+      <button className="btn react"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/325/angry-face-with-horns_1f47f.png" alt />1</button>
+    </div> */}
+    <div className="divider" />
+    <a href="#">Posted On : </a>
+    <div className="divider" />
+    <span className="is-mute">{new Date(comment.postedAt).toLocaleDateString('en-CA')} </span>
+    <RiDeleteBin2Fill  style={{color:'red'}}/>
+  </div>
+</div>
+
+  ))
+}
+
+
+
+
+<div className="load">
+  <span><i className="ri-refresh-line" />Comments</span>
+</div>
+                 </div>
 
                             
-                    <div className={commentCss.block}>
-  <div className={commentCss.blockHeader}>
-    <div className={commentCss.title}>
-      <h2>Comments</h2>
-      <div className={commentCss.tag}>12</div>
-    </div>
-  </div>
-  <div className={commentCss.writing}>
-    <input  className={commentCss.textarea} onChange={(e)=>{setComment(e.target.value)}} >
-   
-    </input>
-    
-    <div className={commentCss.footer}>
-      <div className={commentCss.textFormat}>
-        <button className={commentCss.btn}><i className="ri-bold" /></button>
-        <button className={commentCss.btn}><i className="ri-italic" /></button>
-      </div>
-      <div className={commentCss.groupButton}>
-        <button className={commentCss.btn}><i className="ri-at-line" /></button>
-        <button className={`${commentCss.btn} ${commentCss.primary}`} onClick={()=>{handleCommentSubmit(task._id)}}>Send</button>
-      </div>
-    </div>
-  </div>
-  <div className={commentCss.comment}>
-    <div className={commentCss.userBanner}>
-      <div className={commentCss.user}>
-        <div className={commentCss.avatar}>
-          <img src="https://randomuser.me/api/portraits/men/86.jpg" />
-          <span className={`${commentCss.stat} ${commentCss.grey}`} />
-        </div>
-        <h5>Floyd Miles</h5>
-      </div>
-      <button className={`${commentCss.btn} ${commentCss.dropdown} `}><i className="ri-more-line" /></button>
-    </div>
-    <div className={commentCss.content}>
-      <p>Actually, now that I try out the links on my message, above, none of them take me to the secure site. Only my shortcut on my desktop, which I created years ago.</p>
-    </div>
-    <div className={commentCss.footer}>
-      <button className={commentCss.btn}><i className="ri-emotion-line" /></button>
-      {/* <div className="reactions">
-        <button className="btn react"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/325/thumbs-up_1f44d.png" alt />4</button>
-        <button className="btn react"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/325/angry-face-with-horns_1f47f.png" alt />1</button>
-      </div> */}
-      <div className="divider" />
-      <a href="#">Reply</a>
-      <div className="divider" />
-      <span className="is-mute">6 hour</span>
-    </div>
-  </div>
-  {/* <div>
-
-
-		<div class="comment">
-			<div class="user-banner">
-				<div class="user">
-					<div class="avatar" style="background-color:#fff5e9;border-color:#ffe0bd; color:#F98600">
-						AF
-						<span class="stat green"></span>
-					</div>
-					<h5>Albert Flores</h5>
-				</div>
-				<button class="btn dropdown"><i class="ri-more-line"></i></button>
-			</div>
-			<div class="content">
-				<p>Before installing this plugin please put back again your wordpress and site url back to http.</p>
-			</div>
-			<div class="footer">
-				<button class="btn"><i class="ri-emotion-line"></i></button>
-				<div class="divider"></div>
-				<a href="#">Reply</a>
-				<div class="divider"></div>
-				<span class="is-mute">2 min</span>
-			</div>
-		</div>
-		<div class="reply comment">
-			<div class="user-banner">
-				<div class="user">
-					<div class="avatar">
-						<img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt="">
-						<span class="stat green"></span>
-					</div>
-					<h5>Bessie Cooper</h5>
-				</div>
-				<button class="btn dropdown"><i class="ri-more-line"></i></button>
-			</div>
-			<div class="content">
-				<p>Hi <a href="#" class="tagged-user">@Albert Flores</a>.Thanks for your reply.</p>
-			</div>
-			<div class="footer">
-				<button class="btn"><i class="ri-emotion-line"></i></button>
-				<div class="reactions">
-					<button class="btn react"><img src="https://cdn-0.emojis.wiki/emoji-pics/apple/smiling-face-with-heart-eyes-apple.png" alt="">2</button>
-				</div>
-				<div class="divider"></div>
-				<a href="#">Reply</a>
-				<div class="divider"></div>
-				<span class="is-mute">18 sec</span>
-			</div>
-		</div>
-  
-	</div> */}
-  <div className="load">
-    <span><i className="ri-refresh-line" />Loading</span>
-  </div>
-                   </div>
+                
 
 
                       </div>
@@ -375,6 +348,11 @@ function ProjectTask() {
     {
         newTaskModal===true && <CreateTask newTaskModal={newTaskModal} setNewTaskModal={setNewTaskModal} projectId={id}/>
     }
+
+{
+       
+       snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
+      }
 
     </wrapper>
   )

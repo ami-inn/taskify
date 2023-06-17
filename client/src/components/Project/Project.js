@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { RiArrowRightSFill, RiDeleteBin2Fill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 function Project() {
@@ -15,6 +15,8 @@ function Project() {
   const user=useSelector((state)=>{return state.user.details})
   const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
   const isAdmin = currentWorkspace.admins.includes(user._id)
+  const navigate=useNavigate()
+  
 
     const [modalview,setModalview]=useState(false)
     const [project,setProject] = useState([])
@@ -101,6 +103,33 @@ function Project() {
       project.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleOpenProject=(projectId)=>{
+      console.log(projectId);
+      const singleproject = project.find((p)=>p._id===projectId)
+
+      if(singleproject){
+        // const isUser=singleproject.members.includes(user._id)
+        const isCreator=singleproject.creator._id===user._id
+
+        const isUser = singleproject.members.some((member) => member._id === user._id);
+
+        if(isUser || isCreator){
+          navigate(`/project/${projectId}`)
+
+        }else{
+          setSnackOpen(true)
+          setSeverity('error')
+          setMessage('you are not a member in this project')
+
+        }
+
+
+        console.log('is creator',isCreator);
+
+        console.log('isuser',isUser);
+      }
+    }
+
 
   return (
 
@@ -177,7 +206,8 @@ function Project() {
 </div>
 <h5 className="mb-1">{project.name}</h5>
 <p className="mb-3">{project.description}</p>
-<Link to={`/project/${project._id}`} style={{cursor:'pointer'}}>Open Project <RiArrowRightSFill/></Link>
+
+<a onClick={()=>{handleOpenProject(project._id)}} style={{cursor:'pointer'}}>Open Project <RiArrowRightSFill/></a>
 <div className="d-flex align-items-center justify-content-between pt-3 border-top">
  <div className="iq-media-group">
 
