@@ -5,13 +5,20 @@ import CreateTask from './CreateTask'
 import { RiAlignJustify, RiEditBoxLine, RiEye2Fill, RiEyeFill, RiSurveyLine } from 'react-icons/ri'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import commentCss from '../../styles/TaskComment.module.css'
+import { useSelector } from 'react-redux'
 
 function ProjectTask() {
     const {id}=useParams()
     const navigate=useNavigate()
     const [newTaskModal,setNewTaskModal] = useState(false)
     const [tasks,setTasks]=useState([])
+    const [refresh,setRefresh]=useState(false)
+    const [comment,setComment]=useState('')
+    console.log(comment,'comment');
+    // const [taskId,setTaskId]=useState('')
     const [colapseShowId,setColapseShowId]=useState(false)
+    const user=useSelector((state)=>{return state.user.details})
 
     // const midpoint=Math.ceil(tasks.subtasks.length / 2)
 
@@ -20,7 +27,7 @@ function ProjectTask() {
 
     useEffect(()=>{
       fetchProjectDetails();
-    },[id])
+    },[id,refresh])
 
     const handleModalToggle = (colapseShowId) => {
       setColapseShowId((prevId) => (prevId === colapseShowId ? null : colapseShowId));
@@ -42,6 +49,24 @@ function ProjectTask() {
       catch(err){
         console.log('error');
 
+      }
+    }
+
+    const handleCommentSubmit=async (taskId)=>{
+      try{
+
+        const response = await axios.post(`/task/${taskId}/comments`,{content:comment,postedBy: user._id})
+
+        if(response.data.error){
+          alert('error')
+        }else{
+          alert('success')
+        }
+
+      }
+      catch(err){
+        console.log(err);
+        console.log('error');
       }
     }
 
@@ -207,6 +232,117 @@ function ProjectTask() {
                             <label className="custom-file-label" htmlFor="inputGroupFile001">Upload media</label> */}
                           </div>
                         </div>
+
+
+
+                            
+                    <div className={commentCss.block}>
+  <div className={commentCss.blockHeader}>
+    <div className={commentCss.title}>
+      <h2>Comments</h2>
+      <div className={commentCss.tag}>12</div>
+    </div>
+  </div>
+  <div className={commentCss.writing}>
+    <input  className={commentCss.textarea} onChange={(e)=>{setComment(e.target.value)}} >
+   
+    </input>
+    
+    <div className={commentCss.footer}>
+      <div className={commentCss.textFormat}>
+        <button className={commentCss.btn}><i className="ri-bold" /></button>
+        <button className={commentCss.btn}><i className="ri-italic" /></button>
+      </div>
+      <div className={commentCss.groupButton}>
+        <button className={commentCss.btn}><i className="ri-at-line" /></button>
+        <button className={`${commentCss.btn} ${commentCss.primary}`} onClick={()=>{handleCommentSubmit(task._id)}}>Send</button>
+      </div>
+    </div>
+  </div>
+  <div className={commentCss.comment}>
+    <div className={commentCss.userBanner}>
+      <div className={commentCss.user}>
+        <div className={commentCss.avatar}>
+          <img src="https://randomuser.me/api/portraits/men/86.jpg" />
+          <span className={`${commentCss.stat} ${commentCss.grey}`} />
+        </div>
+        <h5>Floyd Miles</h5>
+      </div>
+      <button className={`${commentCss.btn} ${commentCss.dropdown} `}><i className="ri-more-line" /></button>
+    </div>
+    <div className={commentCss.content}>
+      <p>Actually, now that I try out the links on my message, above, none of them take me to the secure site. Only my shortcut on my desktop, which I created years ago.</p>
+    </div>
+    <div className={commentCss.footer}>
+      <button className={commentCss.btn}><i className="ri-emotion-line" /></button>
+      {/* <div className="reactions">
+        <button className="btn react"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/325/thumbs-up_1f44d.png" alt />4</button>
+        <button className="btn react"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/325/angry-face-with-horns_1f47f.png" alt />1</button>
+      </div> */}
+      <div className="divider" />
+      <a href="#">Reply</a>
+      <div className="divider" />
+      <span className="is-mute">6 hour</span>
+    </div>
+  </div>
+  {/* <div>
+
+
+		<div class="comment">
+			<div class="user-banner">
+				<div class="user">
+					<div class="avatar" style="background-color:#fff5e9;border-color:#ffe0bd; color:#F98600">
+						AF
+						<span class="stat green"></span>
+					</div>
+					<h5>Albert Flores</h5>
+				</div>
+				<button class="btn dropdown"><i class="ri-more-line"></i></button>
+			</div>
+			<div class="content">
+				<p>Before installing this plugin please put back again your wordpress and site url back to http.</p>
+			</div>
+			<div class="footer">
+				<button class="btn"><i class="ri-emotion-line"></i></button>
+				<div class="divider"></div>
+				<a href="#">Reply</a>
+				<div class="divider"></div>
+				<span class="is-mute">2 min</span>
+			</div>
+		</div>
+		<div class="reply comment">
+			<div class="user-banner">
+				<div class="user">
+					<div class="avatar">
+						<img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt="">
+						<span class="stat green"></span>
+					</div>
+					<h5>Bessie Cooper</h5>
+				</div>
+				<button class="btn dropdown"><i class="ri-more-line"></i></button>
+			</div>
+			<div class="content">
+				<p>Hi <a href="#" class="tagged-user">@Albert Flores</a>.Thanks for your reply.</p>
+			</div>
+			<div class="footer">
+				<button class="btn"><i class="ri-emotion-line"></i></button>
+				<div class="reactions">
+					<button class="btn react"><img src="https://cdn-0.emojis.wiki/emoji-pics/apple/smiling-face-with-heart-eyes-apple.png" alt="">2</button>
+				</div>
+				<div class="divider"></div>
+				<a href="#">Reply</a>
+				<div class="divider"></div>
+				<span class="is-mute">18 sec</span>
+			</div>
+		</div>
+  
+	</div> */}
+  <div className="load">
+    <span><i className="ri-refresh-line" />Loading</span>
+  </div>
+                   </div>
+
+
                       </div>
                     </div>
                   </div>   

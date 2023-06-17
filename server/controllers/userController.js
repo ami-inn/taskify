@@ -644,6 +644,7 @@ export const fetchProjectTask=async (req,res)=>{
             populate:[
                 {path:'assigneeId',model:'User'},
                 {path:'creatorId',model:'User'},
+                { path: 'comments.postedBy', model: 'User' },
 
             ]
         })
@@ -660,6 +661,36 @@ export const fetchProjectTask=async (req,res)=>{
     }
     catch(err){
         console.log(err)
+        return res.json({error:true,message:'internal server error'})
+    }
+}
+
+export const postTaskComment =async (req,res)=>{
+    try{
+        console.log('etner haseere');
+
+        const {taskId}=req.params
+        console.log('taskId',taskId);
+        const {content,postedBy}=req.body
+
+        console.log('here',req.body);
+
+        const task= await TaskModel.findById(taskId)
+
+        if(!task){
+            return res.json({error:true,message:'task not found'})
+        }
+
+        const newComment = {content,postedBy}
+        task.comments.push(newComment)
+
+        await task.save()
+
+        return res.json({error:false,message:'task updated'})
+
+    }
+    catch(err){
+        console.log(err);
         return res.json({error:true,message:'internal server error'})
     }
 }
