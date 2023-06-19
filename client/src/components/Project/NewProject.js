@@ -111,6 +111,7 @@ function NewProject(props) {
            setSnackOpen(true)
           
             dispatch({type:'refresh'})
+            dispatch({type:''})
             console.log(snackOpen,'snack opennnnn');
             props.setModalview(false)
           }

@@ -13,8 +13,12 @@ import SnackBar from '../SnackBar/SnackBar'
 function ProjectTask() {
     const {id}=useParams()
     const navigate=useNavigate()
+    // const workspaceId = useSelector((state)=>state.currentWorkspace)
+    // const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+    
     const [newTaskModal,setNewTaskModal] = useState(false)
     const [tasks,setTasks]=useState([])
+    const [project,setProject]=useState([])
     const [refresh,setRefresh]=useState(false)
     const [comment,setComment]=useState('')
     const [snackOpen,setSnackOpen]=useState(false)
@@ -24,6 +28,8 @@ function ProjectTask() {
     // const [taskId,setTaskId]=useState('')
     const [colapseShowId,setColapseShowId]=useState(false)
     const user=useSelector((state)=>{return state.user.details})
+    const isCreator=project.creator===user._id
+    console.log('is crearor',isCreator);
 
     // const midpoint=Math.ceil(tasks.subtasks.length / 2)
 
@@ -47,6 +53,7 @@ function ProjectTask() {
           alert('error')
           navigate('/projects')
         }else{
+          setProject(response.data.project)
           setTasks(response.data.project.tasks)
         }
         
@@ -80,6 +87,51 @@ function ProjectTask() {
       }
     }
 
+    const handleDeleteComment = async (taskId,commentId)=>{
+      try{
+        console.log('etnere');
+        const response = await axios.delete(`/tasks/${taskId}/comments/${commentId}`)
+        if(response.data.error){
+          setSnackOpen(true)
+          setSeverity('error')
+          setMessage(response.data.message)
+        }else{
+          setRefresh(!refresh)
+          setSnackOpen(true)
+          setSeverity('success')
+          setMessage(response.data.message)
+        }
+      }
+      catch(err){
+        console.log('errorrrrr');
+      }
+    }
+
+    const handleDeleteTask=async (taskId)=>{
+      try{
+        if(!isCreator){
+          setSnackOpen(true)
+          setSeverity('error')
+          setMessage('you are not the creator')
+          return
+
+        }else{
+          const response = await axios.delete(`/tasks/${taskId}`)
+
+          if(response.data.error){
+            alert('error')
+          }else{
+            alert('success')
+          }
+        }
+        
+
+      }
+      catch(err){
+        console.log('errorr of handle delete task');
+      }
+    }
+
     console.log(tasks,'taskssss');
 
 
@@ -98,7 +150,7 @@ function ProjectTask() {
         <div className="card">
           <div className="card-body">
             <div className="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
-              <h5>Your Task</h5>
+              <h5>{project.name} Tasks</h5>
               <div className="d-flex flex-wrap align-items-center">
                 <div className="dropdown dropdown-project mr-3">
                   <div className="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
@@ -110,7 +162,8 @@ function ProjectTask() {
                     <a className="dropdown-item" href="#"><i className="ri-file-copy-line mr-2" />Category</a> 
                   </div>
                 </div>
-                <a onClick={()=>{setNewTaskModal(true)}} className="btn btn-primary" data-target="#new-task-modal" data-toggle="modal">New Task</a>
+                {isCreator? <a onClick={()=>{setNewTaskModal(true)}} className="btn btn-primary" style={{color:'white'}} data-target="#new-task-modal" data-toggle="modal">New Task</a>:''}
+               
               </div>
             </div>
           </div>
@@ -138,7 +191,7 @@ function ProjectTask() {
                             <h5 className="mb-2">{task.name}</h5>
                             {/* <h6>assigned To : {task.assigneeId.name}</h6> */}
                             <div className="media align-items-center">
-                              <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />5/10</div>
+                              <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />0/{task.subtasks.length}</div>
                               <div className="btn bg-body mr-3"><RiSurveyLine className="ri-survey-line mr-2" />{task.comments.length}</div>
                               <div className="btn bg-body"><RiUser2Fill className="ri-survey-line mr-2" />{task.assigneeId.name}</div>
                             </div>
@@ -147,7 +200,7 @@ function ProjectTask() {
                         <div className="media align-items-center mt-md-0 mt-3">
                           <a  className="btn bg-secondary-light mr-3">{task.priority}</a>
                           <a className="btn bg-primary-light mr-3" onClick={()=>{handleModalToggle(task._id)}} data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiEyeFill className="ri-edit-box-line m-0" /></a>
-                          <a className="btn bg-danger-light" onClick={()=>{handleModalToggle(task._id)}} data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiDeleteBack2Fill className="ri-edit-box-line m-0" /></a>
+                          <a className="btn bg-danger-light" onClick={()=>{handleDeleteTask(task._id)}} data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiDeleteBack2Fill className="ri-edit-box-line m-0" /></a>
                         </div>
                       </div>  
                     </div>
@@ -250,7 +303,7 @@ function ProjectTask() {
 <div className={commentCss.blockHeader}>
   <div className={commentCss.title}>
     <h2>Comments</h2>
-    <div className={commentCss.tag}>12</div>
+    <div className={commentCss.tag}>{task.comments.length}</div>
   </div>
 </div>
 <div className={commentCss.writing}>
@@ -297,7 +350,7 @@ function ProjectTask() {
     <a href="#">Posted On : </a>
     <div className="divider" />
     <span className="is-mute">{new Date(comment.postedAt).toLocaleDateString('en-CA')} </span>
-    <RiDeleteBin2Fill  style={{color:'red'}}/>
+    <RiDeleteBin2Fill onClick={()=>handleDeleteComment(task._id,comment._id)} style={{color:'red',cursor:'pointer'}}/>
   </div>
 </div>
 

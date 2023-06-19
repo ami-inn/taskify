@@ -563,6 +563,10 @@ export const deleteProject = async (req,res)=>{
         console.log('sucees');
 
         await ProjectModel.deleteOne({ _id: projectId });
+        await workspaceModel.updateMany(
+            { projects: projectId }, // Filter to find workspaces with the project
+            { $pull: { projects: projectId } } // Remove the project from the projects array
+          );
 
         res.json({error:false,message:'project deleted '})
 
@@ -681,12 +685,12 @@ export const postTaskComment =async (req,res)=>{
             return res.json({error:true,message:'task not found'})
         }
 
-        const newComment = {content,postedBy}
+        const newComment = {content,postedBy,postedAt: Date.now()}
         task.comments.push(newComment)
 
         await task.save()
 
-        return res.json({error:false,message:'task updated'})
+        return res.json({error:false,message:'post comment'})
 
     }
     catch(err){
@@ -694,3 +698,47 @@ export const postTaskComment =async (req,res)=>{
         return res.json({error:true,message:'internal server error'})
     }
 }
+
+export const deleteComment= async (req,res)=>{
+    try{
+         
+        console.log('enter herere');
+        const taskId=req.params.taskId
+        console.log(taskId);
+        const commentId=req.params.commentId
+        console.log(commentId);
+
+        const task= await TaskModel.findById(taskId)
+
+        // console.log(task);
+
+        const commentIndex = task.comments.findIndex(
+            (comment) => comment._id.toString() === commentId
+          );
+          console.log('commenidndex',commentIndex);
+
+          if(commentIndex===-1){
+            console.log('entee');
+            return res.json({error:true,message:'comment not found'})
+          }
+
+          task.comments.splice(commentIndex,1)
+
+          await task.save()
+
+          res.json({error:false,message:'deleted the comment'})
+    }
+    catch(err){
+        console.log('errorrr');
+    }
+}
+
+export const deleteTask=async(req,res)=>{
+    try{
+
+    }
+    catch(err){
+        console.log('error');
+    }
+}
+

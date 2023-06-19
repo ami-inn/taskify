@@ -11,6 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Link, Navigate } from "react-router-dom";
+import store from "../../store/store";
 
 
 function UserHeder() {
@@ -65,7 +66,10 @@ function UserHeder() {
   const dispatch = useDispatch()
   async function handleLogout(){
     await axios.get('/auth/logout');
-    dispatch({type:'refresh'})
+
+    dispatch({ type: 'clearWorkspace' });
+    dispatch({ type: 'refresh' });
+   
   }
   
 

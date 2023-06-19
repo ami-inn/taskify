@@ -12,6 +12,7 @@ const taskSchema=new mongoose.Schema({
         {
           content: { type: String },
           postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+          postedAt: { type: Date, default: Date.now },
         },
       ],
     completedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

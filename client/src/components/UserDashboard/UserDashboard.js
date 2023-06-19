@@ -2,8 +2,18 @@ import React from 'react'
 import img1 from '../../assets/images/user/01.jpg'
 import img2 from '../../assets/images/user/02.jpg'
 import img3 from '../../assets/images/user/03.jpg'
+import { useSelector } from 'react-redux'
 
 function UserDashboard() {
+
+  const workspaceId = useSelector((state)=>state.currentWorkspace)
+  const user=useSelector((state)=>{return state.user.details})
+  const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+
+  console.log('currentworkspace',currentWorkspace);
+
+
+
   return (
     <div className="content-page">
     <div className="container-fluid">
@@ -12,10 +22,10 @@ function UserDashboard() {
           <div className="card card-block card-stretch card-height">
             <div className="card-body">
               <div className="top-block d-flex align-items-center justify-content-between">
-                <h5>Spaces</h5>
+                <h5>Projects</h5>
                 <span className="badge badge-primary">created</span>
               </div>
-              <h3><span className="counter">25</span></h3>
+              <h3><span className="counter">{currentWorkspace?.projects.length}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
                 <p className="mb-0">in progress</p>
                 <span className="text-primary">65%</span>
@@ -31,9 +41,9 @@ function UserDashboard() {
             <div className="card-body">
               <div className="top-block d-flex align-items-center justify-content-between">
                 <h5>Attendance</h5>
-                <span className="badge badge-warning">Toda</span>
+                <span className="badge badge-warning">Admins</span>
               </div>
-              <h3><span className="counter">48</span></h3>
+              <h3><span className="counter">{currentWorkspace?.admins.length}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
                 <p className="mb-0">available</p>
                 <span className="text-warning">65%</span>
@@ -69,7 +79,7 @@ function UserDashboard() {
                 <h5>Members</h5>
                 <span className="badge badge-info">Joined</span>
               </div>
-              <h3><span className="counter">0</span></h3>
+              <h3><span className="counter">{currentWorkspace?.members.length}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
                 <p className="mb-0">available</p>
                 <span className="text-info">90%</span>
