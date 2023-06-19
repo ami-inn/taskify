@@ -16,7 +16,7 @@ function Project() {
   const workspaceId = useSelector((state)=>state.currentWorkspace)
   const user=useSelector((state)=>{return state.user.details})
   const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
-  const isAdmin = currentWorkspace.admins.includes(user._id)
+  const isAdmin = currentWorkspace?.admins?.includes(user._id)
   const navigate=useNavigate()
   
 
@@ -198,7 +198,7 @@ function Project() {
  </div>
 </div>
 
-{project.length===0?
+{project?.length===0?
 
 
 <div className={Nodata.emptyState}>

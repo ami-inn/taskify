@@ -46,6 +46,9 @@ function App() {
       let { data: adminData } = await axios.get("/admin/auth/check");
       dispatch({ type: "admin", payload: { login: adminData.loggedIn, details: adminData.admin } })
           })()
+          
+
+  
   }, [refresh])
 
 

@@ -8,7 +8,7 @@ function CreateTask(props) {
 
 
     
-    const{newTaskModal,setNewTaskModal,projectId}=props
+    const{newTaskModal,setNewTaskModal,projectId,refresh,setRefresh}=props
     const [project,setProject]=useState([])
     const [name,setName]=useState('')
     const [description,setDescription]=useState('')
@@ -109,6 +109,7 @@ function CreateTask(props) {
                 setErrorMessage(response.data.message)
             }else{
                 setNewTaskModal(false)
+                setRefresh(!refresh)
             }
 
         }

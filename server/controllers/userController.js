@@ -560,6 +560,10 @@ export const deleteProject = async (req,res)=>{
             return res.json({error:true,message:'you are not the creator of this project'})
         }
 
+        if (project.tasks.length > 0) {
+            return res.json({ error: true, message: 'Cannot delete project with associated tasks' });
+          }
+
         console.log('sucees');
 
         await ProjectModel.deleteOne({ _id: projectId });
@@ -651,7 +655,7 @@ export const fetchProjectTask=async (req,res)=>{
                 { path: 'comments.postedBy', model: 'User' },
 
             ]
-        })
+        }).populate('members');
 
 
         if(!project){
@@ -735,10 +739,39 @@ export const deleteComment= async (req,res)=>{
 
 export const deleteTask=async(req,res)=>{
     try{
+        const {taskId}=req.params
+        const {projectId}=req.body
+         
+        console.log(taskId,'taskId');
+        console.log(projectId,'projectId')
+
+        const task = await TaskModel.findById(taskId)
+
+        if(!task){
+            return res.json({error:true,message:'Task not Found'})
+        }
+
+       const user= await userModel.findByIdAndUpdate(task.creatorId,{$pull:{createdTasks:taskId}})
+
+       if(!user){
+        console.log('no user found');
+       }
+        
+        if(task.assigneeId){
+            console.log('enter to assignee ');
+            await userModel.findByIdAndUpdate(task.assigneeId,{$pull:{assignedTasks:taskId}})
+        }
+
+        await TaskModel.deleteOne({_id:taskId})
+
+        await ProjectModel.findByIdAndUpdate(projectId,{$pull:{tasks:taskId}},{new:true})
+
+        res.json({error:false,message:'task delete successfully'})
 
     }
     catch(err){
         console.log('error');
+        res.json({error:true,message:'internal server error'})
     }
 }
 
