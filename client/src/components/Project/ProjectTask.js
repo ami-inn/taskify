@@ -19,6 +19,8 @@ import commentCss from "../../styles/TaskComment.module.css";
 import { useSelector } from "react-redux";
 import SnackBar from "../SnackBar/SnackBar";
 import Nodata from "../../styles/Nodata.module.css";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button } from "react-bootstrap";
 
 function ProjectTask() {
   const { id } = useParams();
@@ -38,6 +40,8 @@ function ProjectTask() {
   const [showFilter, setShowFiler] = useState(false);
   const [assigneeId, setAssigneeId] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [warnModal,setWarnModal]=useState(false)
+  const [taskId,setTaskId]=useState('')
 
   console.log(comment, "comment");
   // const [taskId,setTaskId]=useState('')
@@ -137,9 +141,15 @@ function ProjectTask() {
         const response = await axios.delete(`/tasks/${taskId}`,{data:{projectId:project._id}});
 
         if (response.data.error) {
-          alert("error");
+          setSnackOpen(true)
+          setSeverity('error')
+          setMessage(response.data.message)
         } else {
-          alert("success");
+         setSnackOpen(true)
+         setWarnModal(!warnModal)
+         setSeverity('success')
+         setMessage(response.data.message)
+         setRefresh(!refresh)
         }
       }
     } catch (err) {
@@ -167,6 +177,13 @@ function ProjectTask() {
       setfilteredTasks(tasks);
     }
   };
+
+  const setOpenWarnModal=(id)=>{
+    console.log('entered here on wanrn modal');
+    setTaskId(id)
+    setWarnModal(true)
+
+  }
 
   console.log(tasks, "taskssss");
 
@@ -330,15 +347,13 @@ function ProjectTask() {
                                     </a>
                                     <a
                                       className="btn bg-danger-light"
-                                      onClick={() => {
-                                        handleDeleteTask(task._id);
-                                      }}
+                                      onClick={()=>{setOpenWarnModal(task._id)}}
                                       data-toggle="collapse"
                                       role="button"
                                       aria-expanded="false"
                                       aria-controls="collapseEdit1"
                                     >
-                                      <RiDeleteBack2Fill onClick={()=>{handleDeleteTask(task._id)}} className="ri-edit-box-line m-0" />
+                                      <RiDeleteBack2Fill className="ri-edit-box-line m-0" />
                                     </a>
                                   </div>
                                 </div>
@@ -359,6 +374,7 @@ function ProjectTask() {
                                         type="checkbox"
                                         className="custom-control-input"
                                         id="customCheck05"
+                                        checked={task.completed?true:false}
                                         disabled
                                       />
                                       <label
@@ -644,6 +660,28 @@ function ProjectTask() {
           setSnackOpen={setSnackOpen}
         />
       )}
+
+<Dialog
+        open={warnModal}
+        onClose={()=>{setWarnModal(!warnModal)}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you Sure Do You Want To Delete ?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Are You Sure Do You Want to Delete This Member 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>{setWarnModal(!warnModal)}}>cancel</Button>
+          <Button onClick={()=>{handleDeleteTask(taskId)}} autoFocus>
+            Accept
+          </Button>
+        </DialogActions>
+      </Dialog>
     </wrapper>
   );
 }

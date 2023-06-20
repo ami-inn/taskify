@@ -775,3 +775,57 @@ export const deleteTask=async(req,res)=>{
     }
 }
 
+export const fetchAssignedTasks = async (req,res)=>{
+
+    try{
+        const { userId, workspaceId } = req.query;
+
+        const workspace=await workspaceModel.findById(workspaceId).populate({
+            path:'projects',
+            populate:{
+                path:'tasks',
+                match:{assigneeId:userId},
+            },
+        })
+
+
+        const assignedTasks =[]
+
+        workspace.projects.forEach((project) => {
+            assignedTasks.push(...project.tasks);
+          });
+          
+          console.log('assigned tasks',assignedTasks);
+
+          res.json({error:false,tasks:assignedTasks})
+
+    }
+    catch(err){
+        console.log(err);
+        res.json({error:true,message:'internal server error'})
+    }
+}
+
+export const updateTask=async(req,res)=>{
+
+
+    try{
+
+        const {tasks} = req.body
+
+        console.log('fdjfkjd',req.body);
+
+        const updatedTasks = await Promise.all(tasks.map(async (task) => {
+            const updatedTask = await TaskModel.findByIdAndUpdate(task._id, { completed: task.completed }, { new: true });
+            return updatedTask;
+          }));
+
+
+          res.json({error:false,message:'task updated',tasks:updatedTasks})
+    }
+
+    catch(err){
+        console.log('error');
+        res.json({error:true,message:'internal  server error'})
+    }
+}

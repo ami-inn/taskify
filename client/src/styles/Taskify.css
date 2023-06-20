@@ -23991,3 +23991,9 @@ ul.iq-contact-rest li a p {
 }
 
   
+.custom-control-input:disabled {
+  /* Add your custom disabled styles here */
+  opacity: 0.5; /* Example: reducing opacity for a faded look */
+  cursor: not-allowed; /* Example: changing cursor to indicate unavailability */
+  /* Include any other styles you want for the disabled state */
+}

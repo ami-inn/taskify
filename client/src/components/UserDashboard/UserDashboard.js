@@ -1,16 +1,43 @@
-import React from 'react'
+import React, { useDebugValue, useEffect, useState } from 'react'
 import img1 from '../../assets/images/user/01.jpg'
 import img2 from '../../assets/images/user/02.jpg'
 import img3 from '../../assets/images/user/03.jpg'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
 
 function UserDashboard() {
 
   const workspaceId = useSelector((state)=>state.currentWorkspace)
   const user=useSelector((state)=>{return state.user.details})
   const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+  const [projects,setProjects] = useState([])
 
-  console.log('currentworkspace',currentWorkspace);
+
+
+  useEffect(()=>{
+
+    fetchProjectDetails()
+
+  },[])
+
+  const fetchProjectDetails=async()=>{
+    try{
+
+      const response = await axios.get(`/workspace-projects/${workspaceId}`)
+
+      if(response.data.error){
+        console.log(response.data);
+      }else{
+        setProjects(response.data.workspace.projects)
+      }
+
+    }
+    catch(err){
+      console.log('error',err);
+    }
+  }
+
+  console.log('currentprojextss',projects);
 
 
 
@@ -40,8 +67,8 @@ function UserDashboard() {
           <div className="card card-block card-stretch card-height">
             <div className="card-body">
               <div className="top-block d-flex align-items-center justify-content-between">
-                <h5>Attendance</h5>
-                <span className="badge badge-warning">Admins</span>
+                <h5>Admins</h5>
+                <span className="badge badge-warning">joined</span>
               </div>
               <h3><span className="counter">{currentWorkspace?.admins.length}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
@@ -407,7 +434,7 @@ function UserDashboard() {
           <div className="card-transparent mb-0">
             <div className="card-header d-flex align-items-center justify-content-between p-0 pb-3">
               <div className="header-title">
-                <h4 className="card-title">Current Spaces</h4>
+                <h4 className="card-title">Current Projects</h4>
               </div>
               <div className="card-header-toolbar d-flex align-items-center">
                 <div id="top-project-slick-arrow" className="slick-aerrow-block">
@@ -416,156 +443,44 @@ function UserDashboard() {
             </div>
             <div className="card-body p-0">
               <ul className="list-unstyled row top-projects mb-0">
-                <li className="col-lg-4">                                    
-                  <div className="card">
-                    <div className="card-body"> 
-                      <h5 className="mb-3">Hotel Management App UI Kit</h5>
-                      <p className="mb-3"><i className="las la-calendar-check mr-2" />02 / 02 / 2021</p>
-                      <div className="iq-progress-bar bg-secondary-light mb-4">
-                        <span className="bg-secondary iq-progress progress-1" data-percent={65} style={{transition: 'width 2s ease 0s', width: '65%'}} />
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="iq-media-group">
-                          <a href="#" className="iq-media">
-                            <img src={img2} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img2} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img2} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img2} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                        </div>
-                        <div>
-                          <a href="#" className="btn bg-secondary-light">Design</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+              
+              {
+                projects.map((project)=>(
+
+                         
                 <li className="col-lg-4">
-                  <div className="card">
-                    <div className="card-body"> 
-                      <h5 className="mb-3">General Improvement in pages</h5>
-                      <p className="mb-3"><i className="las la-calendar-check mr-2" />02 / 02 / 2021</p>
-                      <div className="iq-progress-bar bg-info-light mb-4">
-                        <span className="bg-info iq-progress progress-1" data-percent={65} style={{transition: 'width 2s ease 0s', width: '65%'}} />
+                <div className="card">
+                  <div className="card-body"> 
+                    <h5 className="mb-3">{project.name}</h5>
+                    <p className="mb-3"><i className="las la-calendar-check mr-2" />{new Date(project.createdDate).toLocaleDateString("en-CA")}</p>
+                    <div className="iq-progress-bar bg-success-light mb-4">
+                      <span className="bg-success iq-progress progress-1" data-percent={65} style={{transition: 'width 2s ease 0s', width: '65%'}} />
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="iq-media-group">
+
+                        {
+                          project.members.map((member)=>(
+                            <a href="#" className="iq-media">
+                            <img src={member.profile.url} className="img-fluid avatar-40 rounded-circle" alt />
+                          </a>
+                          ))
+                        }
+                      
+                     
                       </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="iq-media-group">
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                        </div>
-                        <div>
-                          <a href="#" className="btn bg-info-light">Testing</a>
-                        </div>
+                      <div>
+                        <a href="#" className="btn bg-success-light">{project.category}</a>
                       </div>
                     </div>
                   </div>
-                </li>
-                <li className="col-lg-4">
-                  <div className="card">
-                    <div className="card-body"> 
-                      <h5 className="mb-3">Product list view changes</h5>
-                      <p className="mb-3"><i className="las la-calendar-check mr-2" />02 / 02 / 2021</p>
-                      <div className="iq-progress-bar bg-success-light mb-4">
-                        <span className="bg-success iq-progress progress-1" data-percent={65} style={{transition: 'width 2s ease 0s', width: '65%'}} />
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="iq-media-group">
-                          <a href="#" className="iq-media">
-                            <img src={img1} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img1} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img1} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img1} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                        </div>
-                        <div>
-                          <a href="#" className="btn bg-success-light">SEO</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li className="col-lg-4">
-                  <div className="card">
-                    <div className="card-body"> 
-                      <h5 className="mb-3">Add Multiple theme options</h5>
-                      <p className="mb-3"><i className="las la-calendar-check mr-2" />02 / 02 / 2021</p>
-                      <div className="iq-progress-bar bg-warning-light mb-4">
-                        <span className="bg-warning iq-progress progress-1" data-percent={65} style={{transition: 'width 2s ease 0s', width: '65%'}} />
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="iq-media-group">
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                        </div>
-                        <div>
-                          <a href="#" className="btn bg-warning-light">Development</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li className="col-lg-4">
-                  <div className="card">
-                    <div className="card-body"> 
-                      <h5 className="mb-3">Admin Panel Customization</h5>
-                      <p className="mb-3"><i className="las la-calendar-check mr-2" />02 / 02 / 2021</p>
-                      <div className="iq-progress-bar bg-primary-light mb-4">
-                        <span className="bg-primary iq-progress progress-1" data-percent={65} />
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="iq-media-group">
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                          <a href="#" className="iq-media">
-                            <img src={img3} className="img-fluid avatar-40 rounded-circle" alt />
-                          </a>
-                        </div>
-                        <div>
-                          <a href="#" className="btn bg-primary-light">Content</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                </div>
+              </li>
+
+                ))
+              }
+         
+            
               </ul>
             </div>
           </div>

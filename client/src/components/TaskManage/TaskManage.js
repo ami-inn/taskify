@@ -1,12 +1,95 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import { RiAlignJustify, RiEditBoxFill, RiEditBoxLine, RiSurveyLine } from 'react-icons/ri'
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 // import UserSidebar from '../UserSidebar/UserSidebar'
 // import UserHeder from '../UserHeader/UserHeder'
 // import NewTask from './NewTask'
 
 function TaskManage() {
+
+
+  const workspaceId = useSelector((state)=>state.currentWorkspace)
+  const user=useSelector((state)=>{return state.user.details})
+  const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+  
+
+
+  const [assignedTasks,setAssignedTasks]=useState([])
+  const [showTask,setShowTask]=useState(false)
+  const [colapseShowId, setColapseShowId] = useState(false);
+  const [taskStatus, setTaskStatus] = useState({});
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [refresh,setRefresh]=useState(false)
+
+
+  useEffect(()=>{
+
+    fetchAssignedTasks()
+
+  },[refresh])
+
+  const handleModalToggle = (colapseShowId) => {
+    setColapseShowId((prevId) =>
+      prevId === colapseShowId ? null : colapseShowId
+    );
+  };
+
+  const fetchAssignedTasks=async ()=>{
+
+    console.log('enterr hereee');
+    try{
+
+      console.log('enterrrr');
+
+    
+
+      const response = await axios.get('/assigned-tasks',{params:{userId:user._id,workspaceId}})
+
+      if(response.data.error){
+        alert('error')
+      }else{
+        setAssignedTasks(response.data.tasks)
+      }
+    }
+    catch(err){
+      console.log('error');
+    }
+  }
+  const handleTaskCheckboxChange = (taskId, completed) => {
+    // Update the completed status of the task locally
+    const updatedTasks = assignedTasks.map((task) => {
+      if (task._id === taskId) {
+        return { ...task, completed };
+      }
+      return task;
+    });
+    setAssignedTasks(updatedTasks);
+  };
+
+  const handleMarkAsDone = async ()=>{
+    try{
+      console.log('enter hereee');
+      const updatedTasks = assignedTasks.filter((task)=>task.completed)
+      console.log(updatedTasks);
+      const response = await axios.put('/update-task',{tasks:updatedTasks})
+
+
+      if(response.data.error){
+        alert('error')
+      }else{
+        setRefresh(!refresh)
+        alert('success')
+      }
+
+    }
+    catch(err){
+      console.log('error');
+    }
+  }
+  console.log('tasks',assignedTasks);
 
    
   return (
@@ -45,123 +128,119 @@ function TaskManage() {
           <div className="card-body">
             <div className="row">
 
-              <div className="col-lg-12">
-                <div className="card card-widget task-card">
-                  <div className="card-body">
-                    <div className="d-flex flex-wrap align-items-center justify-content-between">
-                      <div className="d-flex align-items-center">
-                        <div className="custom-control custom-task custom-checkbox custom-control-inline">
-                          <input type="checkbox" className="custom-control-input" id="customCheck01" />
-                          <label className="custom-control-label" htmlFor="customCheck01" />
-                        </div>
-                        <div>
-                          <h5 className="mb-2">Design landing page of webkit</h5>
-                          <div className="media align-items-center">
-                            <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />5/10</div>
-                            <div className="btn bg-body"><RiSurveyLine className="ri-survey-line mr-2" />3</div>
+              {
+                assignedTasks.map((task)=>(
+
+
+                  <div className="col-lg-12">
+                  <div className="card card-widget task-card">
+                    <div className="card-body">
+                      <div className="d-flex flex-wrap align-items-center justify-content-between">
+                        <div className="d-flex align-items-center">
+                          <div className="custom-control custom-task custom-checkbox custom-control-inline">
+                            <input type="checkbox" checked={task.completed?true:false} disabled className="custom-control-input" id={task._id} />
+                            <label className="custom-control-label" htmlFor={task._id} />
+                          </div>
+                          <div>
+                            <h5 className="mb-2">{task.name}</h5>
+                            <div className="media align-items-center">
+                              <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />0/{task?.subtasks?.length}</div>
+                              <div className="btn bg-body"><RiSurveyLine className="ri-survey-line mr-2" />{task.comments.length}</div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="media align-items-center mt-md-0 mt-3">
-                        <a href="#" className="btn bg-secondary-light mr-3">Design</a>
-                        <a className="btn bg-secondary-light" data-toggle="collapse" href="#collapseEdit1" role="button" aria-expanded="false" aria-controls="collapseEdit1"><RiEditBoxLine className="ri-edit-box-line m-0" /></a>
-                      </div>
-                    </div>  
-                  </div>
-                </div>                                                                                                        
-                <div className="collapse" id="collapseEdit1">                                            
-                  <div className="card card-list task-card">
-                    <div className="card-header d-flex align-items-center justify-content-between px-0 mx-3">
-                      <div className="header-title">
-                        <div className="custom-control custom-checkbox custom-control-inline">
-                          <input type="checkbox" className="custom-control-input" id="customCheck05" />
-                          <label className="custom-control-label h5" htmlFor="customCheck05">Mark as done</label>
+                        <div className="media align-items-center mt-md-0 mt-3">
+                          <a className={`btn ${task.completed?'bg-primary-light':'bg-secondary-light'}  mr-3`}>{task.completed?'completed':'not complete'}</a>
+                          <a className="btn bg-secondary-light" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseEdit1" onClick={()=>{ handleModalToggle(task._id);}} ><RiEditBoxLine  className="ri-edit-box-line m-0" /></a>
                         </div>
-                      </div>
-                      <div><a href="#" className="btn bg-secondary-light">Design</a></div>
+                      </div>  
                     </div>
-                    <div className="card-body">
-                      <div className="form-group mb-3 position-relative">
-                        <input type="text" className="form-control bg-white" placeholder="Design landing page of webkit" />
-                        <a href="#" className="task-edit task-simple-edit text-body"><i className="ri-edit-box-line" /></a>
+                  </div>                                                                                                        
+                  <div className={`collapse ${ colapseShowId === task._id ? "show" : ""}`} id="collapseEdit1">                                            
+                    <div className="card card-list task-card">
+                      <div className="card-header d-flex align-items-center justify-content-between px-0 mx-3">
+                        <div className="header-title">
+                          <div key={task._id} className="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" checked={task.completed} onChange={(e) => handleTaskCheckboxChange(task._id, e.target.checked)} className="custom-control-input" id={'task'+task._id} />
+                            <label className="custom-control-label h5" htmlFor={'task'+task._id}>Mark as done</label>
+                          </div>
+                        </div>
+                        <div><a onClick={handleMarkAsDone} className="btn bg-primary-light">update</a></div>
                       </div>
-                      <div className="card mb-3">
-                        <div className="card-body">
-                          <div className="row">
+                      <div className="card-body">
+                        <div className="form-group mb-3 position-relative">
+                          <input type="text" className="form-control bg-white" placeholder="Design landing page of webkit" />
+                          <a href="#" className="task-edit task-simple-edit text-body"><i className="ri-edit-box-line" /></a>
+                        </div>
+                        <div className="card mb-3">
+                          <div className="card-body">
+                            <div className="row">
                             <div className="col-lg-6">
-                              <div className="form-group mb-0">
-                                <label htmlFor="exampleInputText2" className="h5">Memebers</label>
-                                <select name="type" className="selectpicker form-control" data-style="py-0">
-                                  <option>Memebers</option>
-                                  <option>Kianna Septimus</option>
-                                  <option>Jaxson Herwitz</option>
-                                  <option>Ryan Schleifer</option>
-                                </select>
+                                <div className="form-group mb-0">
+                                  <label htmlFor="exampleInputText3" className="h5">Priority</label>
+                                  <input type="text" className="form-control" id="exampleInputText3" defaultValue={task.priority} disabled />
+                                </div>                        
+                              </div>
+                              <div className="col-lg-6">
+                                <div className="form-group mb-0">
+                                  <label htmlFor="exampleInputText3" className="h5">Due Date</label>
+                                  <input type="date" className="form-control" id="exampleInputText3" defaultValue={new Date(task.dueDate).toLocaleDateString("en-CA")} />
+                                </div>                        
                               </div>
                             </div>
-                            <div className="col-lg-6">
-                              <div className="form-group mb-0">
-                                <label htmlFor="exampleInputText3" className="h5">Due Dates*</label>
-                                <input type="date" className="form-control" id="exampleInputText3" defaultValue />
-                              </div>                        
+                          </div>
+                        </div>
+                        <div className="card mb-3">
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-lg-6">                                                        
+                                <h5 className="mb-2">Description</h5>
+                                <p className="mb-0">{task.description}</p>
+                              </div>
+                              <div className="col-lg-6">                                      
+                                <h5 className="mb-2">Checklist</h5>
+                                <div className="row">
+                                     <div className="col-lg-12">
+                                              {task.subtasks.map((subtask) => (
+                                                <div className="custom-control custom-checkbox custom-control-inline mr-3">
+                                                  <input
+                                                    id={subtask._id}
+                                                    type="checkbox"
+                                                    className="custom-control-input"
+                                                    
+                                                  />
+                                                  <label
+                                                    className="custom-control-label mb-1"
+                                                    htmlFor={subtask._id}
+                                                  >
+                                                    {" "}
+                                                    {subtask.name}{" "}
+                                                  </label>
+                                                </div>
+                                              ))}
+                                            </div>
+                                </div>                       
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="card mb-3">
-                        <div className="card-body">
-                          <div className="row">
-                            <div className="col-lg-6">                                                        
-                              <h5 className="mb-2">Description</h5>
-                              <p className="mb-0">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
-                            </div>
-                            <div className="col-lg-6">                                      
-                              <h5 className="mb-2">Checklist</h5>
-                              <div className="row">
-                                <div className="col-lg-6">
-                                  <div className="custom-control custom-checkbox custom-control-inline mr-0">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                    <label className="custom-control-label mb-1" htmlFor="customCheck1">Design mobile version</label>
-                                  </div>
-                                  <div className="custom-control custom-checkbox custom-control-inline mr-0">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck02" />
-                                    <label className="custom-control-label mb-1" htmlFor="customCheck02">Use images of unsplash.com</label>
-                                  </div>
-                                  <div className="custom-control custom-checkbox custom-control-inline mr-0">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck3" />
-                                    <label className="custom-control-label" htmlFor="customCheck3">Vector images of small size.</label>
-                                  </div>
-                                </div>
-                                <div className="col-lg-6">
-                                  <div className="custom-control custom-checkbox custom-control-inline mr-0">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck04" />
-                                    <label className="custom-control-label mb-1" htmlFor="customCheck04">Design mobile version of landing page</label>
-                                  </div>
-                                  <div className="custom-control custom-checkbox custom-control-inline mr-0">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck5" />
-                                    <label className="custom-control-label mb-1" htmlFor="customCheck5">Use images of unsplash.com</label>
-                                  </div>
-                                  <div className="custom-control custom-checkbox custom-control-inline mr-0">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck06" />
-                                    <label className="custom-control-label" htmlFor="customCheck06">Vector images of small size..</label>
-                                  </div>
-                                </div>
-                              </div>                       
-                            </div>
+                        <div className="form-group mb-0">
+                          <label htmlFor="exampleInputText01" className="h5">Attachments</label>
+                          <div className="custom-file">
+                            <input type="file" className="custom-file-input" id="inputGroupFile001" />
+                            <label className="custom-file-label" htmlFor="inputGroupFile001">Upload media</label>
                           </div>
-                        </div>
-                      </div>
-                      <div className="form-group mb-0">
-                        <label htmlFor="exampleInputText01" className="h5">Attachments</label>
-                        <div className="custom-file">
-                          <input type="file" className="custom-file-input" id="inputGroupFile001" />
-                          <label className="custom-file-label" htmlFor="inputGroupFile001">Upload media</label>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>      
-              </div>
+                  </div>      
+                </div>
+
+
+                ))
+              }
+
+           
 
            
 
