@@ -141,6 +141,7 @@ function ProjectTask() {
         const response = await axios.delete(`/tasks/${taskId}`,{data:{projectId:project._id}});
 
         if (response.data.error) {
+          setWarnModal(!warnModal)
           setSnackOpen(true)
           setSeverity('error')
           setMessage(response.data.message)
@@ -316,7 +317,7 @@ function ProjectTask() {
                                       <div className="media align-items-center">
                                         <div className="btn bg-body mr-3">
                                           <RiAlignJustify className="ri-align-justify mr-2" />
-                                          0/{task.subtasks.length}
+                                          {task.completed?task.subtasks.length:0}/{task.subtasks.length}
                                         </div>
                                         <div className="btn bg-body mr-3">
                                           <RiSurveyLine className="ri-survey-line mr-2" />
@@ -332,6 +333,9 @@ function ProjectTask() {
                                   <div className="media align-items-center mt-md-0 mt-3">
                                     <a className="btn bg-secondary-light mr-3">
                                       {task.priority}
+                                    </a>
+                                    <a className={`btn ${task.completed?'bg-success-light':'bg-secondary-light'}  mr-3`}>
+                                      {task.completed?'completed':'pending'}
                                     </a>
                                     <a
                                       className="btn bg-primary-light mr-3"

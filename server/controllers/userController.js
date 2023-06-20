@@ -815,10 +815,25 @@ export const updateTask=async(req,res)=>{
 
         console.log('fdjfkjd',req.body);
 
-        const updatedTasks = await Promise.all(tasks.map(async (task) => {
-            const updatedTask = await TaskModel.findByIdAndUpdate(task._id, { completed: task.completed }, { new: true });
-            return updatedTask;
-          }));
+        // const updatedTasks = await Promise.all(tasks.map(async (task) => {
+        //     const updatedTask = await TaskModel.findByIdAndUpdate(task._id, { completed: task.completed }, { new: true });
+        //     return updatedTask;
+        //   }));
+
+        
+    const updatedTasks = await Promise.all(
+        tasks.map(async (task) => {
+          const updatedTask = await TaskModel.findByIdAndUpdate(
+            task._id,
+            {
+              completed: task.completed,
+              'subtasks.$[].completed': task.completed
+            },
+            { new: true }
+          );
+          return updatedTask;
+        })
+      );
 
 
           res.json({error:false,message:'task updated',tasks:updatedTasks})

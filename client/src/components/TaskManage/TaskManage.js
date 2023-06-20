@@ -4,6 +4,7 @@ import UserHeder from '../UserHeader/UserHeder'
 import { RiAlignJustify, RiEditBoxFill, RiEditBoxLine, RiSurveyLine } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import SnackBar from '../SnackBar/SnackBar'
 // import UserSidebar from '../UserSidebar/UserSidebar'
 // import UserHeder from '../UserHeader/UserHeder'
 // import NewTask from './NewTask'
@@ -23,6 +24,9 @@ function TaskManage() {
   const [taskStatus, setTaskStatus] = useState({});
   const [completedTasks, setCompletedTasks] = useState([]);
   const [refresh,setRefresh]=useState(false)
+  const [snackOpen,setSnackOpen]=useState(false)
+  const [severity,setSeverity]=useState('')
+  const [message,setMessage]=useState('')
 
 
   useEffect(()=>{
@@ -58,30 +62,58 @@ function TaskManage() {
       console.log('error');
     }
   }
+  // const handleTaskCheckboxChange = (taskId, completed) => {
+  //   // Update the completed status of the task locally
+  //   const updatedTasks = assignedTasks.map((task) => {
+  //     if (task._id === taskId) {
+  //       return { ...task, completed };
+  //     }
+  //     return task;
+  //   });
+  //   setAssignedTasks(updatedTasks);
+  // };
+
   const handleTaskCheckboxChange = (taskId, completed) => {
-    // Update the completed status of the task locally
+
+    console.log('completeddddd',completed);
+    // Update the completed status of the task and its subtasks locally
     const updatedTasks = assignedTasks.map((task) => {
       if (task._id === taskId) {
-        return { ...task, completed };
+        const updatedSubtasks = task.subtasks.map((subtask) => {
+          return { ...subtask, completed };
+        });
+        return { ...task, completed, subtasks: updatedSubtasks };
       }
       return task;
     });
+
     setAssignedTasks(updatedTasks);
   };
 
   const handleMarkAsDone = async ()=>{
     try{
       console.log('enter hereee');
-      const updatedTasks = assignedTasks.filter((task)=>task.completed)
+      // const updatedTasks = assignedTasks.filter((task)=>task.completed)
+      
+      const updatedTasks = assignedTasks.map((task) => {
+        const updatedSubtasks = task.subtasks.map((subtask) => {
+          return { ...subtask, completed: task.completed};
+        });
+        return { ...task,  subtasks: updatedSubtasks };
+      });
       console.log(updatedTasks);
       const response = await axios.put('/update-task',{tasks:updatedTasks})
 
 
       if(response.data.error){
-        alert('error')
+        setSnackOpen(true)
+        setSeverity('error')
+        setMessage(response.data.message)
       }else{
         setRefresh(!refresh)
-        alert('success')
+        setSnackOpen(true)
+        setSeverity('success')
+        setMessage(response.data.message)
       }
 
     }
@@ -144,7 +176,7 @@ function TaskManage() {
                           <div>
                             <h5 className="mb-2">{task.name}</h5>
                             <div className="media align-items-center">
-                              <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />0/{task?.subtasks?.length}</div>
+                              <div className="btn bg-body mr-3"><RiAlignJustify className="ri-align-justify mr-2" />{task.completed?task.subtasks.length:0}/{task?.subtasks?.length}</div>
                               <div className="btn bg-body"><RiSurveyLine className="ri-survey-line mr-2" />{task.comments.length}</div>
                             </div>
                           </div>
@@ -207,6 +239,8 @@ function TaskManage() {
                                                     id={subtask._id}
                                                     type="checkbox"
                                                     className="custom-control-input"
+                                                    checked={subtask.completed}
+                                                    onChange={(e)=>handleTaskCheckboxChange(task._id,e.target.checked)}
                                                     
                                                   />
                                                   <label
@@ -252,6 +286,11 @@ function TaskManage() {
     {/* Page end  */}
   </div>
      </div>
+
+     {
+  
+  snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
+ }
    
    </div>
   )
