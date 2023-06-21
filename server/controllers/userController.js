@@ -65,11 +65,10 @@ export async function workspaceValid(req,res){
 
         const createdWorkspaces = user.createdWorkspaces.includes(id)
         const joinedWorkspaces = user.workspaces.some((workspace) => workspace.workspace.toString() === id);
-        console.log('here we go','64804ebf1b852bb92da43a5a',id);
-        console.log('joined workspace',joinedWorkspaces);
+      
 
         if(!createdWorkspaces && !joinedWorkspaces){
-            console.log('err 2');
+          
 
             return res.json({err:true,message:'workspace not found'})
         }
@@ -282,7 +281,7 @@ export async function acceptInvitation(req,res){
     const{token,accepted}=req.body
     try{
 
-        console.log('herere');
+        console.log('herere',req.body);
 
         const user = await userModel.findOne({ 'invitations.invitationToken': token });
 
@@ -299,6 +298,8 @@ export async function acceptInvitation(req,res){
             return res.json({error:true,message:'invitation not found'})
         }
         console.log(user);
+
+
         const invitation = user.invitations.find((invite) => invite.invitationToken === token);
         
         console.log('invitationnnnn',invitation);
@@ -319,7 +320,7 @@ export async function acceptInvitation(req,res){
         const isMember=workspace.members.includes(user._id)
         if(isMember){
             console.log('error 4');
-            return res.json({message:'user is already a memeber of the worksapce'})
+            return res.json({error:true,message:'user is already a memeber of the worksapce'})
         }
 
         if(accepted){

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
 import NewProject from './NewProject'
@@ -18,7 +18,8 @@ function Project() {
   const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
   const isAdmin = currentWorkspace?.admins?.includes(user._id)
   const navigate=useNavigate()
-  
+
+
 
     const [modalview,setModalview]=useState(false)
     const [project,setProject] = useState([])
@@ -139,7 +140,7 @@ function Project() {
 
   return (
 
-    <wrapper  className={`${modalview===true?'modal-open ':''} `} style={modalview ? { display: 'block', paddingRight: '4px' } : {}}>
+    <div  className={`${modalview===true?'modal-open ':''} `} style={modalview ? { display: 'block', paddingRight: '4px' } : {}}>
 
     <div className='wrapper'>
 
@@ -176,7 +177,7 @@ function Project() {
              </div>
          <div className="d-flex flex-wrap align-items-center justify-content-between">
       
-           <div className="dropdown status-dropdown mr-3">
+           {/* <div className="dropdown status-dropdown mr-3">
              <div className="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
                <div className="btn bg-body"><span className="h6">Status :</span> In Progress<i className="ri-arrow-down-s-line ml-2 mr-0" /></div>
              </div>
@@ -185,7 +186,7 @@ function Project() {
                <a className="dropdown-item" href="#"><i className="ri-attachment-line mr-2" />Priority</a>
                <a className="dropdown-item" href="#"><i className="ri-file-copy-line mr-2" />Category</a> 
              </div>
-           </div>
+           </div> */}
     
            <div className="pl-3 border-left btn-new">
             {isAdmin? <a onClick={()=>{setModalview(true)}} className="btn btn-primary" style={{color:'white'}} data-target="#new-project-modal" data-toggle="modal">New Project</a>:''}
@@ -322,7 +323,7 @@ function Project() {
 modalview===true && <NewProject modalview={modalview} setModalview={setModalview} success={success} setSuccess={setSuccess} />
 }
 
-    </wrapper>
+    </div>
 
 
   )

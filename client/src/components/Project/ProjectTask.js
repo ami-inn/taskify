@@ -189,7 +189,7 @@ function ProjectTask() {
   console.log(tasks, "taskssss");
 
   return (
-    <wrapper
+    <div
       className={` ${newTaskModal === true ? "outwrap modal-open" : ""}`}
       style={newTaskModal ? { display: "block", paddingRight: "4px" } : {}}
     >
@@ -686,7 +686,7 @@ function ProjectTask() {
           </Button>
         </DialogActions>
       </Dialog>
-    </wrapper>
+    </div>
   );
 }
 

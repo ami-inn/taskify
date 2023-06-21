@@ -19,6 +19,20 @@ function CreateTask(props) {
     const [priority,setpriority]=useState('')
     const [newSubtask,setNewsubTask]=useState('')
     const [errMessage,setErrorMessage]=useState('')
+
+    function validationErr() {
+      if (
+        name.replaceAll(" ", "") === "" ||
+        description.replaceAll(" ", "") === "" ||
+        assigneeId.replaceAll(" ", "") === "" ||
+        dueDate.replaceAll(" ", "") === "" ||
+        priority.replaceAll(" ", "") === ""
+      ) {
+          
+        return true;
+      }
+      return false;
+    }
     
     const user=useSelector((state)=>{
     
@@ -219,7 +233,7 @@ function CreateTask(props) {
                
                 <div className="col-lg-12">
                   <div className="d-flex flex-wrap align-items-ceter justify-content-center mt-4">
-                    <div className="btn btn-primary mr-3" data-dismiss="modal" onClick={handleSubmit}>Save</div>
+                    <button type='submit' disabled={validationErr()} className="btn btn-primary mr-3" data-dismiss="modal" onClick={handleSubmit}>Save</button>
                     <div className="btn btn-primary" data-dismiss="modal" onClick={handleCancel}>Cancel</div>
                   </div>
                 </div>

@@ -53,6 +53,25 @@ function NewProject(props) {
         displaySelectedMembersNames();
       }, [selectedMembers]);
 
+
+      function validationErr() {
+        if (
+          name.replaceAll(" ", "") === "" ||
+          category.replaceAll(" ", "") === "" ||
+          priority.replaceAll(" ", "") === "" ||
+          dueDate.replaceAll(" ", "") === "" ||
+          
+          description.replaceAll(" ", "") === "" 
+          
+      
+      
+        ) {
+            
+          return true;
+        }
+        return false;
+      }
+
       const fetchMembers= async ()=>{
         try{
             const {data}=await axios.get(`/workspace-details/${workspaceId}`)
@@ -213,7 +232,7 @@ function NewProject(props) {
           </div>
           <div className="col-lg-12">
             <div className="d-flex flex-wrap align-items-ceter justify-content-center mt-2">
-              <div className="btn btn-primary mr-3" data-dismiss="modal" onClick={handleSubmitProject}>Save</div>
+              <button className="btn btn-primary mr-3" type='submit' disabled={validationErr()} data-dismiss="modal" onClick={handleSubmitProject}>Save</button>
               <div className="btn btn-primary" onClick={handleCancel} data-dismiss="modal">Cancel</div>
             </div>
           </div>
