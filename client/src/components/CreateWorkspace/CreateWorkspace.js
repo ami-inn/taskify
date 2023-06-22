@@ -54,6 +54,9 @@ function CreateWorkspace() {
             workspace: data.workspace
           }
         });
+        //new code
+        localStorage.setItem('workspaceDetails',JSON.stringify(data.workspace))
+
         navigate("/workspace/" + data.workspaceId);
       } else {
         alert();
@@ -109,7 +112,7 @@ function CreateWorkspace() {
                         <img
                           src={user.profile.url}
                           className="rounded avatar-80 mb-3"
-                          alt
+                          
                         />
                         <h2 className="mb-2 text-white">Hi ! {user.name}</h2>
                         <p>Create An Workspace To Continue</p>
@@ -160,7 +163,7 @@ function CreateWorkspace() {
                       <img
                         src={workspaceImg}
                         className="img-fluid image-right"
-                        alt
+                        
                       />
                     </div>
                   </div>

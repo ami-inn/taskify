@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router,Routes,Route,Navigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch,useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import UserSignup from './components/UserSignup/UserSignup';
 import UserLanding from './components/UserLanding/UserLanding';
 import UserLogin from './components/UserLogin/UserLogin';
@@ -33,6 +33,8 @@ function App() {
   axios.defaults.baseURL = "http://localhost:5000/";
   axios.defaults.withCredentials = true;
 
+  const [loading, setLoading] = useState(true);
+
   const { user, admin,refresh } = useSelector((state) => {
     return state;
   });
@@ -45,7 +47,30 @@ function App() {
       dispatch({ type: "user", payload: { login: data.loggedIn, details: data.user } })
       let { data: adminData } = await axios.get("/admin/auth/check");
       dispatch({ type: "admin", payload: { login: adminData.loggedIn, details: adminData.admin } })
-          })()
+          
+    
+      const savedWorkspace = localStorage.getItem('workspaceDetails');
+      console.log('savedWorkspace',savedWorkspace);
+      if (savedWorkspace) {
+        const workspaceData = JSON.parse(savedWorkspace);
+        console.log('workspaceData',workspaceData);
+        console.log(workspaceData.workspaceId);
+        dispatch({
+          type: 'initializeWorkspace',
+          payload: {
+            workspaceId: workspaceData._id,
+            workspace: workspaceData
+          }
+        });
+      }
+    
+      setLoading(false)
+    
+    })
+
+          
+          
+          ()
           
 
   
@@ -53,6 +78,10 @@ function App() {
 
 
   console.log(admin);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
   

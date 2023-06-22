@@ -95,7 +95,7 @@ function InvitationReq() {
 
                 </div>
                 <div className="col-lg-6 content-right">
-                  <img src={workspaceImg} className="img-fluid image-right" alt />
+                  <img src={workspaceImg} className="img-fluid image-right" alt='' />
                 </div>
               </div>
             </div>

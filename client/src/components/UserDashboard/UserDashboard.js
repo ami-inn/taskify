@@ -7,8 +7,8 @@ import axios from 'axios'
 
 function UserDashboard() {
 
-  const workspaceId = useSelector((state)=>state.currentWorkspace)
   const user=useSelector((state)=>{return state.user.details})
+  const workspaceId = useSelector((state)=>state.currentWorkspace)
   const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
   const [projects,setProjects] = useState([])
 
@@ -144,13 +144,13 @@ function UserDashboard() {
                         <div className="col-sm-3">
                           <div className="iq-media-group text-sm-right">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
                             </a>
                           </div>
                         </div>
@@ -172,13 +172,13 @@ function UserDashboard() {
                         <div className="col-sm-3">
                           <div className="iq-media-group text-sm-right">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
                             </a>
                           </div>
                         </div>
@@ -200,13 +200,13 @@ function UserDashboard() {
                         <div className="col-sm-3">
                           <div className="iq-media-group text-sm-right">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
                             </a>
                           </div>
                         </div>
@@ -239,10 +239,10 @@ function UserDashboard() {
                         <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
                           <div className="iq-media-group">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                           </div>
                           <a className="btn btn-white text-primary link-shadow mt-2">High</a>
@@ -272,16 +272,16 @@ function UserDashboard() {
                         <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
                           <div className="iq-media-group">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
                             </a>                                                
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                           </div>
                           <a className="btn btn-white text-secondary link-shadow mt-2">Medium</a>
@@ -311,13 +311,13 @@ function UserDashboard() {
                         <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
                           <div className="iq-media-group">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
                             </a>
                           </div>
                           <a className="btn btn-white text-warning link-shadow mt-2">Low</a>
@@ -347,13 +347,13 @@ function UserDashboard() {
                         <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
                           <div className="iq-media-group">
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
                             </a>
                             <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt />
+                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
                             </a>
                           </div>
                           <a className="btn btn-white text-success  link-shadow mt-2">High</a>
@@ -462,7 +462,7 @@ function UserDashboard() {
                         {
                           project.members.map((member)=>(
                             <a href="#" className="iq-media">
-                            <img src={member.profile.url} className="img-fluid avatar-40 rounded-circle" alt />
+                            <img src={member.profile.url} className="img-fluid avatar-40 rounded-circle" alt='' />
                           </a>
                           ))
                         }

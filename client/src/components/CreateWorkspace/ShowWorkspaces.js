@@ -76,7 +76,7 @@ export default function ShowWorkspaces(props) {
       <DialogTitle>Select an workspace</DialogTitle>
       <List sx={{ pt: 0 }}>
         {workspaces.map((workspace) => (
-          <ListItem disableGutters>
+          <ListItem key={workspace._id} disableGutters>
             <ListItemButton onClick={() => handleListItemClick(workspace._id)} key={workspace._id}>
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
@@ -84,7 +84,7 @@ export default function ShowWorkspaces(props) {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={workspace.name} />
-            </ListItemButton>
+            </ListItemButton> 
           </ListItem>
         ))}
 

@@ -23,9 +23,10 @@ function UserTeam() {
 })
     const workspaceId = useSelector((state)=>state.currentWorkspace)
     const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
-    const isAdmin = currentWorkspace.admins.includes(user._id)
-    const isOwner = currentWorkspace.owner.toString() === user._id;
-    console.log('isowner',isOwner);
+    const isAdmin = currentWorkspace?.admins?.includes(user._id)
+    const isOwner = currentWorkspace?.owner?.toString() === user._id;
+    console.log('workspaceId',workspaceId);
+    
     const dispatch = useDispatch()
     const navigate= useNavigate()
 

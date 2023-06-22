@@ -71,7 +71,7 @@ function ForgotEmailPassword({email,otp}) {
                   </div>
                 </div>
                 <div className="col-lg-6 content-right">
-                  <img src={ForgotImg} className="img-fluid image-right" alt />
+                  <img src={ForgotImg} className="img-fluid image-right" alt='' />
                 </div>
               </div>
             </div>
