@@ -323,6 +323,8 @@ function Project() {
 modalview===true && <NewProject modalview={modalview} setModalview={setModalview} success={success} setSuccess={setSuccess} />
 }
 
+{modalview?<div class="modal-backdrop fade show"></div>:''}
+
     </div>
 
 

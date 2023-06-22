@@ -686,6 +686,8 @@ function ProjectTask() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {newTaskModal ?<div class="modal-backdrop fade show"></div>:''}
     </div>
   );
 }

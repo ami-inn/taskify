@@ -53,6 +53,8 @@ export default function ShowWorkspaces(props) {
         }
       });
 
+      localStorage.setItem('workspaceDetails',JSON.stringify(data.workspace))
+
       navigate("/workspace/" + value);
       alert('success')
     }else{

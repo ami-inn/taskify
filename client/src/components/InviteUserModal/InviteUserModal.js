@@ -9,9 +9,10 @@ function InviteUserModal(props) {
 
   const [email,setEmail]=useState('')
   const [loading,setLoading]=useState(false)
+  const [errMessage,setErrorMessage]=useState('')
  
   const [role,setRole]=useState('')
-
+ 
 
 
   const workspaceId = useSelector((state)=>state.currentWorkspace)
@@ -28,7 +29,7 @@ function InviteUserModal(props) {
         // alert('err')
         console.log('errror');
         setLoading(false)
-        alert('erro')
+        setErrorMessage(response.data.message)
         console.log(response.data.message);
       }else{
         setLoading(false)
@@ -84,6 +85,10 @@ function InviteUserModal(props) {
               </select>
             </div>
           </div>
+          {
+                          errMessage &&
+                          <p className='errMessageText'>{errMessage}</p>
+                        }
           <div className="col-lg-12">
             <div className="d-flex flex-wrap align-items-ceter justify-content-center mt-2">
               <div className="btn btn-primary mr-3" onClick={handleSubmit} data-dismiss="modal">Save</div>

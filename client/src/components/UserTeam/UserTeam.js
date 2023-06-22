@@ -160,8 +160,9 @@ function UserTeam() {
     }
 
   return (
-    
-    <div className='wrapper'>
+
+    <div className={`${modalview?'modal-open':''}`}>
+ <div className='wrapper'>
         <UserSidebar page={'team'}/>
         <UserHeder/>
 
@@ -412,6 +413,12 @@ function UserTeam() {
     
       
     </div>
+
+
+    {modalview?<div class="modal-backdrop fade show"></div>:''}
+    </div>
+    
+   
   )
 }
 

@@ -49,6 +49,7 @@ function JoinedWorkspace(props) {
               workspace: data.workspace
             }
           });
+          localStorage.setItem('workspaceDetails',JSON.stringify(data.workspace))
     
           navigate("/workspace/" + value);
           alert('success')
