@@ -587,6 +587,41 @@ export const createProject=async (req,res)=>{
     }
 }
 
+export const editProject=async (req,res)=>{
+    try{
+        const {projectId}=req.params
+        console.log('jprojectid',projectId);
+        const { name, category, members, dueDate,priority,description} = req.body;
+
+        console.log(req.body);
+
+        const project = await ProjectModel.findById(projectId)
+
+    
+
+     
+
+        // Update the project details
+        project.name = name;
+        project.category = category;
+        project.description = description;
+        project.members = members;
+        project.dueDate = dueDate;
+        project.priority = priority;
+    
+        // Save the updated project
+        await project.save();
+
+        res.json({error:false,message:'edited successfully'})
+
+
+    }
+    catch(err){
+        console.log('eror');
+        res.json({error:true,message:'internal server error'})
+    }
+}
+
 
 export const fetchWorkspaceProjects=async (req,res)=>{
     try{

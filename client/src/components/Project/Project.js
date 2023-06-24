@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import CircleProgress from '../CricleProgress/CircleProgress'
 import Nodata from '../../styles/Nodata.module.css'
 import buttonCss from '../../styles/Buttons.module.css'
+import EditProject from './EditProject'
 
 
 function Project() {
@@ -32,6 +33,8 @@ function Project() {
     const [snackOpen,setSnackOpen]=useState(false)
     const [searchQuery,setSearchQuery]=useState('')
     const [success,setSuccess]=useState(false)
+    const [editmodalview,seteditmodalView]=useState(false)
+    const [selectedProject,setSelectedProject]=useState(null)
     console.log(modalview);
 
 
@@ -134,6 +137,31 @@ function Project() {
       }
     }
 
+    const handleOpenEditModal = (project)=>{
+
+      // if(!isAdmin){
+      //   setSeverity('warning')
+      //   setMessage('you are not an admin')
+      //   setSnackOpen(true)
+      //   return ;
+      // }
+    console.log('creatooror',project.creator._id);
+      if(project.creator._id.toString()=== user._id){
+        setSelectedProject(project)
+        seteditmodalView(true)
+        return ;
+
+      }else{
+        setSeverity('warning')
+        setMessage('you are not the creator')
+        setSnackOpen(true)
+
+      }
+
+      console.log('entee here on');
+    
+    }
+
 
 
    
@@ -157,7 +185,7 @@ function Project() {
 <div className="row">
  <div className="col-lg-12">
    <div className="card">
-     <div className="card-body">
+     <div className="card-body ">
        <div className="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
          <h5>Your Projects</h5>
          <div className="iq-search-bar device-search">
@@ -230,7 +258,7 @@ function Project() {
 
   
   <div className="col-lg-4 col-md-6"  >
-<div className="card card-block card-stretch card-height">
+<div className="card box-shadow-1 card-block card-stretch card-height">
 <div className="card-body">
 <div className="d-flex align-items-center justify-content-between mb-4">
 <CircleProgress/>
@@ -248,9 +276,9 @@ function Project() {
 
   </div>
 
-  <div className='project-icon-box'>
+  <div className='project-icon-box' >
 
-<div className='project-edit-icon '>
+<div className='project-edit-icon ' onClick={()=>handleOpenEditModal(project)}>
 
 <RiEditBoxFill  className="m-0" ></RiEditBoxFill>
 
@@ -350,8 +378,11 @@ function Project() {
 {
 modalview===true && <NewProject modalview={modalview} setModalview={setModalview} success={success} setSuccess={setSuccess} />
 }
+{
+editmodalview===true && <EditProject selectedProject={selectedProject} editmodalview={editmodalview} seteditmodalView={seteditmodalView} success={success} setSuccess={setSuccess} />
+}
 
-{modalview?<div class="modal-backdrop fade show"></div>:''}
+{modalview||editmodalview?<div class="modal-backdrop fade show"></div>:''}
 
     </div>
 
