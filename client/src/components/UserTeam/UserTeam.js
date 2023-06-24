@@ -14,6 +14,8 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
+import buttonCss from '../../styles/Buttons.module.css'
+import EditUserModal from '../InviteUserModal/EditUserModal'
 
 function UserTeam() {
   const user=useSelector((state)=>{
@@ -43,6 +45,8 @@ function UserTeam() {
     const [warnModal,setWarnModal]=useState(false)
     const [memberId,setMemberId]=useState('')
     const [refresh,setrefresh]=useState(false)
+    const [editmodalview,seteditmodalView]=useState(false)
+    const [selectedMember,setSelectedMember]=useState(null)
 
     React.useEffect(()=>{
       console.log('use Effecttt');
@@ -159,6 +163,29 @@ function UserTeam() {
 
     }
 
+    const handleOpenEditModal = (member)=>{
+
+      if(!isAdmin){
+        setSeverity('warning')
+        setMessage('you are not an admin')
+        setSnackOpen(true)
+        return ;
+      }
+    
+      if(currentWorkspace.owner.toString()=== member._id){
+
+        setSeverity('warning')
+        setMessage('you cant edit the owner')
+        setSnackOpen(true)
+        return ;
+
+      }
+
+      console.log('entee here on');
+      setSelectedMember(member)
+      seteditmodalView(true)
+    }
+
   return (
 
     <div className={`${modalview?'modal-open':''}`}>
@@ -210,11 +237,10 @@ function UserTeam() {
 
                 {isAdmin?
                <div className="pl-3 border-left btn-new">
-               <a onClick={()=>{setModalview(true)}} className="btn btn-primary " data-target="#new-user-modal" data-toggle="modal" style={{color:'white'}}>Invite New user</a>
+               <button onClick={()=>{setModalview(true)}} className={`${buttonCss.customBtn} ${buttonCss.btn2}`} data-target="#new-user-modal" data-toggle="modal">Invite</button>
              </div>:''  
               }
 
-               
 
 
               </div>
@@ -244,11 +270,11 @@ function UserTeam() {
         <p className="mb-3">{admin.email}</p>
         <ul className="list-unstyled mb-3">
           <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill  /></li>
-          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
-          <li className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4" ><RiChat1Line className="ri-chat-3-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
-          <a href="#" className="btn btn-primary">Admin</a>
+          <button  className={`${buttonCss.customBtn} ${buttonCss.btn2}`}>Admin</button>
         </div>
       </div>
     </div>
@@ -275,10 +301,10 @@ function UserTeam() {
         <ul className="list-unstyled mb-3">
         <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill  /></li>
           <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
-          <li className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(member)}><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
-          <a href="#" className="btn btn-primary">Member</a>
+          <button className={`${buttonCss.customBtn} ${buttonCss.btn2}`}>Member</button>
         </div>
       </div>
     </div>
@@ -318,7 +344,7 @@ function UserTeam() {
       <div className="media align-items-center">
             <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(member)}><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
       </td>
       <td>
@@ -346,7 +372,7 @@ function UserTeam() {
       <div className="media align-items-center">
             <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small"><RiPencilFill className="ri-phone-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
       </td>
       <td>
@@ -382,6 +408,13 @@ function UserTeam() {
         modalview===true&&<InviteUserModal modalview={modalview} setModalview={setModalview}/>
       }
 
+{
+        editmodalview===true&&<EditUserModal editmodalview={editmodalview} selectedMember={selectedMember} seteditmodalView={seteditmodalView}/>
+      }
+
+
+
+
 
        {
        
@@ -415,7 +448,7 @@ function UserTeam() {
     </div>
 
 
-    {modalview?<div class="modal-backdrop fade show"></div>:''}
+    {modalview||editmodalview?<div class="modal-backdrop fade show"></div>:''}
     </div>
     
    

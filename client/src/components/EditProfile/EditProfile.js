@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RiDeleteBack2Fill, RiDeleteBackFill, RiDeleteBin2Fill, RiDeleteBinFill, RiPenNibFill } from 'react-icons/ri'
 
 import axios from 'axios'
+import SnackBar from '../SnackBar/SnackBar'
 
 function EditProfile() {
 
@@ -30,6 +31,9 @@ function EditProfile() {
     const [twitter,setTwitter]=useState('')
     const [instagram,setInstagram]=useState('')
     const [facebook,setFacebook]=useState('')
+    const [snackOpen,setSnackOpen]=useState(false)
+    const [severity,setSeverity]=useState('')
+    const [message,setMessage]=useState('')
     const [selectedImage,setSelectedImage]=useState(null)
     const {id}=useParams()
     const navigate=useNavigate()
@@ -143,8 +147,14 @@ function EditProfile() {
         console.log(data);
         if(data.err){
           setErrorMessage(data.message)
+          setSnackOpen(true)
+          setSeverity('error')
+          setMessage(data.message)
         }else{
           console.log('sucees',data);
+          setSnackOpen(true)
+          setSeverity('success')
+          setMessage(data.message)
           dispatch({type:'refresh'})
         }
       }
@@ -192,8 +202,14 @@ function EditProfile() {
      if(data.error){
       console.log(data.message)
       setErrorMessage(data.message)
+      setSnackOpen(true)
+      setSeverity('error')
+      setMessage(data.message)
      }else{
       setSuccessMessage(data.message)
+      setSnackOpen(true)
+      setSeverity('success')
+      setMessage(data.message)
       dispatch({type:'refresh'})
      }
         
@@ -215,11 +231,13 @@ function EditProfile() {
         const {data}=await axios.patch('/update-sociallinks/'+id,{instagram,facebook,twitter})
 
         if(data.error){
-          alert('err')
-          console.log(data);
-          
+          setSnackOpen(true)
+          setSeverity('success')
+          setMessage(data.message) 
         }else{
-          alert('sucdes')
+          setSnackOpen(true)
+          setSeverity('success')
+          setMessage(data.message)
           dispatch({type:'refresh'})
         }
       }
@@ -487,6 +505,11 @@ function EditProfile() {
     </div>
   </div>
 </div>
+
+{
+  
+  snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
+ }
       
     </div>
   )

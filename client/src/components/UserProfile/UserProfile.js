@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import tempProfo from '../../assets/images/page-img/temp-profo.png'
 import { SiFacebook} from "react-icons/si";
 import { RiFacebookBoxFill, RiInstagramFill, RiTwitterFill } from 'react-icons/ri'
+import buttonCss from '../../styles/Buttons.module.css'
 
 
 function UserProfile() {
@@ -111,15 +112,16 @@ function UserProfile() {
                             <h4 className="card-title">Personal Skills</h4>
                           </div>
                         </div>
-                        <div className="card-body skillBoady p-4">
+                        <div className="card-body p-4">
 
                         {
                           user.skills.map((skill,index)=>
                           (
-                            <div className="p-2  rounded w-100 mb-3">
-                            <div className="d-flex align-items-center">
-                              <span className="skill-number">{index+1}</span>
-                              <p className="mb-0">{skill}</p>   
+                            <div className="p-2  rounded w-100 mb-2">
+                            <div  className=" d-flex align-items-center">
+                              <button className={`${buttonCss.customBtn} ${buttonCss.btn7}`}>   <span className="skill-number">{skill}</span></button>
+                            
+                              {/* <button ><span>{skill}</span></button>    */}
                             </div>
                           </div>
                           )

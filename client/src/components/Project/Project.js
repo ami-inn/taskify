@@ -10,6 +10,7 @@ import SnackBar from '../SnackBar/SnackBar'
 import { Link, useNavigate } from 'react-router-dom'
 import CircleProgress from '../CricleProgress/CircleProgress'
 import Nodata from '../../styles/Nodata.module.css'
+import buttonCss from '../../styles/Buttons.module.css'
 
 
 function Project() {
@@ -189,7 +190,7 @@ function Project() {
            </div> */}
     
            <div className="pl-3 border-left btn-new">
-            {isAdmin? <a onClick={()=>{setModalview(true)}} className="btn btn-primary" style={{color:'white'}} data-target="#new-project-modal" data-toggle="modal">New Project</a>:''}
+            {isAdmin? <button onClick={()=>{setModalview(true)}} className={`${buttonCss.customBtn} ${buttonCss.btn2}`}  data-target="#new-project-modal" data-toggle="modal">Create</button>:''}
             
            </div>
          </div>

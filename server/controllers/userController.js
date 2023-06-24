@@ -359,6 +359,74 @@ export async function acceptInvitation(req,res){
     }
 }
 
+export const editUserRole= async(req,res)=>{
+    try{
+
+        
+
+        const {role,workspaceId,userId}=req.body
+
+        const workspace=await workspaceModel.findById(workspaceId)
+
+        const adminIndex = workspace.admins.findIndex(adminId => adminId.toString() === userId);
+        const memberIndex = workspace.members.findIndex(memberId => memberId.toString() === userId);
+
+  
+        
+
+        if(role === 'admin'){
+            
+            if(adminIndex !== -1){
+                return res.json({error:true,message:'user is already an admin'})
+            }
+
+            if(memberIndex !== -1){
+                const member = workspace.members.splice(memberIndex,1)[0]
+                workspace.admins.push(member)
+
+                await userModel.updateOne(
+                    { _id: userId, 'workspaces.workspace': workspaceId },
+                    { $set: { 'workspaces.$.role': 'admin' } }
+                  );
+            }else{
+                return res.json({error:true,message:'user not found in workspace'})
+            }
+
+        }
+        else if(role === 'member'){
+            if(memberIndex !== -1){
+                return res.json({error:true,message:'user already a member in the workspace'})
+            }
+
+            if(adminIndex !== -1){
+                const admin = workspace.admins.splice(adminIndex,1)[0]
+                workspace.members.push(admin)
+
+                await userModel.updateOne(
+                    { _id: userId, 'workspaces.workspace': workspaceId },
+                    { $set: { 'workspaces.$.role': 'member' } }
+                  );
+
+
+            }else{
+                return res.json({error:true,message:'user not found in workspace'})
+            }
+        }else{
+            return res.json({error:true,message:'invalid role specified'})
+        }
+
+
+        await workspace.save()
+
+        return res.json({error:false,message:'updated successfully'})
+    }
+
+    catch(err){
+        console.log('error');
+        res.json({error:true,message:'internal server error'})
+    }
+}
+
 export const inviteUserToWorkspace=async (req,res)=>{
     const {email,workspaceId,role}=req.body
 

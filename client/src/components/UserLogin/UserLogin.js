@@ -4,20 +4,21 @@ import SignupImg from '../../assets/images/login/01.png'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import buttonCss from '../../styles/Buttons.module.css'
 
 function UserLogin() {
 
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const [errMessage,setErrorMessage]=useState(null)
-    const [isChecked, setIsChecked] = useState(false);
+   const [isChecked, setIsChecked] = useState(false);
     const dispatch=useDispatch()
 
     function validationErr() {
         if (
           email.replaceAll(" ", "") === "" ||
-          password.replaceAll(" ", "") === ""||
-          isChecked===false
+          password.replaceAll(" ", "") === ""
+        
 
         ) {
           return true;
@@ -42,6 +43,14 @@ function UserLogin() {
           }
         }
       }
+
+    
+        const handleMouseMove = (e) => {
+          const btn = e.currentTarget;
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX * 3 - rect.left;
+          btn.style.setProperty('--x', x + 'deg');
+        };
 
 
   return (
@@ -75,17 +84,27 @@ function UserLogin() {
                           errMessage &&
                           <p className='errMessageText'>{errMessage}</p>
                         }
-                          <div className="col-lg-6">
-                            <div className="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" className="custom-control-input" id="customCheck1"  checked={isChecked}onChange={() => setIsChecked(!isChecked)} />
-                              <label className="custom-control-label control-label-1 text-white" htmlFor="customCheck1">Accept Our Policy</label>
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
+                        
+                          <div className="col-lg-12">
                             <Link to={'/forgot'} className="text-white float-right">Forgot Password?</Link>
                           </div>
                         </div>
-                        <button type="submit" disabled={validationErr()} className="button-submit-login">Sign In</button>
+
+                        
+                        {/* <button type="submit" disabled={validationErr()} className="button-submit-login">Sign In</button> */}
+                    
+
+                       {/* <a className={`${buttonCss.signupBtn}`}  onMouseMove={handleMouseMove} onClick={handleSubmit}>
+                        <i></i>
+                        <i></i>
+                        <span>Login</span>
+                       </a>) */}
+
+
+                       <button type='submit' disabled={validationErr()} className={`${buttonCss.customBtn} ${buttonCss.btn1}`}>Login</button>
+                       
+                       
+                       
                         <p className="mt-3 button-submit-login-p">
                           Create an Account <Link to='/signup' >Sign Up</Link>
                         </p>

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import ShowWorkspaces from "./ShowWorkspaces";
 import JoinedWorkspace from "./JoinedWorkspace";
+import buttonCss from '../../styles/Buttons.module.css'
+import { RiDeleteBack2Fill, RiDropLine, RiGroupLine } from "react-icons/ri";
 
 function CreateWorkspace() {
   const [name, setName] = useState("");
@@ -147,15 +149,42 @@ function CreateWorkspace() {
                               </div>
                             </div>
                           </div>
-                         {workspaces.length>0? <p onClick={() => setOpen(true)}>show workspaces</p>:''}
-                         {joinedWorkspaces.length>0? <p onClick={() => setJopen(true)}>show joined workspaces</p>:''}
-                          <button
+
+                          <div className="row">
+
+                          <div className="col-lg-6">
+                          <div className="floating-label form-group">
+
+                          {workspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setOpen(true)}>
+                        
+                            <span >created</span>
+                          </button>:''}
+                           
+                          </div>
+                        </div>
+                        <div className="col-lg-6">
+                          <div className="floating-label form-group">
+
+                          {joinedWorkspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setJopen(true)}>
+                          <span>Joined</span>
+                         
+                          </button>:''}
+                           
+                          </div>
+                        </div>
+
+                          </div>
+                      
+
+                          {/* <button
                             type="submit"
                             disabled={validForm()}
                             className="button-submit-login"
                           >
                             Submit
-                          </button>
+                          </button> */}
+
+                          <button className={`${buttonCss.customBtn} ${buttonCss.btn1}`} >submit</button>
                         </form>
                       </div>
                     </div>
