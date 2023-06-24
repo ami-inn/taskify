@@ -4,7 +4,7 @@ import UserHeder from '../UserHeader/UserHeder'
 import NewProject from './NewProject'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { RiArrowRightSFill, RiDeleteBin2Fill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
+import { RiArrowRightSFill, RiDeleteBin2Fill, RiDeleteBin7Fill, RiEdit2Fill, RiEditBoxFill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
 import { Link, useNavigate } from 'react-router-dom'
@@ -236,12 +236,39 @@ function Project() {
 <CircleProgress/>
 {/*  
  <svg version="1.1" width="100" height="100" viewBox="0 0 100 100" class="circle-progress"><circle class="circle-progress-circle" cx="50" cy="50" r="47" fill="none" stroke="#ddd" stroke-width="8"></circle><path d="M 50 3 A 47 47 0 0 1 97 50" class="circle-progress-value" fill="none" stroke="#00E699" stroke-width="8"></path><text class="circle-progress-text" x="50" y="50" font="16px Arial, sans-serif" text-anchor="middle" fill="#999" dy="0.4em">25%</text></svg> */}
- <RiDeleteBin2Fill onClick={() => setOpenWarnModal(project._id)} className="ri-star-fill m-0" style={{color:'#fa4356',fontSize:'20px',cursor:'pointer'}} ></RiDeleteBin2Fill>
-</div>
-<h5 className="mb-1">{project.name}</h5>
-<p className="mb-3">{project.description}</p>
+ <div style={{display:'flex', gap:'20px'}}>
 
-<a onClick={()=>{handleOpenProject(project._id)}} style={{cursor:'pointer'}}>Open Project <RiArrowRightSFill/></a>
+
+  <div className='project-icon-box'>
+
+    <div className='project-delete-icon '>
+ <RiDeleteBin7Fill onClick={() => setOpenWarnModal(project._id)} className="m-0"></RiDeleteBin7Fill>
+
+    </div>
+
+  </div>
+
+  <div className='project-icon-box'>
+
+<div className='project-edit-icon '>
+
+<RiEditBoxFill  className="m-0" ></RiEditBoxFill>
+
+</div>
+
+</div>
+
+
+
+
+
+ </div>
+ </div>
+<h5 className=" project-heading mb-1">{project.name}</h5>
+<p className=" project-description mb-3">{project.description}</p>
+
+<a onClick={()=>{handleOpenProject(project._id)}} className='project-open' style={{cursor:'pointer'}}>Open Project <RiArrowRightSFill/></a>
+
 <div className="d-flex align-items-center justify-content-between pt-3 border-top">
  <div className="iq-media-group">
 
@@ -259,7 +286,7 @@ function Project() {
  </div>
  <a className={`btn btn-white  link-shadow ${
     project.priority === 'low' ? 'low-priority' : project.priority === 'medium' ? 'medium-priority' : 'high-priority'
-  }`} >{project.priority} priority</a>
+  }`} >{project.priority} </a>
 </div>
 </div>
 </div>

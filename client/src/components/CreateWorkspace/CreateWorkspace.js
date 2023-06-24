@@ -88,6 +88,12 @@ function CreateWorkspace() {
     fetchWorkspaces();
   }, []);
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <div className="wrapper">
       <ShowWorkspaces
@@ -144,36 +150,14 @@ function CreateWorkspace() {
                                   onChange={(e) => {
                                     setDescription(e.target.value);
                                   }}
+                                  onKeyPress={handleKeyPress}
                                 />
                                 <label>Description</label>
                               </div>
                             </div>
                           </div>
 
-                          <div className="row">
-
-                          <div className="col-lg-6">
-                          <div className="floating-label form-group">
-
-                          {workspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setOpen(true)}>
-                        
-                            <span >created</span>
-                          </button>:''}
-                           
-                          </div>
-                        </div>
-                        <div className="col-lg-6">
-                          <div className="floating-label form-group">
-
-                          {joinedWorkspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setJopen(true)}>
-                          <span>Joined</span>
-                         
-                          </button>:''}
-                           
-                          </div>
-                        </div>
-
-                          </div>
+                          
                       
 
                           {/* <button
@@ -184,8 +168,35 @@ function CreateWorkspace() {
                             Submit
                           </button> */}
 
-                          <button className={`${buttonCss.customBtn} ${buttonCss.btn1}`} >submit</button>
+                          {/* <button className={`${buttonCss.customBtn} ${buttonCss.btn1}`} >submit</button> */}
                         </form>
+
+
+                        <div className="row">
+
+<div className="col-lg-6">
+<div className="floating-label form-group">
+
+{workspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setOpen(true)}>
+
+  <span >created</span>
+</button>:''}
+ 
+</div>
+</div>
+<div className="col-lg-6">
+<div className="floating-label form-group">
+
+{joinedWorkspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setJopen(true)}>
+<span>Joined</span>
+
+</button>:''}
+ 
+</div>
+</div>
+
+</div>
+
                       </div>
                     </div>
                     <div className="col-lg-6 content-right">

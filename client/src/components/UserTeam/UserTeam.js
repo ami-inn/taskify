@@ -271,7 +271,7 @@ function UserTeam() {
         <ul className="list-unstyled mb-3">
           <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill  /></li>
           <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4" ><RiChat1Line className="ri-chat-3-line m-0" /></li>
-          <li className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small" style={{cursor:'pointer'}} onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
           <button  className={`${buttonCss.customBtn} ${buttonCss.btn2}`}>Admin</button>
@@ -301,7 +301,7 @@ function UserTeam() {
         <ul className="list-unstyled mb-3">
         <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill  /></li>
           <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
-          <li className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(member)}><RiPencilFill className="ri-phone-line m-0" /></li>
+          <li className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(member)} style={{cursor:'pointer'}}><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
           <button className={`${buttonCss.customBtn} ${buttonCss.btn2}`}>Member</button>
@@ -344,7 +344,7 @@ function UserTeam() {
       <div className="media align-items-center">
             <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(member)}><RiPencilFill className="ri-phone-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small" style={{cursor:'pointer'}} onClick={()=>handleOpenEditModal(member)}><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
       </td>
       <td>
@@ -372,7 +372,7 @@ function UserTeam() {
       <div className="media align-items-center">
             <div  className="bg-secondary-light rounded-circle iq-card-icon-small mr-3"  onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill className="ri-mail-open-line m-0" /></div>
             <div className="bg-primary-light rounded-circle iq-card-icon-small mr-3"><RiChat1Line className="ri-chat-3-line m-0" /></div>
-            <div className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></div>
+            <div className="bg-success-light rounded-circle iq-card-icon-small" style={{cursor:'pointer'}} onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></div>
           </div>
       </td>
       <td>
