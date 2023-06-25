@@ -5,6 +5,11 @@ const chatSchema = new mongoose.Schema(
         members: {
             type: Array
         },
+
+        workspace: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Workspace'
+          }
     },
     {
         timestamps: true
