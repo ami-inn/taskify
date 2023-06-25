@@ -880,6 +880,42 @@ export const deleteTask=async(req,res)=>{
         res.json({error:true,message:'internal server error'})
     }
 }
+export const taskApprove=async (req,res)=>{
+    try{
+
+        const {taskId}=req.params
+        const {approvalStatus}=req.body
+
+        const task=await TaskModel.findById(taskId)
+
+        if(!task){
+            console.log('error 1');
+            return res.json({error:true,message:'task not found'})
+        }
+
+
+
+        if(approvalStatus){
+
+               // Update the task status and approval status
+    task.status = 'Completed';
+    task.approvalStatus = true;
+
+    // Save the updated task
+    const updatedTask = await task.save();
+
+        }
+
+        res.json({error:false,message:'updated successfully'})
+
+
+
+    }
+    catch(err){
+        console.log(err);
+        res.json({error:true,message:'internal server error'})
+    }
+}
 
 export const fetchAssignedTasks = async (req,res)=>{
 
@@ -933,7 +969,10 @@ export const updateTask=async(req,res)=>{
             task._id,
             {
               completed: task.completed,
-              'subtasks.$[].completed': task.completed
+              'subtasks.$[].completed': task.completed,
+              status:'waiting',
+              completedAt:Date.now()
+
             },
             { new: true }
           );

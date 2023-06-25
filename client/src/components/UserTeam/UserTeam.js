@@ -260,12 +260,12 @@ function UserTeam() {
 
 <div className="col-lg-4 col-md-6">
 <div className="card-transparent card-block card-stretch card-height">
-  <div className="card-body text-center p-0">                            
+  <div className="card-body text-center p-0 ">                            
     <div className="item">
       <div className="odr-img">
         <img src={admin.profile.url} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
       </div>                        
-      <div className="odr-content rounded">                                          
+      <div className="odr-content rounded box-shadow-1">                                          
         <h4 className="mb-2">{admin.name}</h4>
         <p className="mb-3">{admin.email}</p>
         <ul className="list-unstyled mb-3">
@@ -295,7 +295,7 @@ function UserTeam() {
       <div className="odr-img">
         <img src={member.profile.url} className="img-fluid rounded-circle avatar-90 m-auto" alt="image" />
       </div>                        
-      <div className="odr-content rounded">                                          
+      <div className="odr-content rounded box-shadow-1">                                          
         <h4 className="mb-2">{member.name}</h4>
         <p className="mb-3">{member.email}</p>
         <ul className="list-unstyled mb-3">

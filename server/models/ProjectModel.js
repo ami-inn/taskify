@@ -18,6 +18,7 @@ const projectSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  status:{type:String, default:'pending'},
   description:{type:String},
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   dueDate: { type: Date } , // User who created the project

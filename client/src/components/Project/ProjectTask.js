@@ -5,6 +5,7 @@ import CreateTask from "./CreateTask";
 import {
   RiAlignJustify,
   RiArrowDownSLine,
+  RiCalendar2Fill,
   RiDeleteBack2Fill,
   RiDeleteBin2Fill,
   RiEditBoxLine,
@@ -19,7 +20,7 @@ import commentCss from "../../styles/TaskComment.module.css";
 import { useSelector } from "react-redux";
 import SnackBar from "../SnackBar/SnackBar";
 import Nodata from "../../styles/Nodata.module.css";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, setRef } from "@mui/material";
 import { Button } from "react-bootstrap";
 
 function ProjectTask() {
@@ -42,6 +43,8 @@ function ProjectTask() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [warnModal,setWarnModal]=useState(false)
   const [taskId,setTaskId]=useState('')
+  const [approveStatus,setApprovestatus]=useState(false)
+  
 
   console.log(comment, "comment");
   // const [taskId,setTaskId]=useState('')
@@ -186,6 +189,35 @@ function ProjectTask() {
 
   }
 
+  const updateTaskApproval = async(e,taskId,approvalStatus)=>{
+    e.preventDefault();
+    try{
+
+      console.log(taskId,approvalStatus,'kjsadkjfjlkdfkkajkldkjllka');
+
+      const response = await axios.put(`/approve-task/${taskId}`,{
+        approvalStatus:approvalStatus
+      })
+
+      if(response.data.error){
+        setSnackOpen(true)
+        setSeverity('error')
+        setMessage(response.data.message)
+      }else{
+        setSnackOpen(true)
+        setSeverity('success')
+        setMessage(response.data.message)
+        setRefresh(!refresh)
+
+      }
+
+    }
+    catch(err){
+      console.log('error');
+      alert('erro')
+    }
+  }
+
   console.log(tasks, "taskssss");
 
   return (
@@ -323,10 +355,34 @@ function ProjectTask() {
                                           <RiSurveyLine className="ri-survey-line mr-2" />
                                           {task.comments.length}
                                         </div>
-                                        <div className="btn bg-body">
+                                      
+                                        <div className="btn bg-body mr-3">
                                           <RiUser2Fill className="ri-survey-line mr-2" />
                                           {task.assigneeId.name}
                                         </div>
+
+                                       {task.approvalStatus?
+
+                                           <div className="btn mr-3" style={{color:'#02C295',background:'white'}}>
+                                          <RiCalendar2Fill className="ri-survey-line mr-2" />
+                                          {new Date(
+                                                task.completedAt
+                                              ).toLocaleDateString("en-CA")}
+                                        </div>:
+
+                                        
+                                           <div className="btn mr-3" style={{color:'#FF6271',background:'white'}}>
+                                          <RiCalendar2Fill className="ri-survey-line mr-2" />
+                                          {new Date(
+                                                task.dueDate
+                                              ).toLocaleDateString("en-CA")}
+                                        </div>
+
+                                        
+                                       
+                                      }
+
+                                    
                                       </div>
                                     </div>
                                   </div>
@@ -334,8 +390,9 @@ function ProjectTask() {
                                     <a className="btn bg-secondary-light mr-3">
                                       {task.priority}
                                     </a>
-                                    <a className={`btn ${task.completed?'bg-success-light':'bg-secondary-light'}  mr-3`}>
-                                      {task.completed?'completed':'pending'}
+                                    <a className={`btn ${task.status==='waiting'?'bg-warning-light':'bg-success-light'}  mr-3`}>
+                                      {/* {task.completed?'completed':'pending'} */}
+                                      {task.status}
                                     </a>
                                     <a
                                       className="btn bg-primary-light mr-3"
@@ -371,16 +428,27 @@ function ProjectTask() {
                               id="collapseEdit1"
                             >
                               <div className="card card-list task-card">
+                              <form onSubmit={(e)=>updateTaskApproval(e,task._id,approveStatus)}>
                                 <div className="card-header d-flex align-items-center justify-content-between px-0 mx-3">
+                              
                                   <div className="header-title">
+                                   
                                     <div className="custom-control custom-checkbox custom-control-inline">
-                                      <input
+
+                                      {task.approvalStatus===false?
+                                        <input
                                         type="checkbox"
                                         className="custom-control-input"
                                         id="customCheck05"
-                                        checked={task.completed?true:false}
-                                        disabled
-                                      />
+                                        value={approveStatus}
+                                        onChange={()=>{setApprovestatus(!approveStatus)}}
+
+                                        
+                                        
+                                        
+                                      />:''
+                                    }
+                                    
                                       <label
                                         className="custom-control-label h5"
                                         htmlFor="customCheck05"
@@ -388,8 +456,11 @@ function ProjectTask() {
                                         Task Status
                                       </label>
                                     </div>
+
+                                   
+                                
                                   </div>
-                                  <div>
+                                  <div style={{display:'flex',gap:'10px'}}>
                                     <a
                                       className={`btn  ${
                                         task.completed
@@ -401,8 +472,15 @@ function ProjectTask() {
                                         ? "completed"
                                         : "not completed"}
                                     </a>
+                                    {isCreator && !task.approvalStatus ? <button type="submit" className="btn bg-primary-light" > approve</button>:'' }
+                                  
                                   </div>
+
+                                 
+
                                 </div>
+
+                                </form>
                                 <div className="card-body">
                                   <div className="form-group mb-3 position-relative">
                                     <input
@@ -484,6 +562,7 @@ function ProjectTask() {
                                                     type="checkbox"
                                                     className="custom-control-input"
                                                     id="customCheck1"
+                                                    checked={subtask.completed}
                                                   />
                                                   <label
                                                     className="custom-control-label mb-1"

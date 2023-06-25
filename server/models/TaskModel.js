@@ -4,7 +4,7 @@ const taskSchema=new mongoose.Schema({
     name: { type: String, required: true },
     description:{type:String},
     dueDate: { type: Date },
-    status: { type: String },
+    status: { type: String,default:'assigned' },
     assigneeId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     creatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     completedAt: { type: Date },
