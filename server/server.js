@@ -11,6 +11,7 @@ import adminRouter from './routers/adminRouter.js'
 import verifyAdmin from './middlewares/verifyAdmin.js'
 import verifyUser from './middlewares/verifyUser.js'
 import userRouter from './routers/userRouter.js'
+import chatRoute from './routers/ChatRouter.js'
 
 
 const app=express()
@@ -32,6 +33,7 @@ app.use('/auth/',userAuthRouter)
 app.use('/admin/auth/',adminAuthRouter)
 app.use('/admin/',verifyAdmin,adminRouter)
 app.use('/',verifyUser,userRouter)
+app.use('/chat',chatRoute)
 
 app.listen(5000,()=>{
     console.log('server running on port 5000 hello')

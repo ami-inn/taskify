@@ -29,6 +29,11 @@ const workspaceSchema=new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+
+      chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat'
+    },
       invitationToken: { type: String }
 
 })
