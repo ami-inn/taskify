@@ -1,19 +1,43 @@
 import chatModel from "../models/ChatModel.js";
+import workspaceModel from "../models/WorkspaceModel.js";
 
 export const createChat = async (req,res)=>{
-    const newChat = new chatModel({
-        members:[req.body.senderId,req.body.recieverId]
-    })
+
+
+
+    const { senderId,receiverId } = req.body;
+    
+  const { workspaceId } = req.params;
 
     try{
 
-        const result = await newChat.save()
+        const existingChat = await chatModel.findOne({
+            members: { $all: [senderId, receiverId] },
+            workspace: workspaceId
+          });
 
+          console.log('existingChat',existingChat);
+      
+          if (existingChat) {
+            return res.json({ error: false, message: 'Chat already exists', result: existingChat });
+          }
 
-        res.json({error:false,message:'chat saved',result})
+          const newChat = new chatModel({
+            members:[senderId,receiverId],
+            workspace:workspaceId
+        })
+
+        const savedChat = await newChat.save()
+
+        console.log(savedChat,'chatt');
+
+        await workspaceModel.findByIdAndUpdate(workspaceId, { $push: { chats:savedChat._id } });
+
+        res.json({error:false,message:'chat saved',result:savedChat})
 
     }
     catch(err){
+        console.log('servdee');
         return res.json({error:true,message:'internal server error'})
     }
 } 
@@ -25,7 +49,7 @@ export const userChats=async (req,res)=>{
             workspace:req.params.workspaceId
         })
 
-        console.log(chat);
+        // console.log('cahtff',chat);
     
 
         res.json({error:false,message:'chat get',chat})

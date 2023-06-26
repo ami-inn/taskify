@@ -9,7 +9,11 @@ const chatSchema = new mongoose.Schema(
         workspace: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Workspace'
-          }
+          },
+          messages: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Message'
+          }]
     },
     {
         timestamps: true

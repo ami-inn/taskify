@@ -30,10 +30,10 @@ const workspaceSchema=new mongoose.Schema({
         default: Date.now,
       },
 
-      chat: {
+      chats: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat'
-    },
+      }],
       invitationToken: { type: String }
 
 })

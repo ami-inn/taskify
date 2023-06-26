@@ -25,6 +25,7 @@
     "nodemailer": "^6.9.2",
     "nodemon": "^2.0.22",
     "razorpay": "^2.8.6",
+    "socket.io": "^4.7.0",
     "uuid": "^9.0.0",
     "zxcvbn": "^4.4.2"
   }

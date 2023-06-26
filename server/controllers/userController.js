@@ -989,3 +989,23 @@ export const updateTask=async(req,res)=>{
         res.json({error:true,message:'internal  server error'})
     }
 }
+
+
+export const fetchUser=async(req,res)=>{
+
+    try{
+
+        const {userId}=req.params
+
+        const user=await userModel.findById(userId)
+
+        console.log('user',user);
+
+        res.json({error:false,message:'user Found',user})
+
+    }
+    catch(err){
+        console.log('error');
+        res.json({error:true,message:'internal  server error'})
+    }
+}

@@ -16,6 +16,7 @@ import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, Dialo
 import SnackBar from '../SnackBar/SnackBar'
 import buttonCss from '../../styles/Buttons.module.css'
 import EditUserModal from '../InviteUserModal/EditUserModal'
+import { async } from 'react-input-emoji'
 
 function UserTeam() {
   const user=useSelector((state)=>{
@@ -186,6 +187,26 @@ function UserTeam() {
       seteditmodalView(true)
     }
 
+    const handleCreateChat=async (recieverId)=>{
+      try{
+
+        console.log('recieverId',recieverId);
+        const response = await axios.post(`/chat/workspace/${workspaceId}/chat`,{senderId:user._id,receiverId:recieverId})
+
+        if(response.data.error){
+          console.log('error',response.data);
+          alert('error')
+        }else{
+          alert('success')
+          navigate('/chat')
+        }
+
+      }
+      catch(err){
+        console.log('error',err);
+      }
+    }
+
   return (
 
     <div className={`${modalview?'modal-open':''}`}>
@@ -270,7 +291,7 @@ function UserTeam() {
         <p className="mb-3">{admin.email}</p>
         <ul className="list-unstyled mb-3">
           <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(admin._id)}><RiDeleteBin3Fill  /></li>
-          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4" ><RiChat1Line className="ri-chat-3-line m-0" /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4" onClick={()=>handleCreateChat(admin._id)} ><RiChat1Line className="ri-chat-3-line m-0" /></li>
           <li className="bg-success-light rounded-circle iq-card-icon-small" style={{cursor:'pointer'}} onClick={()=>handleOpenEditModal(admin)}><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
@@ -300,7 +321,7 @@ function UserTeam() {
         <p className="mb-3">{member.email}</p>
         <ul className="list-unstyled mb-3">
         <li className="bg-secondary-light rounded-circle iq-card-icon-small mr-4" style={{cursor:'pointer'}} onClick={() => setOpenWarnModal(member._id)}><RiDeleteBin3Fill  /></li>
-          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4"><RiChat1Line className="ri-chat-3-line m-0" /></li>
+          <li className="bg-primary-light rounded-circle iq-card-icon-small mr-4" onClick={()=>handleCreateChat(member._id)} ><RiChat1Line className="ri-chat-3-line m-0" /></li>
           <li className="bg-success-light rounded-circle iq-card-icon-small" onClick={()=>handleOpenEditModal(member)} style={{cursor:'pointer'}}><RiPencilFill className="ri-phone-line m-0" /></li>
         </ul>                                    
         <div className="pt-3 border-top">
