@@ -191,6 +191,17 @@ function UserTeam() {
       try{
 
         console.log('recieverId',recieverId);
+
+        if(recieverId===user._id){
+
+          setSeverity('warning')
+          setMessage('Its you lol')
+          setSnackOpen(true)
+          return ;
+  
+
+
+        }
         const response = await axios.post(`/chat/workspace/${workspaceId}/chat`,{senderId:user._id,receiverId:recieverId})
 
         if(response.data.error){

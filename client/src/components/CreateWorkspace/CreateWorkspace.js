@@ -157,6 +157,28 @@ function CreateWorkspace() {
                             </div>
                           </div>
 
+
+                          {validForm()?'':
+                          
+
+                          <div className="row">
+
+                          <div className="col-lg-6">
+                          <div className="floating-label form-group">
+                          
+                           <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} type="submit">
+                          
+                            <span >create</span>
+                          </button>
+                           
+                          </div>
+                          </div>
+                       
+                          
+                                                 </div>
+
+                          }
+
                           
                       
 
@@ -172,30 +194,38 @@ function CreateWorkspace() {
                         </form>
 
 
+                        {
+                          validForm()?   
+                          
                         <div className="row">
 
-<div className="col-lg-6">
-<div className="floating-label form-group">
+                        <div className="col-lg-6">
+                        <div className="floating-label form-group">
+                        
+                        {workspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setOpen(true)}>
+                        
+                          <span >created</span>
+                        </button>:''}
+                         
+                        </div>
+                        </div>
+                        <div className="col-lg-6">
+                        <div className="floating-label form-group">
+                        
+                        {joinedWorkspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setJopen(true)}>
+                        <span>Joined</span>
+                        
+                        </button>:''}
+                         
+                        </div>
+                        </div>
+                        
+                                               </div>
+                          
+                          :''
+                        }
 
-{workspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setOpen(true)}>
 
-  <span >created</span>
-</button>:''}
- 
-</div>
-</div>
-<div className="col-lg-6">
-<div className="floating-label form-group">
-
-{joinedWorkspaces.length>0? <button className={`${buttonCss.customBtn} ${buttonCss.btn8}`} onClick={() => setJopen(true)}>
-<span>Joined</span>
-
-</button>:''}
- 
-</div>
-</div>
-
-</div>
 
                       </div>
                     </div>
