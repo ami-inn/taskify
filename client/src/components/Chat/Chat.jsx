@@ -14,6 +14,7 @@ function Chat() {
     const [sendMessage,setSendMessage]=useState(null)
     const [recievedMessage,setRecievedMessage]=useState(null)
 
+
   
 
     const user=useSelector((state)=>{return state.user.details})
@@ -36,6 +37,8 @@ function Chat() {
                     console.log('dataa');
 
                     setChats(data.chat)
+
+
 
 
 
@@ -80,6 +83,9 @@ function Chat() {
 
     );
   }, []);
+
+  
+  console.log('chatschatss',chats);
 
 
   return (

@@ -19,21 +19,27 @@ export const createChat = async (req,res)=>{
           console.log('existingChat',existingChat);
       
           if (existingChat) {
-            return res.json({ error: false, message: 'Chat already exists', result: existingChat });
+            console.log('existingchat',existingChat);
+            return res.json({ error: false, message: 'Chat already exists', result:existingChat });
+          } else{
+
+            const newChat = new chatModel({
+                members:[senderId,receiverId],
+                workspace:workspaceId
+            })
+    
+            const savedChat = await newChat.save()
+    
+            console.log(savedChat,'chatt');
+    
+            await workspaceModel.findByIdAndUpdate(workspaceId, { $push: { chats:savedChat._id } });
+    
+            res.json({error:false,message:'chat saved',result:savedChat})
+
+
           }
 
-          const newChat = new chatModel({
-            members:[senderId,receiverId],
-            workspace:workspaceId
-        })
-
-        const savedChat = await newChat.save()
-
-        console.log(savedChat,'chatt');
-
-        await workspaceModel.findByIdAndUpdate(workspaceId, { $push: { chats:savedChat._id } });
-
-        res.json({error:false,message:'chat saved',result:savedChat})
+     
 
     }
     catch(err){

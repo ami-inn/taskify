@@ -26,6 +26,7 @@ import Project from './components/Project/Project';
 import TaskManage from './components/TaskManage/TaskManage';
 import ProjectTask from './components/Project/ProjectTask';
 import Chat from './components/Chat/Chat';
+import ChatBody from './components/ChatBody/ChatBody';
 
 // ..
 AOS.init();
@@ -127,6 +128,7 @@ function App() {
          <Route path='/project/:id' element={<ProjectTask/>}/>
          <Route path='/tasks' element={<TaskManage/>}/>
          <Route path='/chat' element={<Chat/>}/>
+         <Route path='/chat2' element={<ChatBody/>}/>
 
 
 

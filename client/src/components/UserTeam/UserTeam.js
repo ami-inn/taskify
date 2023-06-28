@@ -17,6 +17,9 @@ import SnackBar from '../SnackBar/SnackBar'
 import buttonCss from '../../styles/Buttons.module.css'
 import EditUserModal from '../InviteUserModal/EditUserModal'
 import { async } from 'react-input-emoji'
+import ChatBody from '../ChatBody/ChatBody'
+import { useRef } from 'react'
+import { io } from 'socket.io-client'
 
 function UserTeam() {
   const user=useSelector((state)=>{
@@ -41,13 +44,90 @@ function UserTeam() {
     const [message, setMessage] = useState('');
     const [snackOpen,setSnackOpen]=useState(false)
     const [workspace,setworkSpace]=useState(null)
-   
     const [searchQuery,setSearchQuery]=useState('')
     const [warnModal,setWarnModal]=useState(false)
     const [memberId,setMemberId]=useState('')
     const [refresh,setrefresh]=useState(false)
     const [editmodalview,seteditmodalView]=useState(false)
     const [selectedMember,setSelectedMember]=useState(null)
+
+    // for chat
+
+    const [chatview,setChatview]=useState(false)
+    const [chats,setChats]=useState([])
+    const [currentChat,setcurrentChat]=useState(null)
+    const [onlineUsers,setOnlineUsers]=useState([])
+    const [sendMessage,setSendMessage]=useState(null)
+    const [recievedMessage,setRecievedMessage]=useState(null)
+    const [online,setOnline]=useState(false)
+
+    const socket = useRef()
+
+      React.useEffect(()=>{
+        const getChats = async ()=>{
+
+            try{
+                const userId = user._id
+                const {data}=await axios.get(`/chat/worksapce/${workspaceId}/user/${userId}/chats`)
+                if(data.error){
+                    alert('err')
+                }else{
+
+                    console.log('dataa');
+
+                    setChats(data.chat)
+
+
+
+                }
+            }
+            catch(err){
+                console.log('error');
+            }
+
+           
+        }
+        getChats()
+    },[user])
+ 
+
+    
+    React.useEffect(()=>{
+        socket.current=io('http://localhost:8800')
+        socket.current.emit('new-user-add',user._id)
+        socket.current.on('get-users',(users)=>{
+            setOnlineUsers(users)
+            console.log(onlineUsers,'online users');
+        })
+    },[user])
+
+
+       // send mesage to socket server
+       React.useEffect(()=>{
+        if(sendMessage !== null){
+            socket.current.emit('send-message',sendMessage)
+        }
+    },[sendMessage])
+
+
+     // Get the message from socket server
+ React.useEffect(() => {
+  socket.current.on("recieve-message", (data) => {
+    console.log(data,'recievedd messageeee')
+    setRecievedMessage(data);
+  }
+
+  );
+}, []);
+
+const checkOnlineStatus = (chat) => {
+  const chatMember = chat.members.find((member) => member !== user._id);
+  const online = onlineUsers.find((user) => user.userId === chatMember);
+  return online ? true : false;
+};
+
+    // chat finished
+
 
     React.useEffect(()=>{
       console.log('use Effecttt');
@@ -208,8 +288,12 @@ function UserTeam() {
           console.log('error',response.data);
           alert('error')
         }else{
-          alert('success')
-          navigate('/chat')
+          console.log('responseddafdfdsfdf',response.data.result);
+          console.log('r',response.data);
+          setcurrentChat(response.data.result)
+          // alert('success')
+          setChatview(true)
+          
         }
 
       }
@@ -218,12 +302,20 @@ function UserTeam() {
       }
     }
 
+
+    console.log('chtaasssfhkhjjkfkdjssssssssssssssssssssssssssssssssssssssss',chats);
+
   return (
 
     <div className={`${modalview?'modal-open':''}`}>
  <div className='wrapper'>
         <UserSidebar page={'team'}/>
         <UserHeder/>
+
+
+      {
+        chatview ? <ChatBody chat={currentChat} currentUser={user._id} workspaceId={workspaceId} setSendMessage={setSendMessage} recievedMessage={recievedMessage} setChatview={setChatview} chatview={chatview}/>:
+   
 
         <div className="content-page">
   <div className="container-fluid">
@@ -308,6 +400,7 @@ function UserTeam() {
         <div className="pt-3 border-top">
           <button  className={`${buttonCss.customBtn} ${buttonCss.btn2}`}>Admin</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -431,6 +524,12 @@ function UserTeam() {
     {/* Page end  */}
   </div>
         </div>
+
+}
+
+
+
+
         {console.log(snackOpen,'sanckopennnnn ')}
 
         
