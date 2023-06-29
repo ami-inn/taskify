@@ -261,7 +261,7 @@ function Project() {
 <div className="card box-shadow-1 card-block card-stretch card-height">
 <div className="card-body">
 <div className="d-flex align-items-center justify-content-between mb-4">
-<CircleProgress/>
+<CircleProgress project={project}/>
 {/*  
  <svg version="1.1" width="100" height="100" viewBox="0 0 100 100" class="circle-progress"><circle class="circle-progress-circle" cx="50" cy="50" r="47" fill="none" stroke="#ddd" stroke-width="8"></circle><path d="M 50 3 A 47 47 0 0 1 97 50" class="circle-progress-value" fill="none" stroke="#00E699" stroke-width="8"></path><text class="circle-progress-text" x="50" y="50" font="16px Arial, sans-serif" text-anchor="middle" fill="#999" dy="0.4em">25%</text></svg> */}
  <div style={{display:'flex', gap:'20px'}}>

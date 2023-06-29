@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar'
 import UserHeder from '../UserHeader/UserHeder'
-import { RiAlignJustify, RiEditBoxFill, RiEditBoxLine, RiSurveyLine } from 'react-icons/ri'
+import { RiAlignJustify, RiArrowDownSLine, RiEditBoxFill, RiEditBoxLine, RiSurveyLine } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import SnackBar from '../SnackBar/SnackBar'
+import Nodata from '../../styles/Nodata.module.css'
+import { useTheme } from '@emotion/react'
 // import UserSidebar from '../UserSidebar/UserSidebar'
 // import UserHeder from '../UserHeader/UserHeder'
 // import NewTask from './NewTask'
@@ -27,13 +29,15 @@ function TaskManage() {
   const [snackOpen,setSnackOpen]=useState(false)
   const [severity,setSeverity]=useState('')
   const [message,setMessage]=useState('')
+  const [showfilter,setShowFilter]=useState(false)
+  const [selectedPriority, setSelectedPriority] = useState('');
 
 
   useEffect(()=>{
 
     fetchAssignedTasks()
 
-  },[refresh])
+  },[refresh,selectedPriority])
 
   const handleModalToggle = (colapseShowId) => {
     setColapseShowId((prevId) =>
@@ -55,7 +59,13 @@ function TaskManage() {
       if(response.data.error){
         alert('error')
       }else{
-        setAssignedTasks(response.data.tasks)
+        // let filteredTasks = response.data.tasks;
+        // console.log('filtered tasks' , filteredTasks);
+        // console.log(selectedPriority,'sdhfsdhfjkhyy');
+        // if (selectedPriority !== 'All') {
+        //   filteredTasks = filteredTasks.filter(task => task.priority === selectedPriority);
+        // }
+        setAssignedTasks(response.data.tasks);
       }
     }
     catch(err){
@@ -123,6 +133,8 @@ function TaskManage() {
   }
   console.log('tasks',assignedTasks);
 
+  // console.log('assignpri',selectedPriority);
+
    
   return (
    <div className='wrapper'>
@@ -139,14 +151,15 @@ function TaskManage() {
             <div className="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
               <h5>Your Task</h5>
               <div className="d-flex flex-wrap align-items-center">
-                <div className="dropdown dropdown-project mr-3">
+                <div className={`dropdown dropdown-project mr-3 ${showfilter?'show':''}`}>
                   <div className="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
-                    <div className="btn bg-body"><span className="h6">Task :</span> filter<i className="ri-arrow-down-s-line ml-2 mr-0" /></div>
+                    <div className="btn bg-body"><span className="h6">Task :</span> filter<RiArrowDownSLine onClick={()=>{setShowFilter(!showfilter)}} className="ri-arrow-down-s-line ml-2 mr-0" /></div>
                   </div>
-                  <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton03">
-                    <a className="dropdown-item" href="#"><i className="ri-mic-line mr-2" />In Progress</a>
-                    <a className="dropdown-item" href="#"><i className="ri-attachment-line mr-2" />Priority</a>
-                    <a className="dropdown-item" href="#"><i className="ri-file-copy-line mr-2" />Category</a> 
+                  <div className={`dropdown-menu dropdown-menu-right ${showfilter?'show':''}`} aria-labelledby="dropdownMenuButton03">
+                    <a className="dropdown-item" ><i className="ri-mic-line mr-2" onClick={()=>setSelectedPriority('')} />All</a>
+                    <a className="dropdown-item" ><i className="ri-attachment-line mr-2"  onClick={()=>setSelectedPriority('medium')} />Medium</a>
+                    <a className="dropdown-item" ><i className="ri-file-copy-line mr-2" onClick={()=>setSelectedPriority('high')} />High</a> 
+                    <a className="dropdown-item" ><i className="ri-file-copy-line mr-2" onClick={()=>setSelectedPriority('low')} />Low</a> 
                   </div>
                 </div>
                 
@@ -155,6 +168,31 @@ function TaskManage() {
           </div>
         </div>
       </div>
+
+     {
+      assignedTasks.length===0?
+      
+      <div className={Nodata.emptyState}>
+      <div className={Nodata.emptyStateContent}>
+        <div className={Nodata.emptyStateIcon}>
+          <img
+            src="https://t4.ftcdn.net/jpg/04/75/01/23/240_F_475012363_aNqXx8CrsoTfJP5KCf1rERd6G50K0hXw.jpg"
+            alt=""
+          />
+        </div>
+        <div className={Nodata.emptyStateMessage}>
+          No Task has been assigned to you yet.
+        </div>
+        <div className={Nodata.emptyStateHelp}>
+          Add a new Task by simpley clicking the button on top right
+          side.
+        </div>
+      </div>
+    </div>
+      
+      :
+   
+
       <div className="col-lg-12">
         <div className="card">
           <div className="card-body">
@@ -282,6 +320,9 @@ function TaskManage() {
           </div>
         </div>
       </div>
+
+}
+
     </div>
     {/* Page end  */}
   </div>

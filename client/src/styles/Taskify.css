@@ -23429,3 +23429,45 @@ ul.iq-contact-rest li a p {
   box-shadow: -2px -2px 2px rgba(255,255,255,0.3), 3px 3px 3px rgba(0,0,0,0.2), 8px 8px 8px rgba(0,0,0,0.2);
   
 }
+
+.circle-progress .color-red{
+  stroke-width: 6px;
+    stroke: #fa3e45;
+}
+
+.circle-progress .color-yellow{
+  stroke-width: 6px;
+    stroke: #fafa3e;
+}
+
+.circle-progress .color-green{
+  stroke-width: 6px;
+    stroke: #3efac8;
+}
+
+.circle-progress .color-blue{
+  stroke-width: 6px;
+    stroke:#3e7dfa;
+}
+
+
+.circle-progress .color-blue-circle{
+  stroke-width: 6px;
+  stroke:#a5c1fa;
+}
+
+.circle-progress .color-red-circle{
+  stroke-width: 6px;
+  stroke: #f8abad;
+}
+
+.circle-progress .color-yellow-circle{
+  stroke-width: 6px;
+  
+  stroke: #f5f5b4;
+}
+
+.circle-progress .color-green-circle{
+  stroke-width: 6px;
+    stroke: #3efac8;
+}

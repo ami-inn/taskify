@@ -636,6 +636,7 @@ export const fetchWorkspaceProjects=async (req,res)=>{
           populate: [
             { path: 'members', model: 'User' },
             { path: 'creator', model: 'User' },
+            { path: 'tasks', model: 'Task' }, 
           ],
         });
           console.log('workspace',workspace);
