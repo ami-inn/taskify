@@ -22,7 +22,8 @@ const projectSchema = new mongoose.Schema({
   description:{type:String},
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   dueDate: { type: Date } , // User who created the project
-  priority: { type: String, enum: ['low', 'medium', 'high'] }
+  priority: { type: String, enum: ['low', 'medium', 'high'] },
+  status:{type:String,default:'pending'}
 });
 
 const ProjectModel = mongoose.model("Project", projectSchema);

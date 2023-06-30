@@ -23315,7 +23315,23 @@ ul.iq-contact-rest li a p {
   inset -2px -2px 3px rgba(0, 0, 0, 0.5);
 
 }
+.card-body .project-icon-box .project-complete-icon{
+  cursor: pointer;
+  position: relative;
+  min-width: 30px;
+  height: 30px;
+  background-color:#02d459 ;
+  display:  flex;
+  justify-content: center;
+  align-items:  center;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.15em;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25),
+  inset 1px 1px 3px rgba(255, 255, 255, 0.25),
+  inset -2px -2px 3px rgba(0, 0, 0, 0.5);
 
+}
 .card-body .project-heading{
   text-transform: capitalize;
   font-family: 'Poppins', sans-serif;

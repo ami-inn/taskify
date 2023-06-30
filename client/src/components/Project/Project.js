@@ -4,7 +4,7 @@ import UserHeder from '../UserHeader/UserHeder'
 import NewProject from './NewProject'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { RiArrowRightSFill, RiDeleteBin2Fill, RiDeleteBin7Fill, RiEdit2Fill, RiEditBoxFill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
+import { RiArrowRightSFill, RiCheckDoubleFill, RiDeleteBin2Fill, RiDeleteBin7Fill, RiEdit2Fill, RiEditBoxFill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
 import { Link, useNavigate } from 'react-router-dom'
@@ -169,7 +169,7 @@ function Project() {
 
   return (
 
-    <div  className={`${modalview===true?'modal-open ':''} `} style={modalview ? { display: 'block', paddingRight: '4px' } : {}}>
+    <div  className={`${modalview||editmodalview===true?'modal-open ':''} `} style={modalview||editmodalview ? { display: 'block', paddingRight: '4px' } : {}}>
 
     <div className='wrapper'>
 
@@ -285,6 +285,21 @@ function Project() {
 </div>
 
 </div>
+
+
+{project.status === 'completed'?
+<div className='project-icon-box' >
+
+<div className='project-complete-icon ' onClick={()=>handleOpenEditModal(project)}>
+
+<RiCheckDoubleFill  className="m-0" ></RiCheckDoubleFill>
+
+</div>
+
+</div>
+:''
+}
+
 
 
 

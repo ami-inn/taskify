@@ -24,6 +24,7 @@ function EditProject(props) {
     const [priority,setpriority]=useState(selectedProject.priority)
     const [displaySelectedMembers, setDisplaySelectedMembers] =useState([]);
     const [description,setDescription]=useState(selectedProject.description)
+    const [status,setStatus]=useState('')
     const [severity, setSeverity] = useState('');
     const [message, setMessage] = useState('');
     const [snackOpen,setSnackOpen] = useState(true)
@@ -120,7 +121,8 @@ function EditProject(props) {
             members:selectedMembers,
             dueDate,
             priority,
-            description
+            description,
+            status
           })
 
           if(response.data.error){
@@ -203,6 +205,34 @@ function EditProject(props) {
                 <input type="date" className="form-control" id="dueDate" value={dueDate} onChange={(e)=>{setDueDate(e.target.value)}} defaultValue />
               </div>                        
             </div>
+
+            <div className="col-lg-6">
+              <div className="form-group mb-3">
+                <label htmlFor="exampleInputText2" className="h5">priority</label>
+                <select name="type" className="selectpicker form-control" data-style="py-0" value={priority} onChange={(e)=>{setpriority(e.target.value)}} >
+                  <option>priority</option>
+                  <option value={'low'}>Low</option>
+                  <option value={'high'}>High</option>
+                  <option value={'medium'}>Medium</option>
+              
+                </select>
+              </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="form-group mb-3">
+                <label htmlFor="exampleInputText2" className="h5">priority</label>
+                <select name="type" className="selectpicker form-control" data-style="py-0" value={status} onChange={(e)=>{setStatus(e.target.value)}} >
+                  <option>Status</option>
+                  <option value={'pending'}>pending</option>
+                  <option value={'completed'}>completed</option>
+                  <option value={'dropped'}>Dropped</option>
+              
+                </select>
+              </div>
+            </div>
+
+        
             <div className="col-lg-6">
               <div className="form-group mb-3">
                 <label htmlFor="exampleInputText2" className="h5">Members *</label>
@@ -230,18 +260,9 @@ function EditProject(props) {
   
             </div>
            
-            <div className="col-lg-6">
-              <div className="form-group mb-3">
-                <label htmlFor="exampleInputText2" className="h5">priority</label>
-                <select name="type" className="selectpicker form-control" data-style="py-0" value={priority} onChange={(e)=>{setpriority(e.target.value)}} >
-                  <option>priority</option>
-                  <option value={'low'}>Low</option>
-                  <option value={'high'}>High</option>
-                  <option value={'medium'}>Medium</option>
-              
-                </select>
-              </div>
-            </div>
+            
+
+
             <div className="col-lg-12">
               <div className="d-flex flex-wrap align-items-ceter justify-content-center mt-2">
                 <button className="btn btn-primary mr-3" type='submit' disabled={validationErr()} data-dismiss="modal" onClick={handleSubmitProject}>Save</button>

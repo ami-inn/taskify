@@ -591,7 +591,7 @@ export const editProject=async (req,res)=>{
     try{
         const {projectId}=req.params
         console.log('jprojectid',projectId);
-        const { name, category, members, dueDate,priority,description} = req.body;
+        const { name, category, members, dueDate,priority,description,status} = req.body;
 
         console.log(req.body);
 
@@ -608,6 +608,7 @@ export const editProject=async (req,res)=>{
         project.members = members;
         project.dueDate = dueDate;
         project.priority = priority;
+        project.status = status
     
         // Save the updated project
         await project.save();
@@ -972,7 +973,8 @@ export const updateTask=async(req,res)=>{
               completed: task.completed,
               'subtasks.$[].completed': task.completed,
               status:'waiting',
-              completedAt:Date.now()
+              completedAt:Date.now(),
+              completedBy:task.assigneeId
 
             },
             { new: true }
@@ -1008,5 +1010,53 @@ export const fetchUser=async(req,res)=>{
     catch(err){
         console.log('error');
         res.json({error:true,message:'internal  server error'})
+    }
+}
+
+export const fetchDesk= async(req,res)=>{
+    try{
+
+        const { workspaceId, userId } = req.query;
+
+        console.log('reqbodeee',workspaceId,userId);
+
+        const workspace = await workspaceModel.findById(workspaceId)
+        .populate({
+          path: 'projects',
+          populate: {
+            path: 'tasks',
+            // match: { completedBy: userId },
+          },
+        })
+        .populate({
+            path: 'projects',
+            populate: {
+              path: 'members',
+            },
+          })
+          .populate({
+            path: 'projects',
+            populate: {
+              path: 'creator',
+            },
+          })
+        .exec();
+
+        console.log('workspaceeee');
+
+   
+
+          console.log('desk',workspace);
+
+
+          res.json({error:false,workspace})
+
+          
+
+    }
+
+    catch(err){
+        console.log('err');
+        res.json({error:false,message:'internal server error'})
     }
 }
