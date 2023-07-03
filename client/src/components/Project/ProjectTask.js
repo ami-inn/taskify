@@ -220,6 +220,10 @@ function ProjectTask() {
 
   console.log(tasks, "taskssss");
 
+const handleCheckboxChange = (taskId) => {
+  setApprovestatus((prevStatus) => !prevStatus);
+};
+
   return (
     <div
       className={` ${newTaskModal === true ? "outwrap modal-open" : ""}`}
@@ -433,25 +437,29 @@ function ProjectTask() {
                               
                                   <div className="header-title">
                                    
-                                    <div className="custom-control custom-checkbox custom-control-inline">
+                                    <div key={taskId} className="custom-control custom-checkbox custom-control-inline">
 
                                       {task.approvalStatus===false?
                                         <input
                                         type="checkbox"
                                         className="custom-control-input"
-                                        id="customCheck05"
+                                      
+                                        id={'task'+task._id}
                                         value={approveStatus}
-                                        onChange={()=>{setApprovestatus(!approveStatus)}}
+                            onChange={() => handleCheckboxChange(task._id)}
 
                                         
                                         
                                         
-                                      />:''
+                                      />
+                                      
+                                      
+                                      :''
                                     }
                                     
                                       <label
                                         className="custom-control-label h5"
-                                        htmlFor="customCheck05"
+                                        htmlFor={'task'+task._id}
                                       >
                                         Task Status
                                       </label>

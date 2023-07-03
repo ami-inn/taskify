@@ -4,6 +4,8 @@ import img2 from '../../assets/images/user/02.jpg'
 import img3 from '../../assets/images/user/03.jpg'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import LineProgress from '../LineProgress/LineProgress'
+import CircleProgress from '../CricleProgress/CircleProgress'
 
 function UserDashboard() {
 
@@ -38,7 +40,10 @@ function UserDashboard() {
   }
 
   console.log('currentprojextss',projects);
-
+  const recentProjects = projects
+  .filter((project) => project.priority === 'medium' || project.priority === 'high')
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  .slice(0, 5);
 
 
   return (
@@ -216,152 +221,52 @@ function UserDashboard() {
                 </div>
               </div>
               <div className="row">
-                <div className="col-lg-12">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="row">
-                        <div className="col-sm-8">
-                          <div className="row align-items-center">
-                            <div className="col-md-3">
-                          
-    <div id="circle-progress-21" className="circle-progress-01 circle-progress circle-progress-primary" data-min-value={0} data-max-value={100} data-value={25} data-type="percent" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={25}><svg version="1.1" width={100} height={100} viewBox="0 0 100 100" className="circle-progress"><circle className="circle-progress-circle" cx={50} cy={50} r={47} fill="none" stroke="#ddd" strokeWidth={8} /><path d="M 50 3 A 47 47 0 0 1 97 50" className="circle-progress-value" fill="none" stroke="#00E699" strokeWidth={8} /><text className="circle-progress-text" x={50} y={50} font="16px Arial, sans-serif" textAnchor="middle" fill="#999" dy="0.4em">25%</text></svg></div>
-                          
-  
-                            </div>
-                            <div className="col-md-9">
-                              <div className="mt-3 mt-md-0">
-                                <h5 className="mb-1">Cloud Service Theme</h5>
-                                <p className="mb-0">Exclusively for cloud-based/ Startup theme.</p>
-                              </div>                                                        
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
-                          <div className="iq-media-group">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                          </div>
-                          <a className="btn btn-white text-primary link-shadow mt-2">High</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-12">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="row">
-                        <div className="col-sm-8">
-                          <div className="row align-items-center">
-                          <div className="col-md-3">
-    <div id="circle-progress-22" className="circle-progress-01 circle-progress circle-progress-secondary" data-min-value={0} data-max-value={100} data-value={30} data-type="percent" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={30}><svg version="1.1" width={100} height={100} viewBox="0 0 100 100" className="circle-progress"><circle className="circle-progress-circle" cx={50} cy={50} r={47} fill="none" stroke="#ddd" strokeWidth={8} /><path d="M 50 3 A 47 47 0 0 1 94.69965626587222 64.52379873562253" className="circle-progress-value" fill="none" stroke="#00E699" strokeWidth={8} /><text className="circle-progress-text" x={50} y={50} font="16px Arial, sans-serif" textAnchor="middle" fill="#999" dy="0.4em">30%</text></svg></div>
-  </div>
-  
-                            <div className="col-md-9">
-                              <div className="mt-3 mt-md-0">
-                                <h5 className="mb-1">Automotive WordPress</h5>
-                                <p className="mb-0">Dealership-based business WordPress theme.</p>
+
+                {
+                  recentProjects.map((project)=>(
+
+                    <div className="col-lg-12">
+                    <div className="card">
+                      <div className="card-body">
+                        <div className="row">
+                          <div className="col-sm-8">
+                            <div className="row align-items-center">
+                              <div className="col-md-3">
+                            
+                            <CircleProgress project={project}/>
+                            
+    
+                              </div>
+                              <div className="col-md-9">
+                                <div className="mt-3 mt-md-0">
+                                  <h5 className="mb-1">{project.name}</h5>
+                                  <p className="mb-0">{project.description}</p>
+                                </div>                                                        
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
-                          <div className="iq-media-group">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
-                            </a>                                                
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                          </div>
-                          <a className="btn btn-white text-secondary link-shadow mt-2">Medium</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-12">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="row">
-                        <div className="col-sm-8">
-                          <div className="row align-items-center">
-                          <div className="col-md-3">
-    <div id="circle-progress-23" className="circle-progress-01 circle-progress circle-progress-warning" data-min-value={0} data-max-value={100} data-value={15} data-type="percent" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={15}><svg version="1.1" width={100} height={100} viewBox="0 0 100 100" className="circle-progress"><circle className="circle-progress-circle" cx={50} cy={50} r={47} fill="none" stroke="#ddd" strokeWidth={8} /><path d="M 50 3 A 47 47 0 0 1 88.02379873562253 22.374093142253763" className="circle-progress-value" fill="none" stroke="#00E699" strokeWidth={8} /><text className="circle-progress-text" x={50} y={50} font="16px Arial, sans-serif" textAnchor="middle" fill="#999" dy="0.4em">15%</text></svg></div>
-  </div>
-  
-                            <div className="col-md-9">
-                              <div className="mt-3 mt-md-0">
-                                <h5 className="mb-1">Online Education</h5>
-                                <p className="mb-0">Remote students and teachers dashboard.</p>
-                              </div>
+                          <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
+                            <div className="iq-media-group">
+                              {project.members.map((member)=>(
+                                      <a href="#" className="iq-media">
+                                      <img className="img-fluid avatar-40 rounded-circle" src={member.profile.url} alt='' />
+                                    </a>
+
+                              ))}
+                        
+                            
                             </div>
+                            <a className="btn btn-white text-primary link-shadow mt-2">{project.priority}</a>
                           </div>
-                        </div>
-                        <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
-                          <div className="iq-media-group">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
-                            </a>
-                          </div>
-                          <a className="btn btn-white text-warning link-shadow mt-2">Low</a>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-lg-12">
-                  <div className="card mb-0">
-                    <div className="card-body">
-                      <div className="row">
-                        <div className="col-sm-8">
-                          <div className="row align-items-center">
-                          <div className="col-md-3">
-    <div id="circle-progress-24" className="circle-progress-01 circle-progress circle-progress-success" data-min-value={0} data-max-value={100} data-value={40} data-type="percent" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={40}><svg version="1.1" width={100} height={100} viewBox="0 0 100 100" className="circle-progress"><circle className="circle-progress-circle" cx={50} cy={50} r={47} fill="none" stroke="#ddd" strokeWidth={8} /><path d="M 50 3 A 47 47 0 0 1 77.62590685774623 88.02379873562253" className="circle-progress-value" fill="none" stroke="#00E699" strokeWidth={8} /><text className="circle-progress-text" x={50} y={50} font="16px Arial, sans-serif" textAnchor="middle" fill="#999" dy="0.4em">40%</text></svg></div>
-  </div>
-  
-                            <div className="col-md-9">
-                              <div className="mt-3 mt-md-0">
-                                <h5 className="mb-1">Blog/Magazine Theme</h5>
-                                <p className="mb-0">Launch visually appealing Blog theme.</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-4 text-sm-right mt-3 mt-sm-0">
-                          <div className="iq-media-group">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
-                            </a>
-                          </div>
-                          <a className="btn btn-white text-success  link-shadow mt-2">High</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+                  ))
+                }
+               
+          
               </div>
             </div>
           </div>
@@ -436,16 +341,16 @@ function UserDashboard() {
               <div className="header-title">
                 <h4 className="card-title">Current Projects</h4>
               </div>
-              <div className="card-header-toolbar d-flex align-items-center">
-                <div id="top-project-slick-arrow" className="slick-aerrow-block">
-                </div>
-              </div>
+{/* <div className="card-header-toolbar d-flex align-items-center">
+  <div id="top-project-slick-arrow" className="slick-aerrow-block"><button className="slick-prev slick-arrow" aria-label="Previous" type="button" fdprocessedid="he6n42b" style={{}}>Previous</button><button className="slick-next slick-arrow" aria-label="Next" type="button" fdprocessedid="d1iwmks" style={{}}>Next</button></div>
+</div> */}
+
             </div>
             <div className="card-body p-0">
               <ul className="list-unstyled row top-projects mb-0">
               
               {
-                projects.map((project)=>(
+                recentProjects.map((project)=>(
 
                          
                 <li className="col-lg-4">
@@ -453,9 +358,7 @@ function UserDashboard() {
                   <div className="card-body"> 
                     <h5 className="mb-3">{project.name}</h5>
                     <p className="mb-3"><i className="las la-calendar-check mr-2" />{new Date(project.createdDate).toLocaleDateString("en-CA")}</p>
-                    <div className="iq-progress-bar bg-success-light mb-4">
-                      <span className="bg-success iq-progress progress-1" data-percent={65} style={{transition: 'width 2s ease 0s', width: '65%'}} />
-                    </div>
+                    <LineProgress project={project}/>
                     <div className="d-flex align-items-center justify-content-between">
                       <div className="iq-media-group">
 

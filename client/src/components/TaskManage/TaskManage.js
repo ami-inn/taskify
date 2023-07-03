@@ -92,7 +92,8 @@ function TaskManage() {
         const updatedSubtasks = task.subtasks.map((subtask) => {
           return { ...subtask, completed };
         });
-        return { ...task, completed, subtasks: updatedSubtasks };
+        // return { ...task, completed, subtasks: updatedSubtasks };
+        return { ...task, completed, subtasks: updatedSubtasks, status: completed ? 'waiting' : task.status };
       }
       return task;
     });
@@ -111,7 +112,7 @@ function TaskManage() {
         });
         return { ...task,  subtasks: updatedSubtasks };
       });
-      console.log(updatedTasks);
+      console.log(updatedTasks,'updated tasks');
       const response = await axios.put('/update-task',{tasks:updatedTasks})
 
 

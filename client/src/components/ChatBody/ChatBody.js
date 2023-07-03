@@ -136,6 +136,13 @@ function ChatBody({chat,currentUser,workspaceId,setSendMessage,recievedMessage,s
         setNewMessage(newMessage)
     }
 
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSend();
+      }
+    };
+
     // always scroll to last
 
    // Always scroll to last Message
@@ -249,6 +256,7 @@ function ChatBody({chat,currentUser,workspaceId,setSendMessage,recievedMessage,s
                 value={newMessage}
                 onChange={handleChange}
                 ref={inputRef}
+                onKeyPress={handleKeyPress}
                 />
 
             <a className="ms-3 sendIcon" onClick={handleSend}><RiSendPlane2Fill className="fas fa-paper-plane" /></a>

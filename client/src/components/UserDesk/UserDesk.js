@@ -157,7 +157,9 @@ function UserDesk() {
      
             ))}  */}
 
-
+{
+    project.tasks.length>0?'':''
+}
 {project.tasks
 .filter((task) =>  task.assigneeId === user._id && (task.status === 'assigned' || task.status === 'pending'|| task.approvalStatus===false ))
 .map((task) => (
@@ -186,6 +188,8 @@ function UserDesk() {
 </div>
 </div>
 ))}
+
+
 
         </div>
 

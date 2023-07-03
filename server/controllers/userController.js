@@ -887,6 +887,8 @@ export const taskApprove=async (req,res)=>{
 
         const {taskId}=req.params
         const {approvalStatus}=req.body
+console.log('reqbodeee',req.body);
+        console.log(approvalStatus);
 
         const task=await TaskModel.findById(taskId)
 
@@ -904,7 +906,7 @@ export const taskApprove=async (req,res)=>{
     task.approvalStatus = true;
 
     // Save the updated task
-    const updatedTask = await task.save();
+    await task.save();
 
         }
 
@@ -957,6 +959,9 @@ export const updateTask=async(req,res)=>{
 
         const {tasks} = req.body
 
+
+        
+
         console.log('fdjfkjd',req.body);
 
         // const updatedTasks = await Promise.all(tasks.map(async (task) => {
@@ -972,8 +977,8 @@ export const updateTask=async(req,res)=>{
             {
               completed: task.completed,
               'subtasks.$[].completed': task.completed,
-              status:'waiting',
               completedAt:Date.now(),
+              status:task.status,
               completedBy:task.assigneeId
 
             },
@@ -1059,4 +1064,35 @@ export const fetchDesk= async(req,res)=>{
         console.log('err');
         res.json({error:false,message:'internal server error'})
     }
+}
+
+export const fetchCalendarTasks= async(req,res)=>{
+
+    try{
+
+        const { workspaceId, userId } = req.query;
+
+        const workspace = await workspaceModel.findById(workspaceId).exec();
+    
+        const projectIds = workspace.projects;
+    
+        const projects = await ProjectModel.find({ _id: { $in: projectIds } }).exec();
+    
+        const taskIds = projects.reduce(
+          (acc, project) => acc.concat(project.taskIds),
+          []
+        );
+    
+        const tasks = await TaskModel.find({
+          _id: { $in: taskIds },
+          assigneeId: userId,
+        }).exec();
+    
+        res.json({error:false,tasks});
+
+    }
+    catch(err){
+        res.json({error:true,message:'internal server errro'})
+    }
+
 }

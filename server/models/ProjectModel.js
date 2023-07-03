@@ -24,7 +24,11 @@ const projectSchema = new mongoose.Schema({
   dueDate: { type: Date } , // User who created the project
   priority: { type: String, enum: ['low', 'medium', 'high'] },
   status:{type:String,default:'pending'}
-});
+},
+{
+  timestamps: true
+}
+);
 
 const ProjectModel = mongoose.model("Project", projectSchema);
 export default ProjectModel;
