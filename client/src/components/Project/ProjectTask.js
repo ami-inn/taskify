@@ -77,7 +77,7 @@ function ProjectTask() {
       const response = await axios.get(`/projectTask/${id}`);
 
       if (response.data.error) {
-        alert("error");
+        // alert("error");
         navigate("/projects");
       } else {
         setProject(response.data.project);
@@ -214,7 +214,7 @@ function ProjectTask() {
     }
     catch(err){
       console.log('error');
-      alert('erro')
+      // alert('erro')
     }
   }
 

@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 function EditUserModal(props) {
-    const {editmodalview,selectedMember} = props;
+    const {editmodalview,selectedMember,} = props;
 
     console.log('props',props);
 
@@ -43,6 +43,9 @@ function EditUserModal(props) {
             dispatch({type:'refresh'})
           setLoading(false)
           props.seteditmodalView(false)
+          props.setSnackOpen(true)
+          props.setMessage('invited successfully')
+          props.setSeverity('success')
           console.log("sucesss");
         }
       }

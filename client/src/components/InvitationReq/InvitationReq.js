@@ -31,7 +31,7 @@ function InvitationReq() {
           const response = await axios.post('/invitation/response',{token:invitationToken,accepted}) 
 
           if(response.data.error){
-            alert('err')
+            // alert('err')
             console.log(response.data.message);
           }else{
             navigate('/create-workspace')
@@ -39,7 +39,7 @@ function InvitationReq() {
 
         }
         catch(err){
-          alert('err')
+          // alert('err')
         }
        
       }

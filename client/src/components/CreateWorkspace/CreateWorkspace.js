@@ -61,7 +61,7 @@ function CreateWorkspace() {
 
         navigate("/workspace/" + data.workspaceId);
       } else {
-        alert();
+        // alert();
       }
     }
   }

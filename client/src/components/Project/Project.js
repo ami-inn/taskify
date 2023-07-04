@@ -54,7 +54,7 @@ function Project() {
 
             if(response.data.error){
                 console.log('err');
-                alert('error')
+                // alert('error')
             }else{
                 console.log(response.data);
                 const {workspace}=response.data

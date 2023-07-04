@@ -540,7 +540,7 @@ const checkOnlineStatus = (chat) => {
       }
 
 {
-        editmodalview===true&&<EditUserModal editmodalview={editmodalview} selectedMember={selectedMember} seteditmodalView={seteditmodalView}/>
+        editmodalview===true&&<EditUserModal editmodalview={editmodalview} selectedMember={selectedMember} setSnackOpen={setSnackOpen} setMessage={setMessage} setSeverity={setSeverity} seteditmodalView={seteditmodalView}/>
       }
 
 

@@ -52,9 +52,9 @@ function JoinedWorkspace(props) {
           localStorage.setItem('workspaceDetails',JSON.stringify(data.workspace))
     
           navigate("/workspace/" + value);
-          alert('success')
+          // alert('success')
         }else{
-          alert('error')
+          // alert('error')
         }
         
      

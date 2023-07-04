@@ -31,7 +31,7 @@ function Chat() {
                 const userId = user._id
                 const {data}=await axios.get(`/chat/worksapce/${workspaceId}/user/${userId}/chats`)
                 if(data.error){
-                    alert('err')
+                    // alert('err')
                 }else{
 
                     console.log('dataa');

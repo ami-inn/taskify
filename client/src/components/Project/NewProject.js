@@ -119,7 +119,7 @@ function NewProject(props) {
             setMessage(response.data.message)
             setSnackOpen(true)
             console.log('error',response.data)
-            alert('error')
+            // alert('error')
           }else{
             console.log('successsssssssss');
 

@@ -22,7 +22,7 @@ function ChatBox({chat,currentUser,workspaceId,setSendMessage,recievedMessage}) 
             const {data} = await axios.get(`/get-user/${userId}`)
 
             if(data.error){
-                alert('error')
+                // alert('error')
             }else{
                 console.log(data,'dataa');
                 setUserData(data.user)
@@ -59,11 +59,11 @@ function ChatBox({chat,currentUser,workspaceId,setSendMessage,recievedMessage}) 
 
             if(data.error){
                 console.log(data);
-                alert('errr')
+                // alert('errr')
             }else{
                 console.log('data',data);
 
-                alert('success')
+                // alert('success')
                 
                 setMessages([...messages,data.result])
                 setNewMessage('')

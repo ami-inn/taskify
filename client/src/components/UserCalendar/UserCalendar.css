@@ -1,0 +1,8 @@
+.rac__event {
+    width: 200px; /* Set the desired width */
+  }
+  
+  /* Target a specific event by its ID */
+  #yourEventId {
+    width: 300px; /* Set the desired width */
+  }

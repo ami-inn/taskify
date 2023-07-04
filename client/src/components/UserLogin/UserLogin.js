@@ -35,7 +35,7 @@ function UserLogin() {
             password,
           });
           if (!data.error) {
-            alert('success')
+            // alert('success')
             dispatch({ type: "refresh" });
            
           } else {

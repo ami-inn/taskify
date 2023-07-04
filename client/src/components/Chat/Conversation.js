@@ -16,7 +16,7 @@ function Conversation({data,currentUserId}) {
             const {data} = await axios.get(`/get-user/${userId}`)
 
             if(data.error){
-                alert('error')
+                // alert('error')
             }else{
                 setUserData(data.user)
             }

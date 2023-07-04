@@ -26,7 +26,7 @@ function AdminLogin() {
         if (data.err) {
             setErrorMessage(data.message)
         } else {
-            alert('success')
+            // alert('success')
             dispatch({ type: "refresh" })
         }
     }

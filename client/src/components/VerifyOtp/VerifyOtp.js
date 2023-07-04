@@ -20,10 +20,10 @@ function VerifyOtp(props) {
         let { data } = await axios.post("/auth/signup/verify", { otp, ...props.data });
         console.log(data);
         if(data.err){
-          alert('error')
+          // alert('error')
             setErrorMessage(data.message)
         }else{
-            alert('success')
+            // alert('success')
             dispatch({type:'refresh'})
         }
     }

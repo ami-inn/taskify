@@ -72,7 +72,7 @@ function UserWorkspace() {
             dispatch({type:'workspace',payload:data.workspace._id})
             // alert('success')
           }else{
-            alert('error')
+            // alert('error')
             navigate('/create-workspace')
           }
 

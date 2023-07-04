@@ -1070,25 +1070,45 @@ export const fetchCalendarTasks= async(req,res)=>{
 
     try{
 
+        console.log('entered heree');
+
         const { workspaceId, userId } = req.query;
 
         const workspace = await workspaceModel.findById(workspaceId).exec();
+
+        // console.log('workspace',workspace);
     
         const projectIds = workspace.projects;
+
+        // console.log('projectIds',projectIds);
     
         const projects = await ProjectModel.find({ _id: { $in: projectIds } }).exec();
     
+        // console.log('projects',projects);
+
         const taskIds = projects.reduce(
-          (acc, project) => acc.concat(project.taskIds),
+          (acc, project) => acc.concat(project.tasks),
           []
         );
+
+        // console.log('tasksId',taskIds);
     
-        const tasks = await TaskModel.find({
-          _id: { $in: taskIds },
-          assigneeId: userId,
-        }).exec();
+        // const tasks = await TaskModel.find({
+        //   _id: { $in: taskIds },
+        //   assigneeId: userId,
+        // }).exec();
     
-        res.json({error:false,tasks});
+        const [tasks, completedTasks] = await Promise.all([
+            TaskModel.find({ _id: { $in: taskIds }, assigneeId: userId }).exec(),
+            TaskModel.find({ _id: { $in: taskIds }, completedBy: userId }).exec()
+          ]);
+      
+          console.log('tasks:', tasks);
+          console.log('completedTasks:', completedTasks);
+      
+          res.json({ error: false, tasks,completedTasks});
+
+       
 
     }
     catch(err){

@@ -57,7 +57,7 @@ function TaskManage() {
       const response = await axios.get('/assigned-tasks',{params:{userId:user._id,workspaceId}})
 
       if(response.data.error){
-        alert('error')
+        // alert('error')
       }else{
         // let filteredTasks = response.data.tasks;
         // console.log('filtered tasks' , filteredTasks);
