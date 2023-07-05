@@ -35,6 +35,14 @@ function Project() {
     const [success,setSuccess]=useState(false)
     const [editmodalview,seteditmodalView]=useState(false)
     const [selectedProject,setSelectedProject]=useState(null)
+
+
+    const [sidebarShow, setsidebarShow] = useState(false);
+
+    const handleButtonClick = () => {
+      setsidebarShow(!sidebarShow);
+    };
+
     console.log(modalview);
 
 
@@ -170,12 +178,12 @@ function Project() {
   return (
 
     <div  className={`${modalview||editmodalview===true?'modal-open ':''} `} style={modalview||editmodalview ? { display: 'block', paddingRight: '4px' } : {}}>
-
+      <div className={`${sidebarShow?'sidebar-main':''}`}>
     <div className='wrapper'>
 
         
-<UserSidebar page={'project'}/>
-<UserHeder/>
+<UserSidebar onsideViewClick={handleButtonClick} page={'project'}/>
+<UserHeder onsideViewClick={handleButtonClick}/>
 
 
 
@@ -389,7 +397,7 @@ function Project() {
  }
  
     </div>
-
+</div>
 {
 modalview===true && <NewProject modalview={modalview} setModalview={setModalview} success={success} setSuccess={setSuccess} />
 }

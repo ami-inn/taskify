@@ -17,6 +17,8 @@ function TaskManage() {
   const workspaceId = useSelector((state)=>state.currentWorkspace)
   const user=useSelector((state)=>{return state.user.details})
   const currentWorkspace = useSelector((state) => state.workspaces[workspaceId]);
+
+
   
 
 
@@ -31,6 +33,12 @@ function TaskManage() {
   const [message,setMessage]=useState('')
   const [showfilter,setShowFilter]=useState(false)
   const [selectedPriority, setSelectedPriority] = useState('');
+
+  const [sidebarShow, setsidebarShow] = useState(false);
+
+  const handleButtonClick = () => {
+    setsidebarShow(!sidebarShow);
+  };
 
 
   useEffect(()=>{
@@ -138,10 +146,11 @@ function TaskManage() {
 
    
   return (
+    <div className={`${sidebarShow?'sidebar-main':''}`}>
    <div className='wrapper'>
 
-    <UserSidebar page={'tasks'}/>
-    <UserHeder/>
+    <UserSidebar onsideViewClick={handleButtonClick} page={'tasks'}/>
+    <UserHeder onsideViewClick={handleButtonClick}/>
 
      <div className="content-page">
   <div className="container-fluid">
@@ -334,6 +343,7 @@ function TaskManage() {
   snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
  }
    
+   </div>
    </div>
   )
 }

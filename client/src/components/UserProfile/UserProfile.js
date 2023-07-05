@@ -20,10 +20,16 @@ function UserProfile() {
     const handleFormId=(formId)=>{
       setopenForm(formId)
     }
+    const [sidebarShow, setsidebarShow] = useState(false);
+
+    const handleButtonClick = () => {
+      setsidebarShow(!sidebarShow);
+    };
   return (
+    <div className={`${sidebarShow?'sidebar-main':''}`}>
     <div className='wrapper'>
-    <UserSidebar page={'dashboard'}/>    
-    <UserHeder/>
+    <UserSidebar onsideViewClick={handleButtonClick} page={'dashboard'}/>    
+    <UserHeder onsideViewClick={handleButtonClick}/>
    
    
     <div className="content-page">
@@ -222,6 +228,7 @@ function UserProfile() {
     </div>
      </div>
 
+  </div>
   </div>
   )
 }

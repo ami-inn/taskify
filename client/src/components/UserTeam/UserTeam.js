@@ -61,6 +61,15 @@ function UserTeam() {
     const [recievedMessage,setRecievedMessage]=useState(null)
     const [online,setOnline]=useState(false)
 
+
+    // for sidebar
+
+    const [sidebarShow, setsidebarShow] = useState(false);
+
+    const handleButtonClick = () => {
+      setsidebarShow(!sidebarShow);
+    };
+
     const socket = useRef()
 
       React.useEffect(()=>{
@@ -93,7 +102,7 @@ function UserTeam() {
 
     
     React.useEffect(()=>{
-        socket.current=io('http://localhost:8800')
+        socket.current=io('http://localhost:5000')
         socket.current.emit('new-user-add',user._id)
         socket.current.on('get-users',(users)=>{
             setOnlineUsers(users)
@@ -305,12 +314,17 @@ const checkOnlineStatus = (chat) => {
 
     console.log('chtaasssfhkhjjkfkdjssssssssssssssssssssssssssssssssssssssss',chats);
 
+
+
+
+
   return (
 
     <div className={`${modalview?'modal-open':''}`}>
- <div className='wrapper'>
-        <UserSidebar page={'team'}/>
-        <UserHeder/>
+      <div className={`${sidebarShow?'sidebar-main':''}`}>
+      <div className='wrapper'>
+        <UserSidebar onsideViewClick={handleButtonClick} page={'team'}/>
+        <UserHeder onsideViewClick={handleButtonClick}/>
 
 
       {
@@ -578,7 +592,7 @@ const checkOnlineStatus = (chat) => {
       
     </div>
 
-
+    </div>
     {modalview||editmodalview?<div class="modal-backdrop fade show"></div>:''}
     </div>
     

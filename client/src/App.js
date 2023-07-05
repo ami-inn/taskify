@@ -163,7 +163,7 @@ function App() {
          <Route path='/tasks' element={<Navigate to={'/'}/>}/>
          <Route path='/desk' element={<Navigate to={'/'}/>}/>
          <Route path='/calendar' element={<Navigate to={'/'}/>}/>
-        
+         <Route path='/*' element={<Error1/>}></Route>
 
       </>
     }

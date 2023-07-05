@@ -44,6 +44,11 @@ function ProjectTask() {
   const [warnModal,setWarnModal]=useState(false)
   const [taskId,setTaskId]=useState('')
   const [approveStatus,setApprovestatus]=useState(false)
+  const [sidebarShow, setsidebarShow] = useState(false);
+
+  const handleButtonClick = () => {
+    setsidebarShow(!sidebarShow);
+  };
   
 
   console.log(comment, "comment");
@@ -229,9 +234,10 @@ const handleCheckboxChange = (taskId) => {
       className={` ${newTaskModal === true ? "outwrap modal-open" : ""}`}
       style={newTaskModal ? { display: "block", paddingRight: "4px" } : {}}
     >
+            <div className={`${sidebarShow?'sidebar-main':''}`}>    
       <div className="wrapper">
-        <UserSidebar page={"project"} />
-        <UserHeder />
+        <UserSidebar onsideViewClick={handleButtonClick} page={"project"} />
+        <UserHeder onsideViewClick={handleButtonClick} />
         <div className="content-page">
           <div className="container-fluid">
             <div className="row">
@@ -732,6 +738,7 @@ const handleCheckboxChange = (taskId) => {
           </div>
         </div>
       </div>
+      </div>
 
       {newTaskModal === true && (
         <CreateTask
@@ -752,7 +759,7 @@ const handleCheckboxChange = (taskId) => {
         />
       )}
 
-<Dialog
+       <Dialog
         open={warnModal}
         onClose={()=>{setWarnModal(!warnModal)}}
         aria-labelledby="alert-dialog-title"

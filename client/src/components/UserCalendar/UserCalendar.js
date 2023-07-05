@@ -18,6 +18,11 @@ function UserCalendar() {
 
 
   const [events,setEvents]=useState([])
+  const [sidebarShow, setsidebarShow] = useState(false);
+
+  const handleButtonClick = () => {
+    setsidebarShow(!sidebarShow);
+  };
 
   useEffect(()=>{
 
@@ -88,9 +93,10 @@ function UserCalendar() {
   console.log(events,'events');
  
   return (
+    <div className={`${sidebarShow?'sidebar-main':''}`}>
     <div className="wrapper">
-      <UserSidebar page={"calendar"} />
-      <UserHeder />
+      <UserSidebar onsideViewClick={handleButtonClick} page={"calendar"} />
+      <UserHeder onsideViewClick={handleButtonClick} />
       <div className="content-page">
         <div className="container-fluid">
           <div className="row">
@@ -181,6 +187,7 @@ function UserCalendar() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

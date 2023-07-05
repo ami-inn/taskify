@@ -16,6 +16,12 @@ function UserDesk() {
     const [desk,setDesk]=useState(null)
     const [projects,setProject]=useState([])
 
+    const [sidebarShow, setsidebarShow] = useState(false);
+
+    const handleButtonClick = () => {
+      setsidebarShow(!sidebarShow);
+    };
+
     
 
 
@@ -67,10 +73,11 @@ function UserDesk() {
 
 
   return (
+    <div className={`${sidebarShow?'sidebar-main':''}`}>
     <div className='wrapper'>
 
-        <UserSidebar page={'desk'}/>
-        <UserHeder/>
+        <UserSidebar onsideViewClick={handleButtonClick} page={'desk'}/>
+        <UserHeder onsideViewClick={handleButtonClick}/>
 
 
          
@@ -435,6 +442,7 @@ function UserDesk() {
 </div>
 
       
+    </div>
     </div>
   )
 }

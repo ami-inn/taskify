@@ -35,6 +35,12 @@ function EditProfile() {
     const [severity,setSeverity]=useState('')
     const [message,setMessage]=useState('')
     const [selectedImage,setSelectedImage]=useState(null)
+    const [sidebarShow, setsidebarShow] = useState(false);
+
+    const handleButtonClick = () => {
+      setsidebarShow(!sidebarShow);
+    };
+
     const {id}=useParams()
     const navigate=useNavigate()
     const dispatch=useDispatch()
@@ -253,10 +259,11 @@ function EditProfile() {
 
 
   return (
+    <div className={`${sidebarShow?'sidebar-main':''}`}>
     <div className='wrapper'>
 
-    <UserSidebar page={'dashboard'}/>    
-    <UserHeder/>
+    <UserSidebar onsideViewClick={handleButtonClick} page={'dashboard'}/>    
+    <UserHeder onsideViewClick={handleButtonClick}/>
 
     <div className="content-page">
   <div className="container-fluid">
@@ -511,6 +518,7 @@ function EditProfile() {
   snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
  }
       
+    </div>
     </div>
   )
 }
