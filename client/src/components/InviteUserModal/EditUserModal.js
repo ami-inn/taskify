@@ -44,7 +44,8 @@ function EditUserModal(props) {
           setLoading(false)
           props.seteditmodalView(false)
           props.setSnackOpen(true)
-          props.setMessage('invited successfully')
+          props.setRefresh(!props.refresh)
+          props.setMessage('edit successfully')
           props.setSeverity('success')
           console.log("sucesss");
         }

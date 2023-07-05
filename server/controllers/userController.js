@@ -1083,6 +1083,8 @@ export const fetchCalendarTasks= async(req,res)=>{
         // console.log('projectIds',projectIds);
     
         const projects = await ProjectModel.find({ _id: { $in: projectIds } }).exec();
+
+        const Dueprojects = await ProjectModel.find({ _id: { $in: projectIds }, status: 'pending' }).exec();
     
         // console.log('projects',projects);
 
@@ -1091,6 +1093,8 @@ export const fetchCalendarTasks= async(req,res)=>{
           []
         );
 
+        console.log('due projectsss',Dueprojects);
+
         // console.log('tasksId',taskIds);
     
         // const tasks = await TaskModel.find({
@@ -1098,15 +1102,18 @@ export const fetchCalendarTasks= async(req,res)=>{
         //   assigneeId: userId,
         // }).exec();
     
-        const [tasks, completedTasks] = await Promise.all([
-            TaskModel.find({ _id: { $in: taskIds }, assigneeId: userId }).exec(),
-            TaskModel.find({ _id: { $in: taskIds }, completedBy: userId }).exec()
+        const [tasks, completedTasks,allDueTasks,allCompletedTasks] = await Promise.all([
+            TaskModel.find({ _id: { $in: taskIds }, assigneeId: userId, status:'assigned' }).exec(),
+            TaskModel.find({ _id: { $in: taskIds }, completedBy: userId,status:'Completed' }).exec(),
+            TaskModel.find({ _id: { $in: taskIds }, status: { $in: ['pending', 'assigned'] } }).exec(),
+            TaskModel.find({ _id: { $in: taskIds }, status: 'Completed' }).exec(),
           ]);
       
           console.log('tasks:', tasks);
           console.log('completedTasks:', completedTasks);
+          console.log('alldueTaksskskks',allDueTasks);
       
-          res.json({ error: false, tasks,completedTasks});
+          res.json({ error: false, tasks,completedTasks,allDueTasks,allCompletedTasks});
 
        
 

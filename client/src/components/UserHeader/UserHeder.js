@@ -1,6 +1,6 @@
 import  { useEffect, useState } from "react";
 import img1 from "../../assets/images/user/01.jpg";
-import { RiSearch2Line } from "react-icons/ri";
+import { RiMenu3Line, RiMenuLine, RiSearch2Line } from "react-icons/ri";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import * as React from 'react';
@@ -14,10 +14,16 @@ import { Link, Navigate } from "react-router-dom";
 import store from "../../store/store";
 
 
-function UserHeder() {
+function UserHeder({onsideViewClick}) {
   const workspaceId = useSelector((state)=>state.currentWorkspace)
+
   console.log(workspaceId)
+
+  const [sideView,setsideView]=useState(false)
   const [workspace,setworkSpace]=useState('')
+  const [navView,setnavView]=useState(false)
+
+
     React.useEffect(()=>{
     
         (
@@ -86,7 +92,7 @@ function UserHeder() {
       <div className="iq-navbar-custom">
         <nav className="navbar navbar-expand-lg navbar-light p-0">
           <div className="iq-navbar-logo d-flex align-items-center justify-content-between">
-            <i className="ri-menu-line wrapper-menu" />
+            <RiMenuLine onClick={onsideViewClick} className="ri-menu-line wrapper-menu" style={{cursor:'pointer'}} />
             <a href="../backend/index.html" className="header-logo">
               <h4 className="logo-title text-uppercase">Taskify</h4>
             </a>
@@ -98,15 +104,17 @@ function UserHeder() {
             <button
               className="navbar-toggler"
               type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-label="Toggle navigation"
+              // data-toggle="collapse"
+              // data-target="#navbarSupportedContent"
+              // aria-controls="navbarSupportedContent"
+              // aria-label="Toggle navigation"
+
+              onClick={()=>setnavView(!navView)}
             >
-              <i className="ri-menu-3-line" />
+              <RiMenu3Line className="ri-menu-3-line" />
             </button>
             <div
-              className="collapse navbar-collapse"
+              className={`collapse navbar-collapse ${navView?'show':''}`}
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ml-auto navbar-list align-items-center">

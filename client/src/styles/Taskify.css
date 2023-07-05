@@ -7118,9 +7118,9 @@ a.text-white:hover, a.text-white:focus {
 @media (min-width: 1300px) {
   .iq-top-navbar .iq-navbar-custom .wrapper-menu {
     display: none; }
-  body.sidebar-main .iq-sidebar {
+  .sidebar-main .iq-sidebar {
     width: 60px; }
-    body.sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu li a span {
+  .sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu li a span {
       -webkit-opacity: 0;
       -moz-opacity: 0;
       -ms-opacity: 0;
@@ -7132,13 +7132,13 @@ a.text-white:hover, a.text-white:focus {
       -ms-transition: all 0.6s ease-in-out;
       -o-transition: all 0.6s ease-in-out;
       transition: all 0.6s ease-in-out; }
-    body.sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu li a .iq-arrow-right {
+    .sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu li a .iq-arrow-right {
       display: none; }
-    body.sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu .iq-submenu {
+    .sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu .iq-submenu {
       display: none; }
-  body.sidebar-main .iq-sidebar-logo {
+  .sidebar-main .iq-sidebar-logo {
     transform: translateX(-100px); }
-    body.sidebar-main .iq-sidebar-logo a {
+  .sidebar-main .iq-sidebar-logo a {
       -webkit-opacity: 0;
       -moz-opacity: 0;
       -ms-opacity: 0;
@@ -7162,7 +7162,7 @@ a.text-white:hover, a.text-white:focus {
         -ms-transition: all 0.6s ease-in-out;
         -o-transition: all 0.6s ease-in-out;
         transition: all 0.6s ease-in-out; }
-  body.sidebar-main .iq-sidebar-menu .iq-menu li a .badge {
+  .sidebar-main .iq-sidebar-menu .iq-menu li a .badge {
     -webkit-opacity: 0;
     -moz-opacity: 0;
     -ms-opacity: 0;
@@ -7174,15 +7174,15 @@ a.text-white:hover, a.text-white:focus {
     -ms-transition: all 0.6s ease-in-out;
     -o-transition: all 0.6s ease-in-out;
     transition: all 0.6s ease-in-out; }
-  body.sidebar-main .iq-sidebar-menu .iq-menu li a .iq-arrow-right {
+  .sidebar-main .iq-sidebar-menu .iq-menu li a .iq-arrow-right {
     margin-right: 0;
     display: none; }
-  body.sidebar-main .iq-sidebar-menu .iq-menu li a i.iq-arrow-left {
+  .sidebar-main .iq-sidebar-menu .iq-menu li a i.iq-arrow-left {
     margin: 0 auto; }
-  body.sidebar-main .iq-sidebar-menu .iq-menu li li a i {
+  .sidebar-main .iq-sidebar-menu .iq-menu li li a i {
     margin: 0 auto;
     text-align: center; }
-  body.sidebar-main .sidebar-default .iq-sidebar-menu .iq-menu li ul li a {
+  .sidebar-main .sidebar-default .iq-sidebar-menu .iq-menu li ul li a {
     padding-left: 18px; }
   .sidebar-main .iq-sidebar .iq-submenu li a {
     font-size: 0; }
@@ -7195,7 +7195,7 @@ a.text-white:hover, a.text-white:focus {
     z-index: 99;
     left: -300px;
     top: 0px; }
-  body.sidebar-main .iq-sidebar {
+  .sidebar-main .iq-sidebar {
     width: 260px;
     left: 0;
     z-index: 999; } }
@@ -7357,7 +7357,7 @@ a.text-white:hover, a.text-white:focus {
   .iq-top-navbar .navbar-brand {
     padding: 0; }
 
-body.sidebar-main .iq-top-navbar {
+.sidebar-main .iq-top-navbar {
   width: calc(100% - 70px); }
 
 .iq-top-navbar.fixed-header {
@@ -7788,7 +7788,7 @@ body.sidebar-main .iq-top-navbar {
     .iq-top-navbar .iq-search-bar.device-search {
       margin-left: 20px; }
 
-  body.sidebar-main .iq-top-navbar {
+  .sidebar-main .iq-top-navbar {
     width: 100%; } }
 
 .search-toggle.add-btn {
@@ -10149,7 +10149,7 @@ body.tab-horizontal .iq-footer {
   padding-bottom: 0; }
 
 @media (min-width: 1300px) {
-  body.sidebar-main .iq-footer {
+  .sidebar-main .iq-footer {
     margin-left: 70px;
     width: calc(100vw - 74px); } }
 
@@ -10157,7 +10157,7 @@ body.tab-horizontal .iq-footer {
   .iq-footer {
     margin-left: 0;
     width: 100%; }
-  body.sidebar-main .iq-footer {
+  .sidebar-main .iq-footer {
     padding: 15px 10px;
     margin-left: 0;
     width: 100%; }
@@ -18431,9 +18431,9 @@ g[aria-describedby="id-22-description"] {
   transition: all 0.3s ease-in-out; }
 
 @media (min-width: 1300px) {
-  body.sidebar-main .content-page {
+  .sidebar-main .content-page {
     margin-left: 70px; }
-  body.sidebar-main .iq-menu-bt-sidebar {
+  .sidebar-main .iq-menu-bt-sidebar {
     display: block;
     margin-left: auto;
     margin-right: auto;

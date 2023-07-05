@@ -439,7 +439,7 @@ const handleCheckboxChange = (taskId) => {
                                    
                                     <div key={taskId} className="custom-control custom-checkbox custom-control-inline">
 
-                                      {task.approvalStatus===false?
+                                      {task.approvalStatus===false || task.status==='pending'||task.status==='waiting'?
                                         <input
                                         type="checkbox"
                                         className="custom-control-input"
@@ -480,7 +480,7 @@ const handleCheckboxChange = (taskId) => {
                                         ? "completed"
                                         : "not completed"}
                                     </a>
-                                    {isCreator && !task.approvalStatus ? <button type="submit" className="btn bg-primary-light" > approve</button>:'' }
+                                    {isCreator && !task.approvalStatus||task.status==='waiting' ? <button type="submit" className="btn bg-primary-light" > approve</button>:'' }
                                   
                                   </div>
 

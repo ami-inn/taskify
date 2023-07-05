@@ -90,18 +90,23 @@ function UserWorkspace() {
 
 },[])
 
+const [sidebarShow, setsidebarShow] = useState(false);
+
+const handleButtonClick = () => {
+  setsidebarShow(!sidebarShow);
+};
+
   return (
+    <div className={`${sidebarShow?'sidebar-main':''}`}>
     <div className='wrapper'>
 
 
-        <UserSidebar page={'dashboard'}/>
-        <UserHeder/>
-
-    
-  
+        <UserSidebar onsideViewClick={handleButtonClick} page={'dashboard'}  />
+        <UserHeder onsideViewClick={handleButtonClick}/>
          <UserDashboard/>
 
      
+    </div>
     </div>
   )
 }

@@ -29,6 +29,7 @@ import Chat from './components/Chat/Chat';
 import ChatBody from './components/ChatBody/ChatBody';
 import UserDesk from './components/UserDesk/UserDesk';
 import UserCalendar from './components/UserCalendar/UserCalendar';
+import Error1 from './components/ErrorPages/Error1';
 
 
 // ..
@@ -132,6 +133,7 @@ function App() {
          <Route path='/tasks' element={<TaskManage/>}/>
          <Route path='/desk' element={<UserDesk/>}/>
          <Route path='/calendar' element={<UserCalendar/>}/>
+         <Route path='/*' element={<Error1/>}></Route>
 
          {/* <Route path='/chat' element={<Chat/>}/>
          <Route path='/chat2' element={<ChatBody/>}/> */}
@@ -156,6 +158,11 @@ function App() {
          <Route path='/profile' element={<Navigate to={'/'}/>}  />
          <Route path='/edit-profile/:id' element={<Navigate to={'/'}/>}  />
          <Route path='/invitation' element={<InvitationReq/>}/>
+         <Route path='/projects' element={<Navigate to={'/'}/>}/>
+         <Route path='/project/:id' element={<Navigate to={'/'}/>}/>
+         <Route path='/tasks' element={<Navigate to={'/'}/>}/>
+         <Route path='/desk' element={<Navigate to={'/'}/>}/>
+         <Route path='/calendar' element={<Navigate to={'/'}/>}/>
         
 
       </>

@@ -93,7 +93,7 @@ function TaskManage() {
           return { ...subtask, completed };
         });
         // return { ...task, completed, subtasks: updatedSubtasks };
-        return { ...task, completed, subtasks: updatedSubtasks, status: completed ? 'waiting' : task.status };
+        return { ...task, completed, subtasks: updatedSubtasks, status: completed ? 'waiting' : 'pending' };
       }
       return task;
     });

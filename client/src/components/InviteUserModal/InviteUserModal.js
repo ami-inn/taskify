@@ -34,6 +34,9 @@ function InviteUserModal(props) {
       }else{
         setLoading(false)
         props.setModalview(false)
+        props.setSnackOpen(true)
+        props.setMessage('edit successfully')
+        props.setSeverity('success')
         console.log("sucesss");
       }
     }

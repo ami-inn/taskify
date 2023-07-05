@@ -536,11 +536,11 @@ const checkOnlineStatus = (chat) => {
 
 
       {
-        modalview===true&&<InviteUserModal modalview={modalview} setModalview={setModalview}/>
+        modalview===true&&<InviteUserModal modalview={modalview} setModalview={setModalview} setSnackOpen={setSnackOpen} setMessage={setMessage} setSeverity={setSeverity}/>
       }
 
 {
-        editmodalview===true&&<EditUserModal editmodalview={editmodalview} selectedMember={selectedMember} setSnackOpen={setSnackOpen} setMessage={setMessage} setSeverity={setSeverity} seteditmodalView={seteditmodalView}/>
+        editmodalview===true&&<EditUserModal setrefresh={setrefresh} refresh={refresh} editmodalview={editmodalview} selectedMember={selectedMember} setSnackOpen={setSnackOpen} setMessage={setMessage} setSeverity={setSeverity} seteditmodalView={seteditmodalView}/>
       }
 
 

@@ -1,8 +1,9 @@
 import React from 'react'
+import { RiMenu3Line } from 'react-icons/ri';
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-function UserSidebar({page}) {
+function UserSidebar({page,onsideViewClick}) {
 
   const workspaceId = useSelector((state)=>state.currentWorkspace)
 
@@ -11,13 +12,13 @@ function UserSidebar({page}) {
 
   return (
 <div className="iq-sidebar  sidebar-default ">
-  <div className="iq-sidebar-logo d-flex align-items-center">
+  <div className="iq-sidebar-logo d-flex justify-content-between">
     <a href="../backend/index.html" className="header-logo">
    {/* logo */}
       <h3 className="logo-title light-logo">Taskify</h3>
     </a>
     <div className="iq-menu-bt-sidebar ml-0">
-      <i className="las la-bars wrapper-menu" />
+      <RiMenu3Line onClick={onsideViewClick} className="las la-bars wrapper-menu" />
     </div>
   </div>
   <div className="data-scrollbar" data-scroll={1}>
