@@ -26,7 +26,7 @@ export async function userSignup(req,res){
         const strengthScore=result.score
 
         if(strengthScore < 3){
-            return res.json({error:true,message:'password is weak'})
+            return res.json({error:true,message:'password is weak use [A-Z] [0-9] [!@#$%^&*]'})
         }
 
         let otp=Math.ceil(Math.random()*1000000)

@@ -7,13 +7,13 @@ export default function sentOtp(email,otp){
             port: 465,
             secure: true,
             auth: {
-              user: 'amipk2001@gmail.com',
-              pass: 'gzpenpqheyoeplcl',
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD,
             },
         })
 
         var mailOptions={
-            from: 'amipk2001@gmail.com',
+            from: process.env.EMAIL,
             to: email,
             subject: "Taskify Email verification",
             html: `

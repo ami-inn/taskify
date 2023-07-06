@@ -65,7 +65,7 @@ function ForgotEmailPassword({email,otp}) {
                         }
                       <button type="submit" disabled={!validForm()}  className="button-submit-login">Submit</button>
                       <p className="mt-3 button-submit-login-p">
-                        Go to <a href="#">Home</a>
+                        Go to <Link to={'/'}>Home</Link>
                       </p>
                     </form>
                   </div>

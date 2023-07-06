@@ -25,7 +25,7 @@ function UserSignup() {
     const [phoneNumber,setPhoneNumber]=useState()
     const dispatch = useDispatch()
     const [showOtpPage, setShowOtpPage] = useState(false)
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
   
     const handleClose = () => {
       setOpen(false);
@@ -56,17 +56,27 @@ function UserSignup() {
        
         e.preventDefault();
         if (!validationErr()) {
-          let {data}=await axios.post("/auth/signup", {
-            name, email, password, confPassword,lastname,phoneNumber
-          });
-          if(!data.error){
-            // alert('success')
-            setShowOtpPage(true)
-            dispatch({type:"refresh"})
-         
+          if(confPassword === password){
+            let {data}=await axios.post("/auth/signup", {
+              name, email, password, confPassword,lastname,phoneNumber
+            });
+            if(!data.error){
+              // alert('success')
+              setShowOtpPage(true)
+              dispatch({type:"refresh"})
+           
+            }else{
+              setErrMessage(data.message)
+              handleClose()
+            }
+
           }else{
-            setErrMessage(data.message)
+            handleClose()
+            setErrMessage('passwords must be same')
           }
+        
+        }else{
+          handleClose()
         }
       }
 
@@ -148,7 +158,7 @@ function UserSignup() {
 
                       {
                           errMessage &&
-                          <p className='errMessageText'>{errMessage}</p>
+                          <p className='errMessageText' style={{color:'#ca31a3'}}>{errMessage}</p>
                         }
                           {/* {
                           passwordStrength === 'weak' &&

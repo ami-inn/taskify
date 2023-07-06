@@ -7,6 +7,7 @@ import axios from 'axios'
 import SnackBar from '../SnackBar/SnackBar'
 import Nodata from '../../styles/Nodata.module.css'
 import { useTheme } from '@emotion/react'
+import { Navigate, useNavigate } from 'react-router-dom'
 // import UserSidebar from '../UserSidebar/UserSidebar'
 // import UserHeder from '../UserHeader/UserHeder'
 // import NewTask from './NewTask'
@@ -35,6 +36,8 @@ function TaskManage() {
   const [selectedPriority, setSelectedPriority] = useState('');
 
   const [sidebarShow, setsidebarShow] = useState(false);
+
+  const naveigate= useNavigate()
 
   const handleButtonClick = () => {
     setsidebarShow(!sidebarShow);
@@ -66,13 +69,9 @@ function TaskManage() {
 
       if(response.data.error){
         // alert('error')
+        naveigate('/')
       }else{
-        // let filteredTasks = response.data.tasks;
-        // console.log('filtered tasks' , filteredTasks);
-        // console.log(selectedPriority,'sdhfsdhfjkhyy');
-        // if (selectedPriority !== 'All') {
-        //   filteredTasks = filteredTasks.filter(task => task.priority === selectedPriority);
-        // }
+  
         setAssignedTasks(response.data.tasks);
       }
     }
@@ -80,16 +79,7 @@ function TaskManage() {
       console.log('error');
     }
   }
-  // const handleTaskCheckboxChange = (taskId, completed) => {
-  //   // Update the completed status of the task locally
-  //   const updatedTasks = assignedTasks.map((task) => {
-  //     if (task._id === taskId) {
-  //       return { ...task, completed };
-  //     }
-  //     return task;
-  //   });
-  //   setAssignedTasks(updatedTasks);
-  // };
+
 
   const handleTaskCheckboxChange = (taskId, completed) => {
 
