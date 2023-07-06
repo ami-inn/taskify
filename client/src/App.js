@@ -36,7 +36,7 @@ import Error1 from './components/ErrorPages/Error1';
 AOS.init();
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:5000/";
+  axios.defaults.baseURL = "https://taskify.aeshion.shop";
   axios.defaults.withCredentials = true;
 
   const [loading, setLoading] = useState(true);
