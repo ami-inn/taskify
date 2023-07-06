@@ -475,7 +475,9 @@ export const inviteUserToWorkspace=async (req,res)=>{
        
 
 
-        const invitationLink = `http://localhost:3000/invitation?token=${invitationToken}`;
+        // const invitationLink = `http://localhost:3000/invitation?token=${invitationToken}`;
+
+        const invitationLink = `https://taskifi.netlify.app/invitation?token=${invitationToken}`;
 
         let sentEmail=await sentMail(email,`you have an email req to join ${workspace.name} as ${role}  you can accept or reject it click the below link ${invitationLink}`,'team invitation link ')
 
