@@ -80,7 +80,7 @@ function SNote() {
 
                 if(response.data.error){
                     console.log(response.data);
-                    alert('error')
+                    alert('errors'+response.data.message)
                 }
                 else{
                     setRefresh(!refresh)
