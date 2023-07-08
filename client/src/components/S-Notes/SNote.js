@@ -22,6 +22,8 @@ function SNote() {
     const [refresh,setRefresh]=useState(false)
 
 
+    console.log('inpit',userInput);
+
 
     // feth previous note
  useEffect(() => {
@@ -77,6 +79,7 @@ function SNote() {
                 const response= await axios.post(`/notes/${workspaceId}`, note)
 
                 if(response.data.error){
+                    console.log(response.data);
                     alert('error')
                 }
                 else{
