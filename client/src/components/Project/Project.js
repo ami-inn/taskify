@@ -5,7 +5,7 @@ import NewProject from './NewProject'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { RiArrowRightSFill, RiCheckDoubleFill, RiDeleteBin2Fill, RiDeleteBin7Fill, RiEdit2Fill, RiEditBoxFill, RiSearch2Line, RiStarFill } from 'react-icons/ri'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { Backdrop, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import SnackBar from '../SnackBar/SnackBar'
 import { Link, useNavigate } from 'react-router-dom'
 import CircleProgress from '../CricleProgress/CircleProgress'
@@ -35,6 +35,8 @@ function Project() {
     const [success,setSuccess]=useState(false)
     const [editmodalview,seteditmodalView]=useState(false)
     const [selectedProject,setSelectedProject]=useState(null)
+    const [getproject,setgetproject]=useState(true)
+    const [open,setOpen]=useState(false)
 
 
     const [sidebarShow, setsidebarShow] = useState(false);
@@ -67,6 +69,7 @@ function Project() {
                 console.log(response.data);
                 const {workspace}=response.data
                 setProject(workspace.projects)
+                setgetproject(false)
                 
             }
 
@@ -80,15 +83,19 @@ function Project() {
     
     const handleDelete= async(projectId)=>{
       console.log('handleDelete');
+      setOpen(true)
+      setWarnModal(false)
       try{
         const response = await axios.delete(`/projects/${projectId}`,{data:{userId:user._id}})
 
         if(response.data.error){
-          setWarnModal(false)
+          setOpen(false)
+
           setSeverity('error')
           setMessage(response.data.message)
           setSnackOpen(true)
         }else{
+          setOpen(false)
           setWarnModal(false)
           console.log('sucessssssssssssssssssssssssss');
          setSeverity('success')
@@ -179,7 +186,10 @@ function Project() {
 
     <div  className={`${modalview||editmodalview===true?'modal-open ':''} `} style={modalview||editmodalview ? { display: 'block', paddingRight: '4px' } : {}}>
       <div className={`${sidebarShow?'sidebar-main':''}`}>
+
     <div className='wrapper'>
+
+  
 
         
 <UserSidebar onsideViewClick={handleButtonClick} page={'project'}/>
@@ -236,7 +246,19 @@ function Project() {
  </div>
 </div>
 
-{project?.length===0?
+    {
+          getproject===false?'':
+          
+          <Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        }
+
+{project?.length===0 && getproject===false?
 
 
 <div className={Nodata.emptyState}>
@@ -397,6 +419,7 @@ function Project() {
  }
  
     </div>
+
 </div>
 {
 modalview===true && <NewProject modalview={modalview} setModalview={setModalview} success={success} setSuccess={setSuccess} />
@@ -406,6 +429,14 @@ editmodalview===true && <EditProject selectedProject={selectedProject} editmodal
 }
 
 {modalview||editmodalview?<div class="modal-backdrop fade show"></div>:''}
+
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
 
     </div>
 

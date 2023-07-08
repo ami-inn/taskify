@@ -25,11 +25,11 @@ import InvitationReq from './components/InvitationReq/InvitationReq';
 import Project from './components/Project/Project';
 import TaskManage from './components/TaskManage/TaskManage';
 import ProjectTask from './components/Project/ProjectTask';
-import Chat from './components/Chat/Chat';
-import ChatBody from './components/ChatBody/ChatBody';
+
 import UserDesk from './components/UserDesk/UserDesk';
 import UserCalendar from './components/UserCalendar/UserCalendar';
 import Error1 from './components/ErrorPages/Error1';
+import SNote from './components/S-Notes/SNote';
 
 
 // ..
@@ -133,10 +133,10 @@ function App() {
          <Route path='/tasks' element={<TaskManage/>}/>
          <Route path='/desk' element={<UserDesk/>}/>
          <Route path='/calendar' element={<UserCalendar/>}/>
+         <Route path='/notes' element={<SNote/>}/>
          <Route path='/*' element={<Error1/>}></Route>
 
-         {/* <Route path='/chat' element={<Chat/>}/>
-         <Route path='/chat2' element={<ChatBody/>}/> */}
+  
 
 
 

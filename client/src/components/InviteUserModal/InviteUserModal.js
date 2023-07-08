@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 
 function InviteUserModal(props) {
 
+  const user=useSelector((state)=>{return state.user.details})
+
   const {modalview} = props;
 
   const [email,setEmail]=useState('')
@@ -23,7 +25,7 @@ function InviteUserModal(props) {
 
     try{
       setLoading(true)
-      const response = await axios.post('/inviteUsers',{email,workspaceId,role})
+      const response = await axios.post('/inviteUsers',{email,workspaceId,role,userId:user._id})
 
       if(response.data.error){
         // alert('err')

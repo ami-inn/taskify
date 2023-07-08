@@ -20,7 +20,7 @@ import commentCss from "../../styles/TaskComment.module.css";
 import { useSelector } from "react-redux";
 import SnackBar from "../SnackBar/SnackBar";
 import Nodata from "../../styles/Nodata.module.css";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, setRef } from "@mui/material";
+import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, setRef } from "@mui/material";
 import { Button } from "react-bootstrap";
 
 function ProjectTask() {
@@ -31,6 +31,7 @@ function ProjectTask() {
 
   const [newTaskModal, setNewTaskModal] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [gettask,setgetTask]=useState(true)
   const [project, setProject] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [comment, setComment] = useState("");
@@ -88,6 +89,7 @@ function ProjectTask() {
         setProject(response.data.project);
         setTasks(response.data.project.tasks);
         setfilteredTasks(response.data.project.tasks);
+        setgetTask(false)
       }
     } catch (err) {
       console.log("error");
@@ -320,7 +322,18 @@ const handleCheckboxChange = (taskId) => {
                 </div>
               </div>
 
-              {filteredTasks?.length === 0 ? (
+              {
+          gettask===false?'':<Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+          
+        >
+          <CircularProgress
+           color="inherit" />
+        </Backdrop>
+        }
+
+              {tasks?.length === 0 && gettask===false? (
                 <div className={Nodata.emptyState}>
                   <div className={Nodata.emptyStateContent}>
                     <div className={Nodata.emptyStateIcon}>

@@ -61,6 +61,17 @@ function UserTeam() {
     const [recievedMessage,setRecievedMessage]=useState(null)
     const [online,setOnline]=useState(false)
 
+    // for backdrop
+
+    const [open,setOpen]=useState(false)
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleOpen = () => {
+      setOpen(true);
+    };
+
 
     // for sidebar
 
@@ -240,9 +251,16 @@ const checkOnlineStatus = (chat) => {
       }
     }
 
-    if (!workspace) {
-      return <div>Loading...</div>;
-    }
+    // if (!workspace) {
+    //   return     
+    // <Backdrop
+    //   sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    //   open={true}
+    //   onClick={handleClose}
+    // >
+    //   <CircularProgress color="inherit" />
+    // </Backdrop>
+    // }
 
     console.log('workspace details',workspace);
 
@@ -325,6 +343,16 @@ const checkOnlineStatus = (chat) => {
       <div className='wrapper'>
         <UserSidebar onsideViewClick={handleButtonClick} page={'team'}/>
         <UserHeder onsideViewClick={handleButtonClick}/>
+
+        {
+          workspace?'':<Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+          onClick={handleClose}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        }
 
 
       {
@@ -539,7 +567,7 @@ const checkOnlineStatus = (chat) => {
   </div>
         </div>
 
-}
+      }
 
 
 
@@ -594,6 +622,8 @@ const checkOnlineStatus = (chat) => {
 
     </div>
     {modalview||editmodalview?<div class="modal-backdrop fade show"></div>:''}
+
+
     </div>
     
    

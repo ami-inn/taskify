@@ -34,6 +34,26 @@ const workspaceSchema=new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat'
       }],
+      notes: [{
+        title: {
+          type: String,
+          required: true
+        },
+        content: {
+          type: String,
+          required: true
+        },
+        createdBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true
+        },
+        createdDate: {
+          type: Date,
+          default: Date.now
+        }
+      }],
+      
       invitationToken: { type: String }
 
 })

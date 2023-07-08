@@ -1,0 +1,105 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,300&family=Courgette&family=Handlee&family=Kanit&family=Lato:wght@700&family=Mukta:wght@600;800&family=PT+Sans:wght@700&family=Passion+One&family=Poppins&family=Public+Sans:wght@300&family=Sansita:wght@700&display=swap');
+
+
+:root{
+    --size:300px
+}
+
+
+.containerNote{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content:flex-start ;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 50px;
+    padding: 50px;
+
+}
+
+.containerNote .notes{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.containerNote .notes .note{
+ position: relative;
+ width: var(--size);
+ height: var(--size);
+ background: #f7e98d;
+ padding: 20px;
+ box-shadow: 0 15px 35px rgba(0,0,0,0.25) ;
+ font-family: 'Handlee', cursive;
+}
+
+.containerNote .notes .note::before{
+
+    content: 'Double Click To Remove This Content';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.15);
+    padding: 3px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    opacity: 0;
+    transition: 0.5s;
+}
+.containerNote .notes .note:hover::before{
+    opacity: 1;
+}
+
+.create{
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    background: rgb(18 102 227 / 23%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 6em;
+    cursor: pointer;
+
+}
+.create i{
+    position: absolute;
+    color: #fff;
+
+
+}
+.createBox{
+    position:relative;
+    width: var(--size);
+    height: var(--size);
+    z-index: 1000;
+    /* display: none; */
+
+}
+
+.createBox textarea{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--size);
+    height: var(--size);
+    padding: 20px;
+    outline: none;
+    font-size: 0.2em;
+    resize: none;
+    border: none;
+
+}
+
+.details h3{
+    font-family: 'Handlee', cursive;
+    user-select: none;
+    font-size: 1.45em;
+}

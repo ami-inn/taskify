@@ -436,6 +436,8 @@ export const inviteUserToWorkspace=async (req,res)=>{
 
         const user = await userModel.findOne({email})
 
+      
+
         if(!user){
             console.log('error 1');
             return res.json({error:true,message:'user not found'})
@@ -448,8 +450,10 @@ export const inviteUserToWorkspace=async (req,res)=>{
             return res.json({error:true,message:'worksapce not found'})
         }
         const isMember=workspace.members.includes(user._id)
+        const isAdmin=workspace.admins.includes(user._id)
+        
 
-        if(isMember){
+        if(isMember||isAdmin){
             console.log('isError');
             return res.json({error:true,message:'user already exists'})
         }

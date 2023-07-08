@@ -118,7 +118,7 @@ export async function userLogin(req,res){
         const {email,password} = req.body
         const user=await usermodel.findOne({email})
         if(!user){
-            return res.json({error:true,message:'User Already Exist'})
+            return res.json({error:true,message:'User Not Found'})
         }
         const userValid = bcrypt.compareSync(password,user.password)
 
