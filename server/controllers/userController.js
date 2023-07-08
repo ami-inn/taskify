@@ -1129,3 +1129,67 @@ export const fetchCalendarTasks= async(req,res)=>{
     }
 
 }
+
+export const fetchNotes= async(req,res)=>{
+
+    try{
+
+        const { workspaceId, userId } = req.params;
+
+        console.log(workspaceId,userId);
+
+        const workspace = await workspaceModel.findOne({_id: workspaceId});
+
+        if (!workspace) {
+            // If no workspace is found, return an empty array of notes
+            return res.json({error:true,message:'workspace not found', notes: [] });
+          }
+
+          const notes = workspace.notes.filter(note => note.createdBy.toString() === userId);
+
+          console.log(notes,'notes');
+
+          return res.json({error:false,message:'successfully get the note',notes})
+
+
+    }
+
+    catch(err){
+        console.log(err);
+        return res.json({erro:true,message:'internal server error'})
+    }
+
+
+}
+
+export const createNotes=async (req,res)=>{
+    try{
+
+        const { workspaceId } = req.params;
+    const { title, content, createdBy } = req.body;
+
+    // Create a new note object
+    const note = {
+      title,
+      content,
+      createdBy,
+      createdDate: new Date(),
+    };
+
+    const updatedWorkspace = await workspaceModel.findByIdAndUpdate(
+        workspaceId,
+        { $push: { notes: note } },
+        { new: true }
+      );
+  
+      if (!updatedWorkspace) {
+        return res.json({ error: 'Workspace not found' });
+      }
+  
+      res.json({error:false,message:'created successfully', note });
+
+    }
+    catch(err){
+        return res.json({error:true,message:'internal server error'})
+    }
+}

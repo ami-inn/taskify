@@ -6,6 +6,7 @@ import UserHeder from '../UserHeader/UserHeder'
 import { RiAddFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { async } from 'react-input-emoji';
 
 function SNote() {
 
@@ -18,6 +19,8 @@ function SNote() {
 
     const [createBoxVisible, setCreateBoxVisible] = useState(false);
     const [userInput, setUserInput] = useState('');
+    const [refresh,setRefresh]=useState(false)
+
 
 
     // feth previous note
@@ -36,6 +39,8 @@ function SNote() {
 
           }else{
 
+            setNotes(response.data.notes)
+
           }
 
         // Set the fetched notes in the state
@@ -47,16 +52,42 @@ function SNote() {
 
     // Call the fetchNotes function to retrieve the notes
     fetchNotes();
-  }, [workspaceId]);
+  }, [workspaceId,refresh]);
 
 
     const randomColors = ['#c2ff3d', '#ff3de8', '#3dc2ff', '#04e022', '#bc83e6', '#ebb328'];
     let i = 0;
   
-    const handleKeyDown = (e) => {
+    const handleKeyDown = async(e) => {
       if (e.keyCode === 13) {
-        divStyle(userInput);
-        setCreateBoxVisible(false);
+        // divStyle(userInput);
+        // setCreateBoxVisible(false);
+
+        e.preventDefault()
+        const text=userInput.trim()
+        if(text){
+            
+            const note ={
+                title:'',
+                content:text,
+                createdBy:user._id
+            }
+
+            try{
+                const response= await axios.post(`/notes/${workspaceId}`, note)
+
+                if(response.data.error){
+                    alert('error')
+                }
+                else{
+                    setRefresh(!refresh)
+                    alert('success')
+                }
+            }
+            catch(error){
+                console.log('error');
+            }
+        }
       }
     };
   
@@ -136,9 +167,9 @@ function SNote() {
             </div>
           )}
         </div>
-        {/* {notes.map((note, index) => (
+        {notes?.map((note, index) => (
           <div
-            className="note"
+            className={`${Notecss.note}`}
             key={index}
             style={{ background: note.color }}
             onDoubleClick={() => handleNoteDoubleClick(index)}
@@ -147,7 +178,7 @@ function SNote() {
               <h3>{note.text}</h3>
             </div>
           </div>
-        ))} */}
+        ))}
 
       </div>
     </div>
