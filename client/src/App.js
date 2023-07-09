@@ -37,8 +37,8 @@ import UserTodo from './components/UserTodo/UserTodo';
 AOS.init();
 
 function App() {
-  // axios.defaults.baseURL = "https://taskify.aeshion.shop";
-  axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.baseURL = "https://taskify.aeshion.shop";
+  // axios.defaults.baseURL = "http://localhost:5000";
   axios.defaults.withCredentials = true;
 
   const [loading, setLoading] = useState(true);
