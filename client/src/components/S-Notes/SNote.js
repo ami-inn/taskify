@@ -7,6 +7,7 @@ import { RiAddFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { async } from 'react-input-emoji';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 function SNote() {
 
@@ -20,6 +21,7 @@ function SNote() {
     const [createBoxVisible, setCreateBoxVisible] = useState(false);
     const [userInput, setUserInput] = useState('');
     const [refresh,setRefresh]=useState(false)
+    const [open,setOpen]=useState(false)
 
 
     console.log('inpit',userInput);
@@ -28,6 +30,7 @@ function SNote() {
     // feth previous note
  useEffect(() => {
     const fetchNotes = async () => {
+        setOpen(true)
       try {
         // Make the API call to fetch notes using userId and workspaceId
         const response = await axios.get('/notes', {
@@ -38,11 +41,12 @@ function SNote() {
           });
 
           if(response.data.error){
+            setOpen(false)
 
           }else{
 
             setNotes(response.data.notes)
-
+            setOpen(false)
           }
 
         // Set the fetched notes in the state
@@ -74,15 +78,18 @@ function SNote() {
                 content:text,
                 createdBy:user._id
             }
+            setOpen(true)
 
             try{
                 const response= await axios.post(`/notes/${workspaceId}`, note)
 
                 if(response.data.error){
+                    setOpen(false)
                     console.log(response.data);
                     // alert('errors'+response.data.message)
                 }
                 else{
+                    setOpen(false)
                     setRefresh(!refresh)
                     divStyle(userInput);
                     setCreateBoxVisible(false);
@@ -109,15 +116,18 @@ function SNote() {
         console.log('noteId',noteId);
     //   const updatedNotes = notes.filter((_, i) => i !== index);
     //   setNotes(updatedNotes);
+    setOpen(true)
     try{
 
         const response = await axios.delete(`/notes/${workspaceId}/${noteId}`)
 
         if(response.data.error){
             // alert('err')
+            setOpen(false)
             console.log(response.data);
         }else{
             // alert('success')
+            setOpen(false)
             setRefresh(!refresh)
         }
 
@@ -224,6 +234,14 @@ function SNote() {
 
       
     </div>
+
+    <Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
 
     </div>
   )
