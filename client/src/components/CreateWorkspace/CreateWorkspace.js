@@ -8,6 +8,7 @@ import ShowWorkspaces from "./ShowWorkspaces";
 import JoinedWorkspace from "./JoinedWorkspace";
 import buttonCss from '../../styles/Buttons.module.css'
 import { RiDeleteBack2Fill, RiDropLine, RiGroupLine } from "react-icons/ri";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 function CreateWorkspace() {
   const [name, setName] = useState("");
@@ -20,6 +21,15 @@ function CreateWorkspace() {
   const [joinedWorkspaces, setJoinedWorkspaces] = useState([])
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [dropOpen,setDropOpen]=useState(false)
+    
+    const handleDropClose = () => {
+      setDropOpen(false);
+    };
+    const handleDropOpen = () => {
+      setDropOpen(true);
+    };
+  
 
   const validForm = () => {
     if (name.trim() === "" || description.trim() === "") {
@@ -37,6 +47,7 @@ function CreateWorkspace() {
   });
 
   async function handleSubmit(e) {
+    handleDropOpen()
     e.preventDefault();
 
     if (!validForm()) {
@@ -47,6 +58,7 @@ function CreateWorkspace() {
       });
 
       if (!data.error) {
+        handleDropClose()
         console.log(data);
         dispatch({ type: "workspace", payload: data.workspaceId });
         dispatch({
@@ -61,6 +73,7 @@ function CreateWorkspace() {
 
         navigate("/workspace/" + data.workspaceId);
       } else {
+        handleDropClose()
         // alert();
       }
     }
@@ -243,6 +256,14 @@ function CreateWorkspace() {
           </div>
         </div>
       </section>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={dropOpen}
+        onClick={handleDropClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }
