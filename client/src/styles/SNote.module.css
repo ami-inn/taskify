@@ -3,14 +3,14 @@
 
 
 :root{
-    --size:300px
+    --size:250px
 }
 
 
 .containerNote{
     position: relative;
     width: 100%;
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     justify-content:flex-start ;
     align-items: flex-start;
@@ -23,7 +23,7 @@
 .containerNote .notes{
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 37px;
     justify-content: flex-start;
     align-items: flex-start;
 }

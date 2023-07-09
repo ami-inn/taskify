@@ -1134,7 +1134,9 @@ export const fetchNotes= async(req,res)=>{
 
     try{
 
-        const { workspaceId, userId } = req.params;
+        const { userId, workspaceId } = req.query;
+
+        console.log('enter the fetch note');
 
         console.log(workspaceId,userId);
 
@@ -1165,6 +1167,8 @@ export const fetchNotes= async(req,res)=>{
 export const createNotes=async (req,res)=>{
     try{
 
+        console.log('enter hereee');
+
         const { workspaceId } = req.params;
     const { title, content, createdBy } = req.body;
 
@@ -1191,5 +1195,31 @@ export const createNotes=async (req,res)=>{
     }
     catch(err){
         return res.json({error:true,message:'internal server error'})
+    }
+}
+
+export const deleteNotes=async (req,res)=>{
+
+    try{
+
+        const {workspaceId,noteId}=req.params
+
+        console.log('enter to delete note',workspaceId,noteId);
+
+        const updatedWorkspace = await workspaceModel.findByIdAndUpdate(
+            workspaceId,
+            { $pull: { notes: { _id: noteId } } },
+            { new: true }
+          );
+
+          if(!updatedWorkspace){
+            return res.json({error:true,message:'workspace not found'})
+          }
+
+          res.json({error:false,message:'deleted successfully'})
+
+    }
+    catch(err){
+        return res.json({error:true,message:'internal server error'});
     }
 }

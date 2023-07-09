@@ -80,11 +80,14 @@ function SNote() {
 
                 if(response.data.error){
                     console.log(response.data);
-                    alert('errors'+response.data.message)
+                    // alert('errors'+response.data.message)
                 }
                 else{
                     setRefresh(!refresh)
-                    alert('success')
+                    divStyle(userInput);
+                    setCreateBoxVisible(false);
+                    setUserInput('')
+                    // alert('success')
                 }
             }
             catch(error){
@@ -102,9 +105,26 @@ function SNote() {
       setUserInput(e.target.value);
     };
   
-    const handleNoteDoubleClick = (index) => {
-      const updatedNotes = notes.filter((_, i) => i !== index);
-      setNotes(updatedNotes);
+    const handleNoteDoubleClick = async (noteId) => {
+        console.log('noteId',noteId);
+    //   const updatedNotes = notes.filter((_, i) => i !== index);
+    //   setNotes(updatedNotes);
+    try{
+
+        const response = await axios.delete(`/notes/${workspaceId}/${noteId}`)
+
+        if(response.data.error){
+            // alert('err')
+            console.log(response.data);
+        }else{
+            // alert('success')
+            setRefresh(!refresh)
+        }
+
+    }
+    catch(err){
+        console.log('error',err);
+    }
     };
   
     const color = () => {
@@ -150,8 +170,11 @@ function SNote() {
 
         {/* notes */}
 
+        <div className="row">
 
-        <div className={`${Notecss.containerNote}`}>
+ 
+
+     <div className={`${Notecss.containerNote}`}>
       <div className={`${Notecss.notes}`}>
         <div className={`${Notecss.create}`} id="create" onClick={handleCreateClick}>
          <i> <RiAddFill className="fa-sharp fa-regular fa-plus"/></i>
@@ -174,17 +197,25 @@ function SNote() {
           <div
             className={`${Notecss.note}`}
             key={index}
-            style={{ background: note.color }}
-            onDoubleClick={() => handleNoteDoubleClick(index)}
+            style={{ background: color() }}
+            onDoubleClick={() => handleNoteDoubleClick(note._id)}
           >
-            <div className="details">
-              <h3>{note.text}</h3>
+            <div className={`${Notecss.details}`}>
+              <h3>{note.content}</h3>
             </div>
           </div>
         ))}
 
       </div>
     </div>
+
+
+ 
+   
+     </div>
+
+
+      
 
 
     </div>
