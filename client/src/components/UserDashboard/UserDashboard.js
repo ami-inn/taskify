@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import LineProgress from '../LineProgress/LineProgress'
 import CircleProgress from '../CricleProgress/CircleProgress'
+import LineProgressProject from '../LineProgress/LineProgressProject'
 
 function UserDashboard() {
 
@@ -46,6 +47,22 @@ function UserDashboard() {
   .slice(0, 5);
 
 
+  // Function to calculate the total task count
+const getTotalTaskCount = () => {
+  let totalTaskCount = 0;
+
+  // Iterate over each project
+  projects.forEach((project) => {
+    // Add the task count of the current project to the total count
+    totalTaskCount += project.tasks.length;
+  });
+
+  return totalTaskCount;
+};
+
+// Usage
+const totalTaskCount = getTotalTaskCount();
+
   return (
     <div className="content-page">
     <div className="container-fluid">
@@ -58,13 +75,7 @@ function UserDashboard() {
                 <span className="badge badge-primary">created</span>
               </div>
               <h3><span className="counter">{currentWorkspace?.projects.length}</span></h3>
-              <div className="d-flex align-items-center justify-content-between mt-1">
-                <p className="mb-0">in progress</p>
-                <span className="text-primary">65%</span>
-              </div>
-              <div className="iq-progress-bar bg-primary-light mt-2">
-                <span className="bg-primary iq-progress progress-1" data-percent={65} />
-              </div>
+           <LineProgressProject projects={projects}/>
             </div>
           </div>
         </div>
@@ -78,10 +89,10 @@ function UserDashboard() {
               <h3><span className="counter">{currentWorkspace?.admins.length}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
                 <p className="mb-0">available</p>
-                <span className="text-warning">65%</span>
+                <span className="text-warning">100%</span>
               </div>
               <div className="iq-progress-bar bg-warning-light mt-2">
-                <span className="bg-warning iq-progress progress-1" data-percent={35} />
+                <span className="bg-warning iq-progress progress-1" data-percent={100} style={{width:'100%'}} />
               </div>
             </div>
           </div>
@@ -91,9 +102,9 @@ function UserDashboard() {
             <div className="card-body">
               <div className="top-block d-flex align-items-center justify-content-between">
                 <h5>Task</h5>
-                <span className="badge badge-success">Today</span>
+                <span className="badge badge-success">To-Do</span>
               </div>
-              <h3><span className="counter">33</span></h3>
+              <h3><span className="counter">{totalTaskCount}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
                 <p className="mb-0">completed</p>
                 <span className="text-success">85%</span>
@@ -114,10 +125,10 @@ function UserDashboard() {
               <h3><span className="counter">{currentWorkspace?.members.length}</span></h3>
               <div className="d-flex align-items-center justify-content-between mt-1">
                 <p className="mb-0">available</p>
-                <span className="text-info">90%</span>
+                <span className="text-info">100%</span>
               </div>
               <div className="iq-progress-bar bg-info-light mt-2">
-                <span className="bg-info iq-progress progress-1" data-percent={55} />
+                <span className="bg-info iq-progress progress-1" data-percent={100} style={{width:'100%'}}/>
               </div>
             </div>
           </div>
