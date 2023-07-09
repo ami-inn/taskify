@@ -59,17 +59,38 @@ function App() {
     
       const savedWorkspace = localStorage.getItem('workspaceDetails');
       console.log('savedWorkspace',savedWorkspace);
+      // if (savedWorkspace) {
+      //   const workspaceData = JSON.parse(savedWorkspace);
+      //   console.log('workspaceData',workspaceData);
+      //   console.log(workspaceData.workspaceId);
+      //   dispatch({
+      //     type: 'initializeWorkspace',
+      //     payload: {
+      //       workspaceId: workspaceData._id,
+      //       workspace: workspaceData
+      //     }
+      //   });
+      // }
+
       if (savedWorkspace) {
-        const workspaceData = JSON.parse(savedWorkspace);
-        console.log('workspaceData',workspaceData);
-        console.log(workspaceData.workspaceId);
-        dispatch({
-          type: 'initializeWorkspace',
-          payload: {
-            workspaceId: workspaceData._id,
-            workspace: workspaceData
-          }
-        });
+        try {
+          const workspaceData = JSON.parse(savedWorkspace);
+          console.log('workspaceData', workspaceData);
+          console.log(workspaceData._id,'workspaceIds');
+
+          const response = await axios.get(`/fetch-workspace/${workspaceData._id}`);
+          const workspace = response.data.workspace;
+
+          dispatch({
+            type: 'initializeWorkspace',
+            payload: {
+              workspaceId: workspace._id,
+              workspace: workspace
+            }
+          });
+        } catch (error) {
+          console.error('Error fetching workspace details:', error);
+        }
       }
     
       setLoading(false)
