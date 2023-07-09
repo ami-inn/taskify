@@ -1223,3 +1223,23 @@ export const deleteNotes=async (req,res)=>{
         return res.json({error:true,message:'internal server error check catch'});
     }
 }
+
+export const getWorkspace=async (req,res)=>{
+    try{
+
+        const { id } = req.params;
+      console.log('workspaceId', id);
+
+const workspace = await workspaceModel.findById(id);
+
+if (!workspace) {
+  return res.status(404).json({ message: 'Workspace not found',error:true });
+}
+
+return res.json({error:false,workspace});
+
+    }
+    catch(err){
+        return res.json({error:true,message:'internal server error check catch'});
+    }
+}
