@@ -1216,10 +1216,10 @@ export const deleteNotes=async (req,res)=>{
             return res.json({error:true,message:'workspace not found'})
           }
 
-          res.json({error:false,message:'deleted successfully'})
+          res.json({error:false,message:'deleted successfully note'})
 
     }
     catch(err){
-        return res.json({error:true,message:'internal server error'});
+        return res.json({error:true,message:'internal server error check catch'});
     }
 }
