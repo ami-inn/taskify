@@ -30,6 +30,7 @@ import UserDesk from './components/UserDesk/UserDesk';
 import UserCalendar from './components/UserCalendar/UserCalendar';
 import Error1 from './components/ErrorPages/Error1';
 import SNote from './components/S-Notes/SNote';
+import UserTodo from './components/UserTodo/UserTodo';
 
 
 // ..
@@ -135,6 +136,7 @@ function App() {
          <Route path='/desk' element={<UserDesk/>}/>
          <Route path='/calendar' element={<UserCalendar/>}/>
          <Route path='/notes' element={<SNote/>}/>
+         <Route path='/todo' element={<UserTodo/>}/>
          <Route path='/*' element={<Error1/>}></Route>
 
   

@@ -221,7 +221,7 @@ function TaskManage() {
                         </div>
                         <div className="media align-items-center mt-md-0 mt-3">
                           <a className={`btn ${task.completed?'bg-primary-light':'bg-secondary-light'}  mr-3`}>{task.completed?'completed':'not complete'}</a>
-                          <a className="btn bg-secondary-light" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseEdit1" onClick={()=>{ handleModalToggle(task._id);}} ><RiEditBoxLine  className="ri-edit-box-line m-0" /></a>
+                          <a className="btn bg-info-light" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseEdit1" onClick={()=>{ handleModalToggle(task._id);}} ><RiEditBoxLine  className="ri-edit-box-line m-0" /></a>
                         </div>
                       </div>  
                     </div>
