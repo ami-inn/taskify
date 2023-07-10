@@ -8,6 +8,8 @@ import SnackBar from '../SnackBar/SnackBar'
 import Nodata from '../../styles/Nodata.module.css'
 import { useTheme } from '@emotion/react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { Backdrop } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress'
 // import UserSidebar from '../UserSidebar/UserSidebar'
 // import UserHeder from '../UserHeader/UserHeder'
 // import NewTask from './NewTask'
@@ -34,6 +36,7 @@ function TaskManage() {
   const [message,setMessage]=useState('')
   const [showfilter,setShowFilter]=useState(false)
   const [selectedPriority, setSelectedPriority] = useState('');
+  const [dropOpen,setDropOpen]=useState(false)
 
   const [sidebarShow, setsidebarShow] = useState(false);
 
@@ -111,16 +114,19 @@ function TaskManage() {
         return { ...task,  subtasks: updatedSubtasks };
       });
       console.log(updatedTasks,'updated tasks');
+      setDropOpen(true)
       const response = await axios.put('/update-task',{tasks:updatedTasks})
 
 
       if(response.data.error){
         setSnackOpen(true)
         setSeverity('error')
+        setDropOpen(false)
         setMessage(response.data.message)
       }else{
         setRefresh(!refresh)
         setSnackOpen(true)
+        setDropOpen(false)
         setSeverity('success')
         setMessage(response.data.message)
       }
@@ -332,6 +338,17 @@ function TaskManage() {
   
   snackOpen && <SnackBar severity={severity} message={message} snackOpen={snackOpen} setSnackOpen={setSnackOpen}  />
  }
+
+
+      <Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={dropOpen}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+   
+   
    
    </div>
    </div>
