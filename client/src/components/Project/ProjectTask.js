@@ -46,6 +46,7 @@ function ProjectTask() {
   const [taskId,setTaskId]=useState('')
   const [approveStatus,setApprovestatus]=useState(false)
   const [sidebarShow, setsidebarShow] = useState(false);
+  const [dropOpen,setDropOpen]=useState(false)
 
   const handleButtonClick = () => {
     setsidebarShow(!sidebarShow);
@@ -97,6 +98,7 @@ function ProjectTask() {
   };
 
   const handleCommentSubmit = async (taskId) => {
+    setDropOpen(true)
     try {
       const response = await axios.post(`/task/${taskId}/comments`, {
         content: comment,
@@ -105,11 +107,13 @@ function ProjectTask() {
 
       if (response.data.error) {
         setSnackOpen(true);
+        setDropOpen(false)
         setSeverity("error");
         setMessage(response.data.message);
       } else {
         setRefresh(!refresh);
         setSnackOpen(true);
+        setDropOpen(false)
         setSeverity("success");
         setMessage(response.data.message);
       }
@@ -120,6 +124,7 @@ function ProjectTask() {
   };
 
   const handleDeleteComment = async (taskId, commentId) => {
+    setDropOpen(true)
     try {
       console.log("etnere");
       const response = await axios.delete(
@@ -127,10 +132,12 @@ function ProjectTask() {
       );
       if (response.data.error) {
         setSnackOpen(true);
+        setDropOpen(false)
         setSeverity("error");
         setMessage(response.data.message);
       } else {
         setRefresh(!refresh);
+        setDropOpen(false)
         setSnackOpen(true);
         setSeverity("success");
         setMessage(response.data.message);
@@ -148,15 +155,18 @@ function ProjectTask() {
         setMessage("you are not the creator");
         return;
       } else {
+        setDropOpen(true)
         const response = await axios.delete(`/tasks/${taskId}`,{data:{projectId:project._id}});
 
         if (response.data.error) {
           setWarnModal(!warnModal)
+          setDropOpen(false)
           setSnackOpen(true)
           setSeverity('error')
           setMessage(response.data.message)
         } else {
          setSnackOpen(true)
+         setDropOpen(false)
          setWarnModal(!warnModal)
          setSeverity('success')
          setMessage(response.data.message)
@@ -793,6 +803,14 @@ const handleCheckboxChange = (taskId) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={dropOpen}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
 
       {newTaskModal ?<div class="modal-backdrop fade show"></div>:''}
     </div>
