@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import workspaceImg from "../../assets/images/login/Lily.png";
+import { Backdrop, CircularProgress } from '@mui/material';
 
 function InvitationReq() {
 
     const location=useLocation()
     const invitationToken = new URLSearchParams(location.search).get('token');
     const [accepted, setAccepted] = useState(null);
+    const [dropOpen,setDropOpen]=useState(false)
 
     const navigate = useNavigate()
 
@@ -27,13 +29,16 @@ function InvitationReq() {
         console.log('use effect');
         try{
           console.log('try');
+          setDropOpen(true)
 
           const response = await axios.post('/invitation/response',{token:invitationToken,accepted}) 
 
           if(response.data.error){
             // alert('err')
+            setDropOpen(false)
             console.log(response.data.message);
           }else{
+            setDropOpen(false)
             navigate('/create-workspace')
           }
 
@@ -104,6 +109,14 @@ function InvitationReq() {
       </div>
     </div>
   </section>
+
+  <Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={dropOpen}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
 </div>
 
 
