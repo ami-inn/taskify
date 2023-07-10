@@ -7,6 +7,7 @@ import { RiDeleteBack2Fill, RiDeleteBackFill, RiDeleteBin2Fill, RiDeleteBinFill,
 
 import axios from 'axios'
 import SnackBar from '../SnackBar/SnackBar'
+import { Backdrop, CircularProgress } from '@mui/material'
 
 function EditProfile() {
 
@@ -36,6 +37,7 @@ function EditProfile() {
     const [message,setMessage]=useState('')
     const [selectedImage,setSelectedImage]=useState(null)
     const [sidebarShow, setsidebarShow] = useState(false);
+    const [dropOpen,setDropOpen]=useState(false)
 
     const handleButtonClick = () => {
       setsidebarShow(!sidebarShow);
@@ -140,6 +142,7 @@ function EditProfile() {
       
 
       try{
+        setDropOpen(true)
         console.log('enterr');
         const {data}=await axios.patch('/edit-profile/'+id, {
           name,
@@ -152,11 +155,13 @@ function EditProfile() {
         })
         console.log(data);
         if(data.err){
+          setDropOpen(false)
           setErrorMessage(data.message)
           setSnackOpen(true)
           setSeverity('error')
           setMessage(data.message)
         }else{
+          setDropOpen(false)
           console.log('sucees',data);
           setSnackOpen(true)
           setSeverity('success')
@@ -201,17 +206,20 @@ function EditProfile() {
       }
 
       try{
+        setDropOpen(true)
         
      const {data}= await axios.patch('/change-password/'+id,{oldPassword,newPassword})
 
      console.log(data);
      if(data.error){
+      setDropOpen(false)
       console.log(data.message)
       setErrorMessage(data.message)
       setSnackOpen(true)
       setSeverity('error')
       setMessage(data.message)
      }else{
+      setDropOpen(false)
       setSuccessMessage(data.message)
       setSnackOpen(true)
       setSeverity('success')
@@ -233,14 +241,17 @@ function EditProfile() {
       e.preventDefault()
 
       try{
+        setDropOpen(true)
 
         const {data}=await axios.patch('/update-sociallinks/'+id,{instagram,facebook,twitter})
 
         if(data.error){
+          setDropOpen(false)
           setSnackOpen(true)
           setSeverity('success')
           setMessage(data.message) 
         }else{
+          setDropOpen(false)
           setSnackOpen(true)
           setSeverity('success')
           setMessage(data.message)
@@ -519,6 +530,13 @@ function EditProfile() {
  }
       
     </div>
+    <Backdrop
+          sx={{ color: '#a7cafc',background:'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={dropOpen}
+          
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
     </div>
   )
 }
