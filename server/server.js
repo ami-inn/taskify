@@ -25,7 +25,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:3000",
-    //  'https://taskifi.netlify.app'
+     'https://taskifi.netlify.app'
     ],
   },
 });
@@ -42,7 +42,7 @@ app.use(
     cors({
         origin:[
             'http://localhost:3000',
-            // 'https://taskifi.netlify.app'
+            'https://taskifi.netlify.app'
         ],
         credentials:true,
     })
