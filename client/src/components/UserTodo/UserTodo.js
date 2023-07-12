@@ -1,7 +1,15 @@
 import React, { useState } from 'react'
 import UserSidebar from '../UserSidebar/UserSidebar';
 import UserHeder from '../UserHeader/UserHeder';
-import errorImg from '../../assets/images/error/maintain.png'
+// import errorImg from '../../assets/images/error/maintain.png'
+import { Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import Column from './cmpnts/Column';
+// import DarkModeIconButton from './components/DarkModeIconButton';
+
+// import theme from './config/theme';
+import { ChakraProvider } from '@chakra-ui/react';
 
 
 function UserTodo() {
@@ -22,50 +30,33 @@ function UserTodo() {
         <div className="content-page">
     <div className="container-fluid">
 
-    <div className="mt-5 iq-maintenance">
-  <div className="container-fluid p-0">
-    <div className="row no-gutters">
-      <div className="col-sm-12 text-center">
-        <div className="iq-maintenance">
-          <img src={errorImg} className="img-fluid" alt />
-          <h3 className="mt-4 mb-1">We are Currently Updating This Feature</h3>
-          <p>Please check back in sometime.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div className="container mt-3">
-    <div className="row">
-      <div className="col-lg-4">
-        <div className="card text-center">
-          <div className="card-body">
-            <i className="ri-window-line ri-4x line-height text-primary" />
-            <h5 className="card-title mt-1">Why is This To Do?</h5>
-            <p className="mb-0">Because User Can create Their Own Todos.How Cool Is That.We Can Create Our Todos And Track Our Progress</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-4">
-        <div className="card text-center">
-          <div className="card-body">
-            <i className="ri-time-line ri-4x line-height text-primary" />
-            <h5 className="card-title mt-1">Drag And Drop!</h5>
-            <p className="mb-0">The Drag And Drop Feature Is Available So We Can Create This Todos And Drag and Drop It To Our Own Status.</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-4">
-        <div className="card text-center">
-          <div className="card-body">
-            <i className="ri-information-line ri-4x line-height text-primary" />
-            <h5 className="card-title mt-1">Do you need Support?</h5>
-            <p className="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    <ChakraProvider >
+    <main>
+      <Heading
+        fontSize={{ base: '4xl', sm: '5xl', md: '6xl' }}
+        fontWeight="bold"
+        textAlign="center"
+        bgGradient="linear(to-l, #7928CA, #FF0080)"
+        bgClip="text"
+        mt={4}
+      >
+        Welcome to Taskify Kanban
+      </Heading>
+      {/* <DarkModeIconButton position="absolute" top={0} right={2} /> */}
+      <DndProvider backend={HTML5Backend}>
+        <Container maxWidth="container.lg" px={4} py={10}>
+          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={{ base: 16, md: 4 }}>
+            <Column column='Todo' />
+            <Column column='In Progress' />
+            <Column column='Blocked' />
+            <Column column='Completed' />
+          </SimpleGrid>
+        </Container>
+      </DndProvider>
+    </main>
+    </ChakraProvider>
+
+   
 
     </div>
             
