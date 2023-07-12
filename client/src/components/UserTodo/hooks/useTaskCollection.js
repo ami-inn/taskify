@@ -2,9 +2,11 @@ import { useLocalStorage } from 'usehooks-ts';
 import { v4 as uuidv4 } from 'uuid';
 
 
-function useTaskCollection() {
+function useTaskCollection(workspaceId) {
+
+  const storageKey = `tasks_${workspaceId}`;
   
-  return useLocalStorage('tasks', {
+  return useLocalStorage(storageKey, {
     ['Todo']: [
       {
         id: uuidv4(),

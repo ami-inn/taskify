@@ -5,11 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import useTaskCollection from './useTaskCollection';
 import {swap} from '../hooks/helpers'
+import { useSelector } from 'react-redux';
 
 const MAX_TASK_PER_COLUMN = 100;
 
 function useColumnTasks(column) {
-  const [tasks, setTasks] = useTaskCollection();
+  const workspaceId = useSelector((state)=>state.currentWorkspace)
+  const [tasks, setTasks] = useTaskCollection(workspaceId);
 
   const colors = [
     '#coecf7',
