@@ -57,9 +57,9 @@ function ForgotOtp({email}) {
                         }
 
                           <button type="submit" className="button-submit-login">Submit</button>
-                          <p className="mt-3 button-submit-login-p">
+                          {/* <p className="mt-3 button-submit-login-p">
                             Otp Resends In <a href="#">56:00</a>
-                          </p>
+                          </p> */}
                         </form>
                       </div>
                     </div>
