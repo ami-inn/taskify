@@ -63,6 +63,54 @@ const getTotalTaskCount = () => {
 // Usage
 const totalTaskCount = getTotalTaskCount();
 
+const categoryCounts = {
+  'Ui/Ux Design': 0,
+  'Development': 0,
+  'Testing': 0
+};
+
+projects.forEach(project => {
+  if (project.category === 'Ui/Ux Design') {
+    categoryCounts['Ui/Ux Design']++;
+  } else if (project.category === 'Development') {
+    categoryCounts['Development']++;
+  } else if (project.category === 'Testing') {
+    categoryCounts['Testing']++;
+  }
+});
+
+console.log(categoryCounts,'category counts');
+
+// Calculate percentages
+const totalProjects = projects.length;
+const percentages = {
+  'UI/UX Design': (categoryCounts['Ui/Ux Design'] / totalProjects) * 100,
+  'Development': (categoryCounts['Development'] / totalProjects) * 100,
+  'Testing': (categoryCounts['Testing'] / totalProjects) * 100
+};
+const testingMemberSet = new Set();
+const developmentMemberSet = new Set();
+const uiuxMemberSet = new Set();
+
+projects.forEach(project => {
+  if (project.category === 'Testing') {
+    project.members.forEach(member => testingMemberSet.add(member.profile.url));
+  } else if (project.category === 'Development') {
+    project.members.forEach(member => developmentMemberSet.add(member.profile.url));
+  } else if (project.category === 'Ui/Ux Design') {
+    project.members.forEach(member => uiuxMemberSet.add(member.profile.url));
+  }
+});
+
+const testingMembers = [...testingMemberSet];
+const developmentMembers = [...developmentMemberSet];
+const uiuxMembers = [...uiuxMemberSet];
+
+  console.log(testingMembers,'testing membersssss');
+  console.log(uiuxMembers,'ui membersssss');
+  console.log(developmentMembers,'deve membersssss');
+
+
   return (
     <div className="content-page">
     <div className="container-fluid">
@@ -152,22 +200,25 @@ const totalTaskCount = getTotalTaskCount();
                         <div className="col-sm-6">
                           <div className="d-flex align-items-center justify-content-between">
                             <div className="iq-progress-bar bg-secondary-light">
-                              <span className="bg-secondary iq-progress progress-1" data-percent={65} />
+                              <span className="bg-secondary iq-progress progress-1" data-percent={percentages['UI/UX Design']} style={{ width: `${percentages['UI/UX Design']}%` }}  />
                             </div>
-                            <span className="ml-3">65%</span>
+                            <span className="ml-3">{percentages['UI/UX Design']}%</span>
                           </div>                                                                
                         </div>
                         <div className="col-sm-3">
                           <div className="iq-media-group text-sm-right">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
-                            </a>
+                            {
+                              uiuxMembers.map((member)=>(
+
+                                <a href="#" className="iq-media">
+                                <img className="img-fluid avatar-40 rounded-circle" src={member} alt='' />
+                              </a>
+
+                              ))
+                            }
+                          
+                           
+                           
                           </div>
                         </div>
                       </div>
@@ -179,23 +230,23 @@ const totalTaskCount = getTotalTaskCount();
                         </div>
                         <div className="col-sm-6">
                           <div className="d-flex align-items-center justify-content-between">
-                            <div className="iq-progress-bar bg-primary-light">
-                              <span className="bg-primary iq-progress progress-1" data-percent={59} />
+                            <div className="iq-progress-bar" style={{background:'#84b2fa'}}>
+                              <span className=" iq-progress progress-1" data-percent={percentages['Development']} style={{ background:'#4287f5', width: `${percentages['Development']}%` }} />
                             </div>
-                            <span className="ml-3">59%</span>
+                            <span className="ml-3">{percentages['Development']}%</span>
                           </div>                                                                
                         </div>
                         <div className="col-sm-3">
                           <div className="iq-media-group text-sm-right">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
-                            </a>
+                            {
+                              developmentMembers.map((member)=>(
+                                <a href="#" className="iq-media">
+                                <img className="img-fluid avatar-40 rounded-circle" src={member} alt='' />
+                              </a>
+                              ))
+                            }
+                          
+                         
                           </div>
                         </div>
                       </div>
@@ -208,22 +259,22 @@ const totalTaskCount = getTotalTaskCount();
                         <div className="col-sm-6">
                           <div className="d-flex align-items-center justify-content-between">
                             <div className="iq-progress-bar bg-warning-light">
-                              <span className="bg-warning iq-progress progress-1" data-percent={78} />
+                              <span className="bg-warning iq-progress progress-1" data-percent={percentages['Testing']}  style={{ width: `${percentages['Testing']}%` }} />
                             </div>
-                            <span className="ml-3">78%</span>
+                            <span className="ml-3">{percentages['Testing']}%</span>
                           </div>                                                                
                         </div>
                         <div className="col-sm-3">
                           <div className="iq-media-group text-sm-right">
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img1} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img2} alt='' />
-                            </a>
-                            <a href="#" className="iq-media">
-                              <img className="img-fluid avatar-40 rounded-circle" src={img3} alt='' />
-                            </a>
+                            {
+                              testingMembers.map((member)=>(
+                                <a href="#" className="iq-media">
+                                <img className="img-fluid avatar-40 rounded-circle" src={member} alt='' />
+                              </a>
+                              ))
+                            }
+                          
+                          
                           </div>
                         </div>
                       </div>

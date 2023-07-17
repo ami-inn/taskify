@@ -182,6 +182,7 @@ function NewProject(props) {
                 <option>IOS</option>
                 <option>Ui/Ux Design</option>
                 <option>Development</option>
+                <option>Testing</option>
               </select>
             </div>
           </div>
